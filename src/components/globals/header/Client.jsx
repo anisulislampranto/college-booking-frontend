@@ -39,13 +39,15 @@ export default function HeaderClient() {
                 </div>
 
 
-                <ul className=' hidden lg:flex items-center justify-between gap-5 font-poppinsRegular'>
+                <div className=' hidden lg:flex items-center justify-between gap-5 font-poppinsRegular'>
                     {
                         navLinks.map((el) => 
                             <Link href={el.url} className='hover:text-[#96BEBA] cursor-pointer ' key={el.url}>{el.label}</Link>
                         )
                     }
-                </ul>
+                    
+                    <Link href={'signup'} className='hover:text-[#96BEBA] cursor-pointer' >Sign up</Link>
+                </div>
 
                 {/* For Small Screen */}
                 <button className=' block lg:hidden' onClick={() => setOpen(!open)} >
@@ -54,13 +56,14 @@ export default function HeaderClient() {
                     }
                 </button>
             </div>
-            <ul className={`bg-white z-50 absolute top-24 ${open ? 'block' : 'hidden'} border-b md:hidden text-center w-full flex gap-5 flex-col py-10 font-poppinsRegular`}>
+            <div className={`bg-white z-50 absolute top-24 ${open ? 'block' : 'hidden'} border-b md:hidden text-center w-full flex gap-5 flex-col py-10 font-poppinsRegular`}>
                 {
                     navLinks.map(el => 
                         <Link href={el.url} className='hover:text-[#96BEBA]' key={el.label} >{el.label}</Link>
                     )
                 }
-            </ul>
+                <Link href={'signup'} className='hover:text-[#96BEBA] cursor-pointer' >Sign up</Link>
+            </div>
         </>
     )
 }
