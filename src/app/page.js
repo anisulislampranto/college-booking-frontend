@@ -1,9 +1,9 @@
-import styles from "./page.module.css";
+import CollegesClient from "@/components/colleges/Client";
 
 export default function Home() {
   return (
     <main className={""}>
-      <h1 className=" text-reed-400">hello</h1>
+      <CollegesClient />
     </main>
   );
 }

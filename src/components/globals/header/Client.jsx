@@ -33,7 +33,7 @@ export default function HeaderClient() {
 
     return (
         <>
-            <div className='flex items-center justify-between bg-white text-black lg:bg-transparent p-5 gap-5 relative'>
+            <div className='flex items-center justify-between bg-white text-black lg:bg-transparent p-5 gap-5 relative border-b '>
                 <div className=' relative h-14 w-[12rem]'>
                     <Image src={logo} alt='logo' fill className=' absolute object-contain' />
                 </div>
@@ -54,7 +54,7 @@ export default function HeaderClient() {
                     }
                 </button>
             </div>
-            <ul className={`bg-white z-50 absolute top-24 ${open ? 'block' : 'hidden'} md:hidden text-center w-full flex gap-5 flex-col py-10 font-poppinsRegular`}>
+            <ul className={`bg-white z-50 absolute top-24 ${open ? 'block' : 'hidden'} border-b md:hidden text-center w-full flex gap-5 flex-col py-10 font-poppinsRegular`}>
                 {
                     navLinks.map(el => 
                         <Link href={el.url} className='hover:text-[#96BEBA]' key={el.label} >{el.label}</Link>
