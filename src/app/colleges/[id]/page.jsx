@@ -8,10 +8,6 @@ export default function CollegeDetailsPage({params}) {
   const [collegeDetails, setCollegeDetails] = useState(null);
   const [loading, setLoading] = useState(true);
 
-
-  console.log('collegeDetails', collegeDetails);
-  
-
   useEffect(() => {
     if (params.id) {
       // Fetch data based on the `id` param

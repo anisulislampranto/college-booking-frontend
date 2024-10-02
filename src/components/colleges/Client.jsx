@@ -30,7 +30,7 @@ export default function CollegesClient() {
   };
 
   return (
-    <div className="py-20 container mx-auto">
+    <div className="py-20 container mx-auto px-5">
       <form action="">
         <label htmlFor="searchCollege"></label>
         <input
@@ -45,7 +45,7 @@ export default function CollegesClient() {
       {/* Display the colleges */}
       <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
         {colleges.map((college) => (
-          <li key={college._id} className="p-4 border rounded-sm space-y-2">
+          <li key={college._id} className="p-4 border rounded-sm flex flex-col gap-2">
             { console.log('college', college) }
             <div className=' relative h-56 w-full'>
                 <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${college.image}`} className=' rounded-sm absolute object-cover' alt={'college.image'} fill />
@@ -54,7 +54,7 @@ export default function CollegesClient() {
             <p>Admission Date: {college.admissionDate}</p>
             <div>
                 <strong> Events: </strong>
-                <ul className=' flex gap-2'>
+                <ul className=' flex flex-wrap gap-2'>
                     {college.events?.map((el) => 
                         <li key={el._id} className=' shadow-md p-1 rounded-sm'>
                             {el.name}
@@ -64,7 +64,7 @@ export default function CollegesClient() {
             </div>
             <div>
                 <strong> Researches: </strong>
-                <ul className=' flex gap-2'>
+                <ul className=' flex flex-wrap gap-2'>
                     {college.researches?.map((el) => 
                         <li key={el._id} className=' shadow-md p-1 rounded-sm'>
                             {el.name}
@@ -74,7 +74,7 @@ export default function CollegesClient() {
             </div>
             <div>
                 <strong> Sports: </strong>
-                <ul className=' flex gap-2'>
+                <ul className=' flex flex-wrap gap-2'>
                     {college.sports?.map((el) => 
                         <li key={el._id} className=' shadow-md p-1 rounded-sm'>
                             {el.name}
@@ -83,7 +83,7 @@ export default function CollegesClient() {
                 </ul>
             </div>
 
-            <Link href={`/colleges/${college._id}`}  className=' mt-4 bg-black text-white font-semibold p-2 rounded-md'>Details</Link>
+            <Link href={`/colleges/${college._id}`}  className=' w-52 text-center mt-4 bg-black text-white font-semibold p-2 rounded-md'>Details</Link>
           </li>
         ))}
       </ul>
