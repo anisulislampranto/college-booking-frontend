@@ -1,6 +1,7 @@
 import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
 import HeaderServer from "@/components/globals/header/Server";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 export const metadata = {
   title: "College booking App",
@@ -12,8 +13,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={""}>
         <AuthProvider>
-          <HeaderServer />
-          {children}
+          <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID}>
+            <HeaderServer />
+            {children}
+          </GoogleOAuthProvider>
         </AuthProvider>
       </body>
     </html>
