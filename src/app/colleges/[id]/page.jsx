@@ -1,14 +1,22 @@
 'use client'
 
+import { AuthContext } from '@/context/AuthContext';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { redirect } from 'next/navigation'
+
 
 export default function CollegeDetailsPage({params}) {
   const [collegeDetails, setCollegeDetails] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
+    if (!user) {
+      redirect('/signup'); 
+    }
+
     if (params.id) {
       // Fetch data based on the `id` param
       const fetchCollegeDetails = async () => {
@@ -27,20 +35,21 @@ export default function CollegeDetailsPage({params}) {
     }
   }, [params.id]);
 
+
   if (loading) return <div className=' h-screen text-center flex items-center justify-center'>Loading...</div>;
   if (!collegeDetails) return <div  className=' h-screen text-center flex items-center justify-center' >No details found for this college.</div>;
 
   return (
     <div className=' container mx-auto py-10 p-5 space-y-4'>
       <div className=' relative h-[20rem] md:h-[30rem] w-full'>
-          <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${collegeDetails.image}`} className={` absolute object-cover`} alt='clg-img' fill />
+          <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${collegeDetails?.image}`} className={` absolute object-cover`} alt='clg-img' fill />
       </div>
       <h1 className=' text-5xl capitalize'>{collegeDetails.name}</h1>
 
     <div>
       <p className=' text-3xl'>Events:</p>
       <ul className=' grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2'>
-          {collegeDetails.events?.map((el) => 
+          {collegeDetails?.events?.map((el) => 
               <li key={el._id} className=' shadow-md rounded-sm p-5'>
                 <div className=' relative h-36 w-full'>
                     <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${el.image}`} className={` absolute object-cover`} alt='clg-img' fill />
@@ -57,7 +66,7 @@ export default function CollegeDetailsPage({params}) {
     <div>
       <p className=' text-3xl'>Sports:</p>
       <ul className=' grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2'>
-          {collegeDetails.sports?.map((el) => 
+          {collegeDetails?.sports?.map((el) => 
               <li key={el._id} className=' shadow-md rounded-sm p-5'>
                 <div className=' relative h-36 w-full'>
                     <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${el.image}`} className={` absolute object-cover`} alt='clg-img' fill />
@@ -73,7 +82,7 @@ export default function CollegeDetailsPage({params}) {
     <div>
       <p className=' text-3xl'>Researches:</p>
       <ul className=' grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2'>
-          {collegeDetails.researches?.map((el) => 
+          {collegeDetails?.researches?.map((el) => 
               <li key={el._id} className=' shadow-md rounded-sm p-5'>
                 <div className=' relative h-36 w-full'>
                     <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${el.image}`} className={` absolute object-cover`} alt='clg-img' fill />

@@ -11,28 +11,36 @@ import GoogleLogin from '@/auth/GoogleLogin';
 export default function Signup() {
     const [page, setPage] = useState('signup')
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { user } = useContext(AuthContext);
+    const { user, setUser } = useContext(AuthContext);
     const router = useRouter();
+    const [btnState, setBtnState] = useState('');
 
     const onSubmit = async (data) => {
-    try {
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type":"application/json",
-            },
-            body: JSON.stringify(data)      
+        setBtnState('loading');  // Set button state to loading on submit
+        try {
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type":"application/json",
+                },
+                body: JSON.stringify(data)      
+            }
+            const res  = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/${ page === 'signup' ? 'signup' : 'login' }`, options);
+            const userData = await res.json();
+
+            localStorage.setItem('token', userData.token)
+            localStorage.setItem('user', JSON.stringify(userData))
+
+            setUser(userData);
+            setBtnState('success');  // Set button state to success if form submission is successful
+            router.back();
+
+        } catch (error) {
+            setBtnState('failed')
+
+            console.log('error', error);
         }
-        const res  = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/${ page === 'signup' ? 'signup' : 'login' }`, options);
-        const user = await res.json();
-
-        localStorage.setItem('token', user.token)
-        localStorage.setItem('user', JSON.stringify(user))
-
-    } catch (error) {
-        console.log('error', error);
-    }
-  };
+    };
 
   useEffect(() => {
     if (user) {
@@ -120,7 +128,7 @@ export default function Signup() {
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                    { page == 'signup' ? 'Sign Up' : "Sign In" }
+                    { page == 'signup' ? `${ btnState  === 'loading' ? 'loading' : btnState === 'success' ? 'Success' : btnState === 'failed' ? 'failed' : 'Sign Up'}` : `${ btnState  === 'loading' ? 'loading' : btnState === 'success' ? 'Success' : btnState === 'failed' ? 'failed' : 'Sign In'}` }
                 </button>
               </div>
             </form>

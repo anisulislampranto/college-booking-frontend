@@ -41,7 +41,6 @@ export default function HeaderClient() {
                     <Image src={logo} alt='logo' fill className=' absolute object-contain' />
                 </Link>
 
-
                 <div className=' hidden lg:flex items-center justify-between gap-5 font-poppinsRegular'>
                     {
                         navLinks.map((el) => 
@@ -49,7 +48,7 @@ export default function HeaderClient() {
                         )
                     }
                     
-                    <Link href={ user?.name ? '/profile' : 'signup'} className='hover:text-[#96BEBA] cursor-pointer' >{user?.name ? user?.name : 'Sign up'}</Link>
+                    <Link href={ user?.name ? '/profile' : '/signup'} className='hover:text-[#96BEBA] cursor-pointer' >{user?.name ? user?.name : 'Sign up'}</Link>
                 </div>
 
                 {/* For Small Screen */}
@@ -65,7 +64,7 @@ export default function HeaderClient() {
                         <Link href={el.url} className='hover:text-[#96BEBA]' key={el.label} >{el.label}</Link>
                     )
                 }
-                <Link href={ user?.name ? '/profile' : 'signup'} className='hover:text-[#96BEBA] cursor-pointer' > {user?.name ? user?.name : 'Sign up'}</Link>
+                <Link href={ user?.name ? '/profile' : '/signup'} className='hover:text-[#96BEBA] cursor-pointer' > {user?.name ? user?.name : 'Sign up'}</Link>
             </div>
         </>
     )

@@ -3,21 +3,22 @@
 import { AuthContext } from "@/context/AuthContext";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { FaGoogle } from "react-icons/fa";
 
 const GoogleLogin = () => {
     const router = useRouter();
-    const { user } = useContext(AuthContext);
+    const { user, setUser } = useContext(AuthContext);
 
 	const responseGoogle = async (authResult) => {
 		try {
 			if (authResult["code"]) {
 				const result = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + `/api/auth/google?code=${authResult.code}`);
 				const data =  await result.json();
-
 				localStorage.setItem('user',JSON.stringify(data.user));
 				localStorage.setItem('token',JSON.stringify(data.token));
+                setUser(data);
+                router.back();
 			} else {
 				console.log(authResult);
 				throw new Error(authResult);

@@ -8,7 +8,7 @@ export default async function page() {
 
   return (
     <div className=' container mx-auto p-5 py-20'>
-        <h1 className=' text-3xl'>Gallery</h1>
+        <h1 className=' text-3xl'>Colleges</h1>
         <ul className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {data?.colleges?.map((college) => (
                 <li key={college._id} className="p-4 border rounded-sm flex flex-col gap-2">
