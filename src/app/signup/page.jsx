@@ -37,7 +37,6 @@ export default function Signup() {
 
         } catch (error) {
             setBtnState('failed')
-
             console.log('error', error);
         }
     };

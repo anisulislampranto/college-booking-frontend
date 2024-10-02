@@ -34,6 +34,10 @@ export default function HeaderClient() {
     const { user, logout } = useContext(AuthContext);
 
 
+    console.log('====================================');
+    console.log('user', user);
+    console.log('====================================');
+
     return (
         <>
             <div className='flex items-center justify-between bg-white text-black lg:bg-transparent p-5 gap-5 relative border-b '>

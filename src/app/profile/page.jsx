@@ -50,7 +50,7 @@ export default function Page() {
 
     return (
         <div className="max-w-3xl mx-auto mt-10">
-            <div className="border p-5">
+            <div className="border p-5 space-y-3">
                 {user?.image ? (
                     <div className="relative h-52 w-52">
                         <Image
@@ -67,7 +67,7 @@ export default function Page() {
                         </svg>
                     </div>
                 )}
-                <h1>{user?.name}</h1>
+                <h1 className=' capitalize text-4xl'>{user?.name}</h1>
                 <p>{user?.email}</p>
 
                 <button className=' bg-blue-600 text-white p-2 rounded-md' onClick={handleLogout}>Logout</button>
