@@ -1,11 +1,12 @@
 'use client';
 
 import Image from 'next/image'
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 import { RxHamburgerMenu } from "react-icons/rx";
 import { RiCloseLargeLine } from "react-icons/ri";
 import Link from 'next/link';
 import logo from '../../../assets/Board_of_Intermediate_and_Secondary_Education_Dhaka_Monogram.svg.png'
+import { AuthContext } from '@/context/AuthContext';
 
 
 const navLinks = [
@@ -30,6 +31,10 @@ const navLinks = [
 
 export default function HeaderClient() {
     const [open, setOpen] = useState(false);
+    const { user, logout } = useContext(AuthContext);
+
+    console.log('user header', user);
+    
 
     return (
         <>
@@ -46,7 +51,7 @@ export default function HeaderClient() {
                         )
                     }
                     
-                    <Link href={'signup'} className='hover:text-[#96BEBA] cursor-pointer' >Sign up</Link>
+                    <Link href={'signup'} className='hover:text-[#96BEBA] cursor-pointer' >{user?.name ? user?.name : 'Sign up'}</Link>
                 </div>
 
                 {/* For Small Screen */}
@@ -62,7 +67,7 @@ export default function HeaderClient() {
                         <Link href={el.url} className='hover:text-[#96BEBA]' key={el.label} >{el.label}</Link>
                     )
                 }
-                <Link href={'signup'} className='hover:text-[#96BEBA] cursor-pointer' >Sign up</Link>
+                <Link href={'signup'} className='hover:text-[#96BEBA] cursor-pointer' > {user?.name ? user?.name : 'Sign up'}</Link>
             </div>
         </>
     )

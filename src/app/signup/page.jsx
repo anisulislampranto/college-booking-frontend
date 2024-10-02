@@ -4,17 +4,18 @@ import { useForm } from 'react-hook-form';
 import { FaGoogle } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { InputField } from '@/utils/InputField';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { AuthContext } from '@/context/AuthContext';
 
 
 export default function Signup() {
     const [page, setPage] = useState('signup')
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const { user } = useContext(AuthContext);
+    const router = useRouter();
 
     const onSubmit = async (data) => {
-
-    console.log('data', data);
-
     try {
         const options = {
             method: "POST",
@@ -23,16 +24,23 @@ export default function Signup() {
             },
             body: JSON.stringify(data)      
         }
-        const res  = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/signup`, options);
-        
+        const res  = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/${ page === 'signup' ? 'signup' : 'login' }`, options);
         const user = await res.json();
 
-        console.log('user', user);
+        localStorage.setItem('token', user.token)
+        localStorage.setItem('user', JSON.stringify(user))
 
     } catch (error) {
         console.log('error', error);
     }
   };
+
+  useEffect(() => {
+    if (user) {
+      router.back();
+    }
+  }, [user, router]);
+
 
   return (
     <>
@@ -44,13 +52,16 @@ export default function Signup() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <InputField
-                label="Full Name"
-                id="name"
-                validation={{ required: "Full name is required" }}
-                register={register}
-                errors={errors}
-              />
+                {
+                    page === 'signup' &&
+                        <InputField
+                            label="Full Name"
+                            id="name"
+                            validation={{ required: "Full name is required" }}
+                            register={register}
+                            errors={errors}
+                        />
+                }
 
               <InputField
                 label="Email address"
