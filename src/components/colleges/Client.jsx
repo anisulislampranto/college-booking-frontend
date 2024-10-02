@@ -43,10 +43,9 @@ export default function CollegesClient() {
       </form>
 
       {/* Display the colleges */}
-      <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+      <ul className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {colleges.map((college) => (
           <li key={college._id} className="p-4 border rounded-sm flex flex-col gap-2">
-            { console.log('college', college) }
             <div className=' relative h-56 w-full'>
                 <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${college.image}`} className=' rounded-sm absolute object-cover' alt={'college.image'} fill />
             </div>
