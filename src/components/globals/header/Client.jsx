@@ -33,8 +33,6 @@ export default function HeaderClient() {
     const [open, setOpen] = useState(false);
     const { user, logout } = useContext(AuthContext);
 
-    console.log('user header', user);
-    
 
     return (
         <>
