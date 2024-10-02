@@ -12,7 +12,7 @@ import { AuthContext } from '@/context/AuthContext';
 const navLinks = [
     {
         label: 'Home',
-        url: '/home'
+        url: '/'
     },
     {
         label: 'Colleges',
@@ -39,9 +39,9 @@ export default function HeaderClient() {
     return (
         <>
             <div className='flex items-center justify-between bg-white text-black lg:bg-transparent p-5 gap-5 relative border-b '>
-                <div className=' relative h-14 w-[12rem]'>
+                <Link href={'/'} className=' relative h-14 w-[12rem]'>
                     <Image src={logo} alt='logo' fill className=' absolute object-contain' />
-                </div>
+                </Link>
 
 
                 <div className=' hidden lg:flex items-center justify-between gap-5 font-poppinsRegular'>
@@ -51,7 +51,7 @@ export default function HeaderClient() {
                         )
                     }
                     
-                    <Link href={'signup'} className='hover:text-[#96BEBA] cursor-pointer' >{user?.name ? user?.name : 'Sign up'}</Link>
+                    <Link href={ user?.name ? '/profile' : 'signup'} className='hover:text-[#96BEBA] cursor-pointer' >{user?.name ? user?.name : 'Sign up'}</Link>
                 </div>
 
                 {/* For Small Screen */}
@@ -67,7 +67,7 @@ export default function HeaderClient() {
                         <Link href={el.url} className='hover:text-[#96BEBA]' key={el.label} >{el.label}</Link>
                     )
                 }
-                <Link href={'signup'} className='hover:text-[#96BEBA] cursor-pointer' > {user?.name ? user?.name : 'Sign up'}</Link>
+                <Link href={ user?.name ? '/profile' : 'signup'} className='hover:text-[#96BEBA] cursor-pointer' > {user?.name ? user?.name : 'Sign up'}</Link>
             </div>
         </>
     )
