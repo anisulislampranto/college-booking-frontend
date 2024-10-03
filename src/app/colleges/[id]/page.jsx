@@ -46,9 +46,10 @@ export default function CollegeDetailsPage({params}) {
 
   return (
     <div className=' container mx-auto py-10 p-5 space-y-4'>
-      <div className=' relative h-[20rem] md:h-[30rem] w-full'>
+      <img src={el.image} alt="img" className=' h-[20rem] md:h-[30rem] w-full' />
+      {/* <div className=' relative h-[20rem] md:h-[30rem] w-full'>
           <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${collegeDetails?.image}`} className={` absolute object-cover`} alt='clg-img' fill />
-      </div>
+      </div> */}
       <h1 className=' text-5xl capitalize'>{collegeDetails.name}</h1>
 
     <div>
