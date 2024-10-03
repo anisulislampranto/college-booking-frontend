@@ -71,7 +71,7 @@ export default function AdmissionModal({ open, setOpen, collegeData }) {
                     defaultValue={user?.name}
                     className="border p-2 w-full"
                     />
-                    {errors.naem && <span className="text-red-500">{errors.name.message}</span>}
+                    {errors.name && <span className="text-red-500">{errors.name.message}</span>}
                 </div>
 
                 {/* Subject */}

@@ -17,7 +17,7 @@ const GoogleLogin = () => {
 				const data =  await result.json();
 				localStorage.setItem('user',JSON.stringify(data.user));
 				localStorage.setItem('token',JSON.stringify(data.token));
-                setUser(data);
+                setUser(data.user);
                 router.back();
 			} else {
 				console.log(authResult);

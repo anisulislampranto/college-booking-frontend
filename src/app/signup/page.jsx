@@ -35,8 +35,15 @@ export default function Signup() {
             setBtnState('success');  // Set button state to success if form submission is successful
             router.back();
 
+            setTimeout(() => {
+                setBtnState('') 
+             }, 2000);
         } catch (error) {
             setBtnState('failed')
+
+            setTimeout(() => {
+               setBtnState('') 
+            }, 2000);
             console.log('error', error);
         }
     };

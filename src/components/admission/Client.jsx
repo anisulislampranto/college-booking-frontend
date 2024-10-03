@@ -8,7 +8,7 @@ import React, { useContext, useEffect, useState } from 'react'
 export default function AdmissionClient({colleges}) {
     const [open, setOpen] = useState(false);
     const [collegeData, setCollegeData] = useState()
-    const {user, setUser} = useContext(AuthContext)
+    const {user, setUser, loading} = useContext(AuthContext)
 
     const handleClick = (data) => {
         setCollegeData(data)
@@ -16,7 +16,7 @@ export default function AdmissionClient({colleges}) {
     }
 
     useEffect(() => {
-        if (!user) {
+        if (!user && !loading) {
             redirect('/signup'); 
         }
     }, [user])

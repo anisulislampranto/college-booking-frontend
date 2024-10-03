@@ -34,9 +34,7 @@ export default function HeaderClient() {
     const { user, logout } = useContext(AuthContext);
 
 
-    console.log('====================================');
-    console.log('user', user);
-    console.log('====================================');
+    console.log('user header', user);
 
     return (
         <>
