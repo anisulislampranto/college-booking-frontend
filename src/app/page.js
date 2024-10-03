@@ -5,7 +5,7 @@ import ReviewsServer from "@/components/reviews/ReviewsServer";
 
 export default function Home() {
   return (
-    <main className={""}>
+    <main>
       <CollegesClient />
       <GalleryServer />
       <ResearchServer />
