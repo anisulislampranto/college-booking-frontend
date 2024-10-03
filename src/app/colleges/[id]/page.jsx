@@ -56,9 +56,10 @@ export default function CollegeDetailsPage({params}) {
       <ul className=' grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2'>
           {collegeDetails?.events?.map((el) => 
               <li key={el._id} className=' shadow-md rounded-sm p-5'>
-                <div className=' relative h-36 w-full'>
+                {/* <div className=' relative h-36 w-full'>
                     <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${el.image}`} className={` absolute object-cover`} alt='clg-img' fill />
-                </div>
+                </div> */}
+                <img src={el.image} alt="img" className=' h-36 w-full' />
                 <h3 className='capitalize text-xl'> {el.name} </h3>
                 <p> Date: {el.date} </p>
                 <p> {el.description} </p>
@@ -73,9 +74,10 @@ export default function CollegeDetailsPage({params}) {
       <ul className=' grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2'>
           {collegeDetails?.sports?.map((el) => 
               <li key={el._id} className=' shadow-md rounded-sm p-5'>
-                <div className=' relative h-36 w-full'>
+                {/* <div className=' relative h-36 w-full'>
                     <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${el.image}`} className={` absolute object-cover`} alt='clg-img' fill />
-                </div>
+                </div> */}
+                <img src={el.image} alt="img" className=' h-36 w-full' />
                 <h3 className='capitalize text-xl'> {el.name} </h3>
                 <p> {el.description} </p>
               </li>
@@ -89,9 +91,10 @@ export default function CollegeDetailsPage({params}) {
       <ul className=' grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2'>
           {collegeDetails?.researches?.map((el) => 
               <li key={el._id} className=' shadow-md rounded-sm p-5'>
-                <div className=' relative h-36 w-full'>
+                {/* <div className=' relative h-36 w-full'>
                     <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${el.image}`} className={` absolute object-cover`} alt='clg-img' fill />
-                </div>
+                </div> */}
+                <img src={el.image} alt="img" className=' h-36 w-full' />
                 <h3 className=' text-xl capitalize'> {el.name} </h3>
                 <p> {el.description} </p>
               </li>
