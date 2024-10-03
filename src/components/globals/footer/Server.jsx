@@ -7,7 +7,7 @@ import { FaLinkedin } from "react-icons/fa";
 const navLinks = [
     {
         label: 'Home',
-        url: '/home'
+        url: '/'
     },
     {
         label: 'Colleges',
