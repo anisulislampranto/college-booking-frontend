@@ -67,10 +67,9 @@ export default function Page() {
             <div className="border p-5 flex flex-col gap-4 items-center">
                 {user?.imageLink ? (
                     <div className="relative h-52 w-52">
-                        {console.log('ima', user?.imageLink)}
                         <Image
                             className="absolute object-cover"
-                            src={user.imageLink}
+                            src={`https://i.ibb.co.com/mB4v3Ty/Board-of-Intermediate-and-Secondary-Education-Dhaka-Monogram-svg.png`}
                             alt="profile"
                             fill
                         />

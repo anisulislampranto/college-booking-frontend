@@ -7,6 +7,10 @@ const nextConfig = {
         hostname: "localhost",
       },
       {
+        protocol: "http",
+        hostname: "**",
+      },
+      {
         protocol: "https",
         hostname: "i.ibb.co.com",
       },
