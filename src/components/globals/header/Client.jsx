@@ -31,10 +31,7 @@ const navLinks = [
 
 export default function HeaderClient() {
     const [open, setOpen] = useState(false);
-    const { user, logout } = useContext(AuthContext);
-
-
-    console.log('user header', user);
+    const { user } = useContext(AuthContext);
 
     return (
         <>
@@ -66,7 +63,7 @@ export default function HeaderClient() {
                         <Link href={el.url} className='hover:text-[#96BEBA]' key={el.label} >{el.label}</Link>
                     )
                 }
-                <Link href={ user?.name ? '/profile' : '/signup'} className='hover:text-[#96BEBA] cursor-pointer' > {user?.name ? user?.name : 'Sign up'}</Link>
+                <Link type='button' href={ user?.name ? '/profile' : '/signup'} className='hover:text-[#96BEBA] cursor-pointer' > {user?.name ? user?.name : 'Sign up'}</Link>
             </div>
         </>
     )

@@ -8,7 +8,10 @@ import React, { useContext, useEffect, useState } from 'react'
 export default function AdmissionClient({colleges}) {
     const [open, setOpen] = useState(false);
     const [collegeData, setCollegeData] = useState()
-    const {user, setUser, loading} = useContext(AuthContext)
+    const {user, loading} = useContext(AuthContext)
+
+    console.log('us', user, loading);
+    
 
     const handleClick = (data) => {
         setCollegeData(data)

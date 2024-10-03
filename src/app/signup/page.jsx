@@ -16,6 +16,7 @@ export default function Signup() {
     const [btnState, setBtnState] = useState('');
 
     const onSubmit = async (data) => {
+        setFetching(true)
         setBtnState('loading');  // Set button state to loading on submit
         try {
             const options = {
@@ -28,28 +29,27 @@ export default function Signup() {
             const res  = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/${ page === 'signup' ? 'signup' : 'login' }`, options);
             const userData = await res.json();
 
-            localStorage.setItem('token', userData.token)
-            localStorage.setItem('user', JSON.stringify(userData))
+            if (userData.email) {
+              localStorage.setItem('token', userData.token)
+              localStorage.setItem('user', JSON.stringify(userData))
+              setUser(userData);
+              setBtnState('success');
+              setTimeout(() => {
+                  setBtnState('');
+              }, 2000);
+            }
 
-            setUser(userData);
-            setBtnState('success');  // Set button state to success if form submission is successful
-            router.back();
-
-            setTimeout(() => {
-                setBtnState('') 
-             }, 2000);
         } catch (error) {
             setBtnState('failed')
-
             setTimeout(() => {
-               setBtnState('') 
+                setBtnState('') 
             }, 2000);
             console.log('error', error);
         }
     };
 
   useEffect(() => {
-    if (user) {
+    if (user?.email) {
       router.back();
     }
   }, [user, router]);
