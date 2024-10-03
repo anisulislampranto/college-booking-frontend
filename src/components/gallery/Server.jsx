@@ -5,10 +5,6 @@ export default async function GalleryServer() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/gallery`)
     const data = await res.json()
 
-    console.log('data', data);
-    console.log('process.env.NEXT_PUBLIC_BACKEND_URL', process.env.NEXT_PUBLIC_BACKEND_URL);
-    
-    
 
     return (
         <div className=' container mx-auto p-5 space-y-3'>
