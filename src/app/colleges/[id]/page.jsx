@@ -4,18 +4,16 @@ import { AuthContext } from '@/context/AuthContext';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react';
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 
 
 export default function CollegeDetailsPage({params}) {
   const [collegeDetails, setCollegeDetails] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const { user } = useContext(AuthContext);
+  const [fetching, setFetching] = useState(true);
+  const { user, loading } = useContext(AuthContext);
+  const router = useRouter()
 
   useEffect(() => {
-    if (!user) {
-      redirect('/signup'); 
-    }
 
     if (params.id) {
       // Fetch data based on the `id` param
@@ -27,7 +25,7 @@ export default function CollegeDetailsPage({params}) {
         } catch (error) {
           console.error('Error fetching college details:', error);
         } finally {
-          setLoading(false);
+          setFetching(false);
         }
       };
 
@@ -36,7 +34,14 @@ export default function CollegeDetailsPage({params}) {
   }, [params.id]);
 
 
-  if (loading) return <div className=' h-screen text-center flex items-center justify-center'>Loading...</div>;
+  useEffect(() => {
+    if (!loading && !user) {
+        router.push('/signup');
+    }
+}, [loading, user, router]);
+
+
+  if (fetching) return <div className=' h-screen text-center flex items-center justify-center'>Loading...</div>;
   if (!collegeDetails) return <div  className=' h-screen text-center flex items-center justify-center' >No details found for this college.</div>;
 
   return (

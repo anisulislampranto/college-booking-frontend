@@ -4,9 +4,11 @@ import { AuthContext } from '@/context/AuthContext';
 import React, { useContext, useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
-  const { user } = useContext(AuthContext);
+  const { user, loading } = useContext(AuthContext);
+  const router = useRouter()
   const [selectedCollegeId, setSelectedCollegeId] = useState(null);
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [userReviews, setUserReviews] = useState([]);
@@ -62,6 +64,12 @@ export default function Page() {
       console.error('Error submitting review:', error);
     }
   };
+
+  useEffect(() => {
+    if (!loading && !user) {
+        router.push('/signup');
+    }
+}, [loading, user, router]);
 
   return (
     <div className="container mx-auto px-5 py-20">
