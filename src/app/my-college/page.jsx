@@ -105,8 +105,10 @@ export default function Page() {
                 <button
                   onClick={() => setSelectedCollegeId(selectedCollegeId === college._id ? null : college._id)}
                   className="w-52 text-center mt-4 bg-black text-white font-semibold p-2 rounded-md"
-                >
-                  Review
+                > 
+                  {
+                    selectedCollegeId === college._id ? 'Close' : 'Review'
+                  }
                 </button>
               )}
 

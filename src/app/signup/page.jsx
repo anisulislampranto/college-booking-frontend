@@ -28,7 +28,19 @@ export default function Signup() {
             const res  = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/${ page === 'signup' ? 'signup' : 'login' }`, options);
             const userData = await res.json();
 
+            if (res.status === 401) {
+                setBtnState('failed');
+                alert("User doesn't exist")
+                setTimeout(() => {
+                  setBtnState('') 
+              }, 2000);
+            }
+
             if (userData.email) {
+
+              console.log('userData', userData);
+              
+
               localStorage.setItem('token', userData.token)
               localStorage.setItem('user', JSON.stringify(userData))
               setUser(userData);
@@ -36,7 +48,10 @@ export default function Signup() {
               setTimeout(() => {
                   setBtnState('');
               }, 2000);
-            }
+            } 
+
+            console.log('userData', userData);
+            
 
         } catch (error) {
             setBtnState('failed')
@@ -133,7 +148,7 @@ export default function Signup() {
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                    { page == 'signup' ? `${ btnState  === 'loading' ? 'loading' : btnState === 'success' ? 'Success' : btnState === 'failed' ? 'failed' : 'Sign Up'}` : `${ btnState  === 'loading' ? 'loading' : btnState === 'success' ? 'Success' : btnState === 'failed' ? 'failed' : 'Sign In'}` }
+                    { page == 'signup' ? `${ btnState  === 'loading' ? 'loading. . .' : btnState === 'success' ? 'Success' : btnState === 'failed' ? 'failed' : 'Sign Up'}` : `${ btnState  === 'loading' ? 'loading' : btnState === 'success' ? 'Success' : btnState === 'failed' ? 'failed' : 'Sign In'}` }
                 </button>
               </div>
             </form>

@@ -10,33 +10,43 @@ export default function AdmissionModal({ open, setOpen, collegeData }) {
     const { user, setUser } = useContext(AuthContext)
     const { register, handleSubmit, formState: { errors } } = useForm();
 
+    console.log('collegeData', collegeData);
+    
+
   // Submit handler for the form
   const onSubmit = async (data) => {
 
     try {
-      const formData = new FormData();
+      const formData = {
+        address: data.address,
+        dateOfBirth: data.dateOfBirth,
+        email: user?.email,
+        imageLink: data.imageLink, 
+        name: data.name,
+        phoneNumber: data.phoneNumber,
+        college: collegeData?._id,
+    };
 
-      formData.append('address', data.address );
-      formData.append('dateOfBirth', data?.dateOfBirth);
-      formData.append('email', user?.email);
-      formData.append('image', data?.image );
-      formData.append('name', data?.name);
-      formData.append('phoneNumber', data?.phoneNumber);
-    //   formData.append('subject', data?.subject);
-      formData.append('college', collegeData?._id);
+
+      console.log('formData',formData);
+      
 
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/update/${user._id}`, {
         method: 'PATCH',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData), 
       });
 
-      const updatedUser =  await res.json()
+      const updatedUser =  await res.json();
+      const userWithNewData  = {...user, colleges: updatedUser.colleges, address: updatedUser.address, dateOfBirth: updatedUser.dateOfBirth, imageLink: updatedUser.imageLink, phoneNumber: updatedUser.phoneNumber }
 
-      setUser({...user, colleges: updatedUser.colleges})
-      localStorage.setItem('user', JSON.stringify(user))
+      console.log('updated', updatedUser);
 
-      console.log('updatedUser', updatedUser)
-      console.log('user', user)
+      setUser(userWithNewData)
+      localStorage.setItem('user', JSON.stringify(userWithNewData))
+
 
       if (res.ok) {
         setOpen(false); 
@@ -139,14 +149,14 @@ export default function AdmissionModal({ open, setOpen, collegeData }) {
 
                 {/* Image */}
                 <div>
-                    <label htmlFor="image" className="block">Upload Image:</label>
+                    <label htmlFor="imageLink" className="block">Image Link:</label>
                     <input
-                    type="file"
-                    {...register('image', { required: 'Image is required' })}
+                    type="text"
+                    {...register('imageLink', { required: 'Image is required' })}
                     id="image"
                     className="border p-2 w-full"
                     />
-                    {errors.image && <span className="text-red-500">{errors.image.message}</span>}
+                    {errors.imageLink && <span className="text-red-500">{errors.imageLink.message}</span>}
                 </div>
 
                 {/* Submit Button */}

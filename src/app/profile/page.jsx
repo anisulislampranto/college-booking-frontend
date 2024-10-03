@@ -57,6 +57,7 @@ export default function Page() {
         }
     };
 
+
     if (loading) {
         return <div className="h-screen flex items-center justify-center">Loading...</div>;
     }
@@ -64,11 +65,12 @@ export default function Page() {
     return (
         <div className="max-w-md mx-auto py-20">
             <div className="border p-5 flex flex-col gap-4 items-center">
-                {user?.image ? (
+                {user?.imageLink ? (
                     <div className="relative h-52 w-52">
+                        {console.log('ima', user?.imageLink)}
                         <Image
                             className="absolute object-cover"
-                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${user?.image}`}
+                            src={user.imageLink}
                             alt="profile"
                             fill
                         />

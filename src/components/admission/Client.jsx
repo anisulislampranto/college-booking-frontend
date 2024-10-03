@@ -10,8 +10,6 @@ export default function AdmissionClient({colleges}) {
     const [collegeData, setCollegeData] = useState()
     const {user, loading} = useContext(AuthContext)
 
-    console.log('us', user, loading);
-    
 
     const handleClick = (data) => {
         setCollegeData(data)

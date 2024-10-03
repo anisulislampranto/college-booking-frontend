@@ -4,8 +4,6 @@ export default async function ReviewsServer() {
     const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + '/api/reviews' )
     const data = await res.json()
 
-    console.log('data', data.reviews);
-    
 
     return (
         <div className=' container mx-auto py-20 px-5'>
