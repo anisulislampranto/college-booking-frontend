@@ -16,7 +16,6 @@ export default function Signup() {
     const [btnState, setBtnState] = useState('');
 
     const onSubmit = async (data) => {
-        setFetching(true)
         setBtnState('loading');  // Set button state to loading on submit
         try {
             const options = {
