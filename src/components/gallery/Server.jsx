@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React from 'react'
 
 export default async function GalleryServer() {
@@ -14,7 +13,7 @@ export default async function GalleryServer() {
                     data?.map((el) => 
                         <li key={el._id} className=' relative h-56 w-full' >
                             <img src={`${el.image}`} className=' h-56 w-full' alt={'college.image'} />
-                            {/* <Image className=' absolute object-cover rounded-md' src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${el.image}`} alt='img' fill /> */}
+                            {/* <Image className=' absolute object-cover rounded-md' src={`${el.image}`} alt='img' fill /> */}
                             <p className=' absolute bottom-5 text-xl left-3 text-white capitalize backdrop-blur-md p-2'>{el.college?.name}</p>
                         </li>
                     )
