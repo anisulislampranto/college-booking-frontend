@@ -13,10 +13,6 @@ export default async function GalleryServer() {
                 {
                     data?.map((el) => 
                         <li key={el._id} className=' relative h-56 w-full' >
-                            {
-                                console.log('el._id', el.image)
-                            }
-                            {/* <img src={`${el.image}`} className=' h-56 w-full' alt={'college.image'} /> */}
                             <Image className=' absolute object-cover rounded-md' src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${el.image}`} alt='img' fill />
                             <p className=' absolute bottom-5 text-xl left-3 text-white capitalize backdrop-blur-md p-2'>{el.college?.name}</p>
                         </li>
