@@ -16,34 +16,29 @@ export default function AdmissionClient({colleges}) {
     const onSubmit = async (data) => {
 
         try {
-            const formData = {
-                address: data.address,
-                dateOfBirth: data.dateOfBirth,
-                email: user?.email,
-                imageLink: data.imageLink, 
-                name: data.name,
-                phoneNumber: data.phoneNumber,
-                college: collegeData?._id,
-            };
-
-
-            console.log('formData',formData);
-            
+            const formData = new FormData();
+            formData.append('address', data.address );
+            formData.append('dateOfBirth', data?.dateOfBirth);
+            formData.append('email', user?.email);
+            formData.append('image', data?.image );
+            formData.append('name', data?.name);
+            formData.append('phoneNumber', data?.phoneNumber);
+            formData.append('subject', data?.subject);
+            formData.append('college', collegeData?._id);
 
             const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/update/${user._id}`, {
                 method: 'PATCH',
                 headers: {
                 'Content-Type': 'application/json',
             },
-                body: JSON.stringify(formData), 
+                body: formData, 
             });
 
             const updatedUser =  await res.json();
             const userWithNewData  = {...user, colleges: updatedUser.colleges, address: updatedUser.address, dateOfBirth: updatedUser.dateOfBirth, imageLink: updatedUser.imageLink, phoneNumber: updatedUser.phoneNumber }
 
-            console.log('updated', updatedUser);
+            setUser(userWithNewData);
 
-            setUser(userWithNewData)
             localStorage.setItem('user', JSON.stringify(userWithNewData))
 
 
@@ -54,7 +49,7 @@ export default function AdmissionClient({colleges}) {
                 throw new Error('Failed to submit form');
             }
         } catch (error) {
-        console.error('Error submitting form:', error);
+            console.error('Error submitting form:', error);
         }
     };
 
@@ -92,10 +87,10 @@ export default function AdmissionClient({colleges}) {
                     <div>
                         <label htmlFor="name" className="block">Name:</label>
                         <input
-                        {...register('name', { required: 'Candidate Name is required' })}
-                        id="name"
-                        defaultValue={user?.name}
-                        className="border p-2 w-full"
+                            {...register('name', { required: 'Candidate Name is required' })}
+                            id="name"
+                            defaultValue={user?.name}
+                            className="border p-2 w-full"
                         />
                         {errors.name && <span className="text-red-500">{errors.name.message}</span>}
                     </div>
@@ -104,9 +99,9 @@ export default function AdmissionClient({colleges}) {
                     <div>
                         <label htmlFor="subject" className="block">Subject:</label>
                         <input
-                        {...register('subject', { required: 'Subject is required' })}
-                        id="subject"
-                        className="border p-2 w-full"
+                            {...register('subject', { required: 'Subject is required' })}
+                            id="subject"
+                            className="border p-2 w-full"
                         />
                         {errors.subject && <span className="text-red-500">{errors.subject.message}</span>}
                     </div>
@@ -122,7 +117,7 @@ export default function AdmissionClient({colleges}) {
                             id="email"
                             className="border p-2 w-full"
                         />
-                        {/* {errors.email && <span className="text-red-500">{errors.email.message}</span>} */}
+                        {errors.email && <span className="text-red-500">{errors.email.message}</span>}
                     </div>
 
 
@@ -162,15 +157,14 @@ export default function AdmissionClient({colleges}) {
                         {errors.dateOfBirth && <span className="text-red-500">{errors.dateOfBirth.message}</span>}
                     </div>
 
-
                     {/* Image */}
                     <div>
-                        <label htmlFor="imageLink" className="block">Image Link:</label>
+                        <label htmlFor="image" className="block">Image Link:</label>
                         <input
-                        type="text"
-                        {...register('imageLink', { required: 'Image is required' })}
-                        id="image"
-                        className="border p-2 w-full"
+                            type="file"
+                            {...register('image', { required: 'Image is required' })}
+                            id="image"
+                            className="border p-2 w-full"
                         />
                         {errors.imageLink && <span className="text-red-500">{errors.imageLink.message}</span>}
                     </div>

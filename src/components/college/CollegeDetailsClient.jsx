@@ -75,7 +75,9 @@ export default function CollegeDetailsClient({ collegeDetails }) {
   
     return (
       <div className="container mx-auto py-10 space-y-4 px-5">
-        <img src={collegeDetails.image} alt="img" className="h-[20rem] md:h-[30rem] w-full" />
+        <div className=' relative h-[20rem] md:h-[30rem] w-full'>
+            <Image className=' absolute object-cover rounded' src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${collegeDetails.image}`} alt='image' fill />
+        </div>
         <h1 className="text-5xl capitalize">{collegeDetails.name}</h1>
 
         {/* Timeline */}

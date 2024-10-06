@@ -1,12 +1,12 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 export default function CollegesClient() {
   const [searchTerm, setSearchTerm] = useState('');
   const [colleges, setColleges] = useState([]);
-  const [isModalOpen, setModalOpen] = useState()
 
   const fetchColleges = async (query = '') => {
     try {
@@ -32,13 +32,12 @@ export default function CollegesClient() {
   return (
     <div className="py-20 container mx-auto px-5 capitalize">
       <form action="">
-        <label htmlFor="searchCollege"></label>
         <input
           type="text"
           placeholder="Search College by name"
           value={searchTerm}
           onChange={handleSearchChange} 
-          className="p-2 border border-gray-300 rounded"
+          className="p-2 border border-gray-300 rounded w-52"
         />
       </form>
 
@@ -46,10 +45,9 @@ export default function CollegesClient() {
       <ul className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {colleges.map((college) => (
           <li key={college._id} className="p-4 border rounded-sm flex flex-col gap-2">
-                <img src={`${college.image}`} className=' h-20 w-24' alt={'college.image'} />
-            {/* <div className=' relative h-56 w-full'>
+            <div className=' relative h-56 w-full'>
                 <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${college.image}`} className=' rounded-sm absolute object-cover' alt={'college.image'} fill />
-            </div> */}
+            </div>
             <h3 className="text-lg font-semibold">{college.name}</h3>
             <p>Admission Date: {college.admissionDate}</p>
             <div>
