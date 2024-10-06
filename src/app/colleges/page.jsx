@@ -16,7 +16,7 @@ export default async function page() {
                         <Image src={`${college.image}`} className=' rounded-sm absolute object-cover' alt={'college.image'} fill />
                     </div> */}
                     <img src={`${college.image}`} className=' h-20 w-24' alt={'college.image'} />
-                    <h3 className="text-lg font-semibold">{college.name}</h3>
+                    <h3 className="text-lg font-semibold capitalize">{college.name}</h3>
                     <p>Admission Date: {college.admissionDate}</p>
                     <div>
                         <strong> Events: </strong>
