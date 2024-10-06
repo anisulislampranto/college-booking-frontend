@@ -9,7 +9,6 @@ export default function Home() {
   return (
     <main>
       <CollegesClient />
-      <Timeline />
       <GalleryServer />
       <ResearchServer />
       <ReviewsServer />

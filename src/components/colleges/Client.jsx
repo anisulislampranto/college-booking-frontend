@@ -1,12 +1,12 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 export default function CollegesClient() {
   const [searchTerm, setSearchTerm] = useState('');
   const [colleges, setColleges] = useState([]);
+  const [isModalOpen, setModalOpen] = useState()
 
   const fetchColleges = async (query = '') => {
     try {
@@ -30,7 +30,7 @@ export default function CollegesClient() {
   };
 
   return (
-    <div className="py-20 container mx-auto px-5">
+    <div className="py-20 container mx-auto px-5 capitalize">
       <form action="">
         <label htmlFor="searchCollege"></label>
         <input
@@ -84,6 +84,7 @@ export default function CollegesClient() {
             </div>
 
             <Link href={`/colleges/${college._id}`}  className=' w-52 text-center mt-4 bg-black text-white font-semibold p-2 rounded-md'>Details</Link>
+
           </li>
         ))}
       </ul>
