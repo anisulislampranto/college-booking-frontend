@@ -18,7 +18,7 @@ const GoogleLogin = () => {
 				localStorage.setItem('user',JSON.stringify(data.user));
 				localStorage.setItem('token',JSON.stringify(data.token));
                 setUser(data.user);
-                router.back();
+                router.push('/profile');
 			} else {
 				console.log(authResult);
 				throw new Error(authResult);
