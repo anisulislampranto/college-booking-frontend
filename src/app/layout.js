@@ -17,9 +17,11 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID}>
             <GlobalLoader>
-              <HeaderServer />
-              {children}
-              <FooterServer />
+              <div className=" font-visbyRegular flex flex-col min-h-screen">
+                <HeaderServer />
+                <main className="flex-grow">{children}</main>
+                <FooterServer />
+              </div>
             </GlobalLoader>
           </GoogleOAuthProvider>
         </AuthProvider>

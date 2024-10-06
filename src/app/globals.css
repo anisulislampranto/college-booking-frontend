@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url(https://db.onlinewebfonts.com/c/e3d4d88f7ba46cfbdfb4045368826129?family=Visby+Regular);
+
+@font-face {
+    font-family: "visbyRegular";
+    src: url("/fonts/VisbyRegular/VisbyRegular.woff");
+    url: url("/fonts/VisbyRegular/VisbyRegular.woff")format("woff"),
+}
+
 .bg {
     padding: 20px;
     border-radius: 10px;
