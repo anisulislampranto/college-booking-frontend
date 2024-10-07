@@ -6,10 +6,10 @@ import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/context/AuthContext';
 import GoogleLogin from '@/auth/GoogleLogin';
-import Link from 'next/link';
 
 
 export default function Signup() {
+    const [page, setPage] = useState('signup')
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { user, setUser } = useContext(AuthContext);
     const router = useRouter();
@@ -25,7 +25,7 @@ export default function Signup() {
                 },
                 body: JSON.stringify(data)      
             }
-            const res  = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`, options);
+            const res  = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/${ page === 'signup' ? 'signup' : 'login' }`, options);
             const userData = await res.json();
 
             if (res.status === 401) {
@@ -34,20 +34,19 @@ export default function Signup() {
                 setTimeout(() => {
                   setBtnState('') 
               }, 2000);
-            }
+            } 
 
             if (res.status === 403) {
-              setBtnState('');
-              alert('Already have an account try login')
-              router.push('login')
-          }
+                setBtnState('')
+            }
 
-            if (userData.data.email) {
+            if (userData.email) {
 
               console.log('userData', userData);
+              
 
-              localStorage.setItem('token', userData.data.token)
-              localStorage.setItem('user', JSON.stringify(userData.data))
+              localStorage.setItem('token', userData.token)
+              localStorage.setItem('user', JSON.stringify(userData))
               setUser(userData);
               setBtnState('success');
               setTimeout(() => {
@@ -78,19 +77,22 @@ export default function Signup() {
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center py-9 px-5 sm:px-6 lg:px-8">
         <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Sign Up to your account
+          {page === 'signup' ? 'Sign Up' : 'Sign In' } to your account
         </h2>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <InputField
-                  label="Full Name"
-                  id="name"
-                  validation={{ required: "Full name is required" }}
-                  register={register}
-                  errors={errors}
-              />
+                {
+                    page === 'signup' &&
+                        <InputField
+                            label="Full Name"
+                            id="name"
+                            validation={{ required: "Full name is required" }}
+                            register={register}
+                            errors={errors}
+                        />
+                }
 
               <InputField
                 label="Email address"
@@ -120,13 +122,27 @@ export default function Signup() {
               />
 
               <div className="flex items-center justify-between">
+                {/* <div className="text-sm leading-6">
+                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                    Forgot password?
+                  </a>
+                </div> */}
 
                 <div className="text-sm leading-6">
                   <div className="font-semibold">
-                    Already have an account?
-                    <Link href='/login' className=" cursor-pointer font-semibold text-indigo-600 hover:text-indigo-500" >
-                        Log In
-                    </Link>
+                    {
+                        page == 'signup' ? 'Already have an account? ' : "Don't have an account? "
+                    }
+                    
+                    {
+                        page === 'signup' ? 
+                        <span className=" cursor-pointer font-semibold text-indigo-600 hover:text-indigo-500" onClick={() => setPage('signin')}>
+                            Sign In
+                        </span> : 
+                        <span className=" cursor-pointer font-semibold text-indigo-600 hover:text-indigo-500" onClick={() => setPage('signup')}>
+                            Sign Up
+                        </span> 
+                    }
                   </div>
                 </div>
               </div>
@@ -134,9 +150,9 @@ export default function Signup() {
               <div>
                 <button
                   type="submit"
-                  className={` ${btnState === 'loading' ? 'bg-gray-500' : btnState === 'success' ? 'bg-green-600' : 'bg-indigo-600' } flex w-full justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
-                    { `${ btnState  === 'loading' ? 'Submitting. . .' : btnState === 'success' ? 'Success' : btnState === 'failed' ? 'failed' : 'Sign Up'}` }
+                    { page == 'signup' ? `${ btnState  === 'loading' ? 'loading. . .' : btnState === 'success' ? 'Success' : btnState === 'failed' ? 'failed' : 'Sign Up'}` : `${ btnState  === 'loading' ? 'loading' : btnState === 'success' ? 'Success' : btnState === 'failed' ? 'failed' : 'Sign In'}` }
                 </button>
               </div>
             </form>

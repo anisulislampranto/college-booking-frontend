@@ -9,11 +9,14 @@ import GoogleLogin from '@/auth/GoogleLogin';
 import Link from 'next/link';
 
 
-export default function Signup() {
+export default function Login() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { user, setUser } = useContext(AuthContext);
     const router = useRouter();
     const [btnState, setBtnState] = useState('');
+    const [error, setError] = useState('')
+    console.log('err', error);
+    
 
     const onSubmit = async (data) => {
         setBtnState('loading');  // Set button state to loading on submit
@@ -25,7 +28,7 @@ export default function Signup() {
                 },
                 body: JSON.stringify(data)      
             }
-            const res  = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`, options);
+            const res  = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, options);
             const userData = await res.json();
 
             if (res.status === 401) {
@@ -36,15 +39,18 @@ export default function Signup() {
               }, 2000);
             }
 
-            if (res.status === 403) {
-              setBtnState('');
-              alert('Already have an account try login')
-              router.push('login')
-          }
+            if (userData.error) {
+                setBtnState('');
+                setError(userData.error)
+                setTimeout(() => {
+                    setError('')
+                }, 2000);
+            }
 
             if (userData.data.email) {
 
               console.log('userData', userData);
+              
 
               localStorage.setItem('token', userData.data.token)
               localStorage.setItem('user', JSON.stringify(userData.data))
@@ -59,6 +65,7 @@ export default function Signup() {
             
 
         } catch (error) {
+            setError(error.message)
             setBtnState('failed')
             setTimeout(() => {
                 setBtnState('') 
@@ -78,19 +85,12 @@ export default function Signup() {
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center py-9 px-5 sm:px-6 lg:px-8">
         <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Sign Up to your account
+            Log In to your account
         </h2>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              <InputField
-                  label="Full Name"
-                  id="name"
-                  validation={{ required: "Full name is required" }}
-                  register={register}
-                  errors={errors}
-              />
 
               <InputField
                 label="Email address"
@@ -120,25 +120,33 @@ export default function Signup() {
               />
 
               <div className="flex items-center justify-between">
+                {/* <div className="text-sm leading-6">
+                  <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                    Forgot password?
+                  </a>
+                </div> */}
 
                 <div className="text-sm leading-6">
                   <div className="font-semibold">
-                    Already have an account?
-                    <Link href='/login' className=" cursor-pointer font-semibold text-indigo-600 hover:text-indigo-500" >
-                        Log In
-                    </Link>
+                    Don't have an account? 
+                    <Link href='/signup' className=" cursor-pointer font-semibold text-indigo-600 hover:text-indigo-500">
+                        Sign Up
+                    </Link> 
                   </div>
                 </div>
               </div>
 
               <div>
                 <button
-                  type="submit"
-                  className={` ${btnState === 'loading' ? 'bg-gray-500' : btnState === 'success' ? 'bg-green-600' : 'bg-indigo-600' } flex w-full justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                    disabled={btnState === 'loading'}
+                    type="submit"
+                    className={` ${btnState === 'loading' ? 'bg-gray-500' : btnState === 'success' ? 'bg-green-600' : 'bg-indigo-600' } flex w-full justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
                 >
-                    { `${ btnState  === 'loading' ? 'Submitting. . .' : btnState === 'success' ? 'Success' : btnState === 'failed' ? 'failed' : 'Sign Up'}` }
+                    { `${ btnState  === 'loading' ? 'loading' : btnState === 'success' ? 'Success' : btnState === 'failed' ? 'failed' : 'Sign In'}`}
                 </button>
+                <p className='text-red-700 capitalize mt-2' >{error}</p>
               </div>
+
             </form>
 
             <div>
@@ -150,7 +158,6 @@ export default function Signup() {
                   <span className="bg-white px-6 text-gray-900">Or continue with</span>
                 </div>
               </div>
-
                 <GoogleLogin />
               </div>
           </div>
