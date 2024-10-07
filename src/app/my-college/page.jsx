@@ -84,15 +84,15 @@ export default function Page() {
 
           return (
             <li key={college._id} className="p-4 border rounded-sm flex flex-col gap-2">
-              {/* <div className="relative h-56 w-full">
+              <div className="relative h-56 w-full">
                 <Image
                   src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${college.image}`}
                   className="rounded-sm absolute object-cover"
                   alt={'college image'}
                   fill
                 />
-              </div> */}
-              <img src={college.image} className='h-56 w-full' alt="img" />
+              </div>
+              {/* <img src={college.image} className='h-56 w-full' alt="img" /> */}
               <h3 className="text-lg font-semibold">{college.name}</h3>
 
               {collegeReview ? (
