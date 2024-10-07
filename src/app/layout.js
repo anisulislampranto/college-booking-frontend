@@ -3,7 +3,7 @@ import "./globals.css";
 import HeaderServer from "@/components/globals/header/Server";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import FooterServer from "@/components/globals/footer/Server";
-import GlobalLoader from "@/utils/globalLoader";
+import GlobalLoader from "../utils/GlobalLoader";
 
 export const metadata = {
   title: "College booking App",
