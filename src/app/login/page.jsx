@@ -15,11 +15,11 @@ export default function Login() {
     const router = useRouter();
     const [btnState, setBtnState] = useState('');
     const [error, setError] = useState('')
-    console.log('err', error);
     
 
     const onSubmit = async (data) => {
-        setBtnState('loading');  // Set button state to loading on submit
+
+        setBtnState('loading');
         try {
             const options = {
                 method: "POST",
@@ -29,6 +29,7 @@ export default function Login() {
                 body: JSON.stringify(data)      
             }
             const res  = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`, options);
+            
             const userData = await res.json();
 
             if (res.status === 401) {
@@ -47,22 +48,18 @@ export default function Login() {
                 }, 2000);
             }
 
-            if (userData.data.email) {
+            if (userData.data?.email) {
 
-              console.log('userData', userData);
-              
-
-              localStorage.setItem('token', userData.data.token)
-              localStorage.setItem('user', JSON.stringify(userData.data))
-              setUser(userData);
-              setBtnState('success');
-              setTimeout(() => {
-                  setBtnState('');
-              }, 2000);
+                localStorage.setItem('token', userData.data.token)
+                localStorage.setItem('user', JSON.stringify(userData.data))
+                setUser(userData.data);
+                setBtnState('success');
+                setTimeout(() => {
+                    setBtnState('');
+                }, 2000);
             } 
 
             console.log('userData', userData);
-            
 
         } catch (error) {
             setError(error.message)
@@ -127,7 +124,7 @@ export default function Login() {
                 </div> */}
 
                 <div className="text-sm leading-6">
-                  <div className="font-semibold">
+                  <div className="font-semibold flex gap-1">
                     Don't have an account? 
                     <Link href='/signup' className=" cursor-pointer font-semibold text-indigo-600 hover:text-indigo-500">
                         Sign Up
