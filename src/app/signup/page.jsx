@@ -17,101 +17,52 @@ export default function Signup() {
     const [userType, setUserType] = useState('student')
 
 
-    // College Sign up
-    const studentSignup = async (data) => {
-      
-      const options = {
-        method: "POST",
-        headers: {
-            "Content-Type":"application/json",
-        },
-        body: JSON.stringify(data)      
-      }
-
-      const res  = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`, options);
-
-      const userData = await res.json();
-
-      if (res.status === 401) {
-          setBtnState('failed');
-          alert("User doesn't exist")
-          setTimeout(() => {
-            setBtnState('') 
-        }, 2000);
-      }
-
-        if (res.status === 403) {
-          setBtnState('');
-          alert('Already have an account try login')
-          router.push('login')
-      }
-
-      if (userData.data?.email) {
-
-        localStorage.setItem('token', userData.data.token)
-        localStorage.setItem('user', JSON.stringify(userData.data));
-
-        setUser(userData.data);
-        setBtnState('success');
-        setTimeout(() => {
-            setBtnState('');
-        }, 2000);
-      } 
-    }
-
-
-    // College Sign up
-    const collegeSignUp = async (data) => {
-      const options = {
-        method: "POST",
-        headers: {
-            "Content-Type":"application/json",
-        },
-        body: JSON.stringify(data)      
-      }
-
-      const res  = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/create`, options);
-
-      const collegeData = await res.json();
-
-      if (res.status === 401) {
-          setBtnState('failed');
-          alert("User doesn't exist")
-          setTimeout(() => {
-            setBtnState('') 
-        }, 2000);
-      }
-
-        if (res.status === 403) {
-          setBtnState('');
-          alert('Already have an account try login')
-          router.push('login')
-      }
-
-      if (collegeData.data?.email) {
-
-        localStorage.setItem('token', userData.data.token)
-        localStorage.setItem('college', JSON.stringify(userData.data));
-
-        setUser(collegeData.data);
-        setBtnState('success');
-        setTimeout(() => {
-            setBtnState('');
-        }, 2000);
-      } 
-    }
-
-
     const onSubmit = async (data) => {
         setBtnState('loading'); 
         try {
-          if (userType === 'student') {
-            await studentSignup(data)
+
+          const userInfo  = {
+            ...data,
+            type: userType === 'student' ? 'student' : userType === 'college' ? 'collegeAdmin' : ''
           }
 
-          if (userType === 'college') {
-            await collegeSignUp(data)
+          const options = {
+            method: "POST",
+            headers: {
+                "Content-Type":"application/json",
+            },
+            body: JSON.stringify(userInfo)      
           }
+    
+          const res  = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`, options);
+    
+          const userData = await res.json();
+    
+          if (res.status === 401) {
+              setBtnState('failed');
+              alert("User doesn't exist")
+              setTimeout(() => {
+                setBtnState('') 
+            }, 2000);
+          }
+    
+            if (res.status === 403) {
+              setBtnState('');
+              alert('Already have an account try login')
+              router.push('login')
+          }
+    
+          if (userData.data?.email) {
+    
+            localStorage.setItem('token', userData.data.token)
+            localStorage.setItem('user', JSON.stringify(userData.data));
+    
+            setUser(userData.data);
+            setBtnState('success');
+            setTimeout(() => {
+                setBtnState('');
+            }, 2000);
+          } 
 
         } catch (error) {
             setBtnState('failed')

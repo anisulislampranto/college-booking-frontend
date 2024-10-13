@@ -76,11 +76,8 @@ export default function Page() {
       <h1 className="text-3xl">My Colleges</h1>
 
       <ul className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {user?.colleges?.map((college) => {
+        { user.colleges.length !== 0 ? user?.colleges?.map((college) => {
           const collegeReview = userReviews.find(review => review.collegeId._id === college._id);
-
-          console.log('collegeReview', collegeReview);
-          
 
           return (
             <li key={college._id} className="p-4 border rounded-sm flex flex-col gap-2">
@@ -153,7 +150,7 @@ export default function Page() {
               )}
             </li>
           );
-        })}
+        }) : <span className=' text-center col-span-3 text-5xl'>{user.type === 'student' ? 'Get Admission to see your colleges.' : 'Add College to see details here'}</span> }
       </ul>
     </div>
   );

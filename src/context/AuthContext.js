@@ -11,19 +11,13 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     // Get user from localStorage when app starts
     const storedUser = localStorage.getItem("user");
-    const storedCollege = localStorage.getItem("college");
 
     if (storedUser) {
       console.log("storedUser", storedUser);
       setUser(JSON.parse(storedUser));
       setLoading(false);
-    } else if (storedCollege) {
-      console.log("storedUser", storedCollege);
-      setUser(JSON.parse(storedCollege));
-      setLoading(false);
     } else {
       localStorage.removeItem("user");
-      localStorage.removeItem("college");
       localStorage.removeItem("token");
       setUser(null);
     }
@@ -33,7 +27,6 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("user");
-    localStorage.removeItem("college");
     localStorage.removeItem("token");
     setUser(null);
   };

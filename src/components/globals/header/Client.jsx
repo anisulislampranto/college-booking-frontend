@@ -23,6 +23,10 @@ const navLinks = [
         url: '/admission'
     },
     {
+        label: 'Add College',
+        url: '/add-college'
+    },
+    {
         label: 'My College',
         url: '/my-college'
     },
@@ -33,6 +37,11 @@ export default function HeaderClient() {
     const [open, setOpen] = useState(false);
     const { user } = useContext(AuthContext);
 
+    const navlinkForStudent = navLinks.filter(el => el.label !== 'Add College' )
+
+    console.log('navlinkForStudent', navlinkForStudent);
+    
+
     return (
         <>
             <div className='flex items-center justify-between bg-white text-black lg:bg-transparent p-5 gap-5 relative border-b '>
@@ -41,8 +50,15 @@ export default function HeaderClient() {
                 </Link>
 
                 <div className=' hidden lg:flex items-center justify-between gap-5 font-poppinsRegular'>
+
                     {
-                        navLinks.map((el) => 
+                        user.type === 'student' && navLinks.filter(el => el.label !== 'Add College' ).map((el) => 
+                            <Link href={el.url} className='hover:text-[#96BEBA] cursor-pointer ' key={el.url}>{el.label}</Link>
+                        )
+                    }
+
+                    {
+                        user.type === 'collegeAdmin' && navLinks.filter(el => el.label !== 'Admission' ).map((el) => 
                             <Link href={el.url} className='hover:text-[#96BEBA] cursor-pointer ' key={el.url}>{el.label}</Link>
                         )
                     }
@@ -58,11 +74,17 @@ export default function HeaderClient() {
                 </button>
             </div>
             <div className={`bg-white z-50 absolute top-24 ${open ? 'block' : 'hidden'} border-b md:hidden text-center w-full flex gap-5 flex-col py-10 font-poppinsRegular`}>
-                {
-                    navLinks.map(el => 
-                        <Link href={el.url} className='hover:text-[#96BEBA]' key={el.label} >{el.label}</Link>
-                    )
-                }
+                    {
+                        user.type === 'student' && navLinks.filter(el => el.label !== 'Add College' ).map((el) => 
+                            <Link href={el.url} className='hover:text-[#96BEBA] cursor-pointer ' key={el.url}>{el.label}</Link>
+                        )
+                    }
+
+                    {
+                        user.type === 'collegeAdmin' && navLinks.filter(el => el.label !== 'Admission' ).map((el) => 
+                            <Link href={el.url} className='hover:text-[#96BEBA] cursor-pointer ' key={el.url}>{el.label}</Link>
+                        )
+                    }
                 <Link type='button' href={ user?.name ? '/profile' : '/signup'} className='hover:text-[#96BEBA] cursor-pointer' > {user?.name ? user?.name : 'Sign up'}</Link>
             </div>
         </>

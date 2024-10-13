@@ -1,5 +1,5 @@
 export const InputField = ({ label, id, type = "text", validation, register, errors }) => (
-    <div>
+    <>
       <label htmlFor={id} className="block text-sm font-medium leading-6 text-gray-900">
         {label}
       </label>
@@ -16,5 +16,5 @@ export const InputField = ({ label, id, type = "text", validation, register, err
           <p className="text-sm text-red-600 mt-1">{errors[id].message}</p>
         )}
       </div>
-    </div>
+    </>
   );
