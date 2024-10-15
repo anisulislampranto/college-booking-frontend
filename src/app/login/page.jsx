@@ -59,8 +59,6 @@ export default function Login() {
                 }, 2000);
             } 
 
-            console.log('userData', userData);
-
         } catch (error) {
             setError(error.message)
             setBtnState('failed')

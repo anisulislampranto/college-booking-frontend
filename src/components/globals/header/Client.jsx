@@ -37,11 +37,6 @@ export default function HeaderClient() {
     const [open, setOpen] = useState(false);
     const { user } = useContext(AuthContext);
 
-    const navlinkForStudent = navLinks.filter(el => el.label !== 'Add College' )
-
-    console.log('navlinkForStudent', navlinkForStudent);
-    
-
     return (
         <>
             <div className='flex items-center justify-between bg-white text-black lg:bg-transparent p-5 gap-5 relative border-b '>
@@ -52,13 +47,19 @@ export default function HeaderClient() {
                 <div className=' hidden lg:flex items-center justify-between gap-5 font-poppinsRegular'>
 
                     {
-                        user.type === 'student' && navLinks.filter(el => el.label !== 'Add College' ).map((el) => 
+                        user?.type === 'student' && navLinks.filter(el => el.label !== 'Add College' ).map((el) => 
                             <Link href={el.url} className='hover:text-[#96BEBA] cursor-pointer ' key={el.url}>{el.label}</Link>
                         )
                     }
 
                     {
-                        user.type === 'collegeAdmin' && navLinks.filter(el => el.label !== 'Admission' ).map((el) => 
+                        user?.type === 'collegeAdmin' && navLinks.filter(el => el.label !== 'Admission' ).map((el) => 
+                            <Link href={el.url} className='hover:text-[#96BEBA] cursor-pointer ' key={el.url}>{el.label}</Link>
+                        )
+                    }
+
+                    {
+                        !user && navLinks.filter(el => el.label !== 'Add College' &&  el.label !== 'Admission' &&  el.label !== 'My College' ).map((el) => 
                             <Link href={el.url} className='hover:text-[#96BEBA] cursor-pointer ' key={el.url}>{el.label}</Link>
                         )
                     }
@@ -75,13 +76,13 @@ export default function HeaderClient() {
             </div>
             <div className={`bg-white z-50 absolute top-24 ${open ? 'block' : 'hidden'} border-b md:hidden text-center w-full flex gap-5 flex-col py-10 font-poppinsRegular`}>
                     {
-                        user.type === 'student' && navLinks.filter(el => el.label !== 'Add College' ).map((el) => 
+                        user?.email && user.type === 'student' && navLinks.filter(el => el.label !== 'Add College' ).map((el) => 
                             <Link href={el.url} className='hover:text-[#96BEBA] cursor-pointer ' key={el.url}>{el.label}</Link>
                         )
                     }
 
                     {
-                        user.type === 'collegeAdmin' && navLinks.filter(el => el.label !== 'Admission' ).map((el) => 
+                        user?.email && user.type === 'collegeAdmin' && navLinks.filter(el => el.label !== 'Admission' ).map((el) => 
                             <Link href={el.url} className='hover:text-[#96BEBA] cursor-pointer ' key={el.url}>{el.label}</Link>
                         )
                     }

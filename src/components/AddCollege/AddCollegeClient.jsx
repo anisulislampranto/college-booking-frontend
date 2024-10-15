@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 import { AuthContext } from '@/context/AuthContext';
+import { redirect } from 'next/navigation';
 
 
 export default function AddCollegeClient() {
@@ -14,35 +15,37 @@ export default function AddCollegeClient() {
 
     const onSubmit = async (data) => {
 
-        console.log('data', data);
+        console.log('dataR', data);
         
 
         try {
             const formData = new FormData();
             formData.append('name', data.name );
-            formData.append('admissionDate', data?.admissionDate);
-            formData.append('image', data?.image );
-            formData.append('admin', user?._id );
+            formData.append('admissionDate', data.admissionDate);
+            formData.append('image', data.image[0] );
+            formData.append('admin', user._id );
 
             const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/create`, {
                     method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${user.token}`, // Add the token in the Authorization header
-                    },
+                    headers: { 'Authorization': `Bearer ${user.token}` },
                     body: formData, 
-            });
+            }); 
 
             const createdCollege = await res.json();
 
             console.log('res', res);
-            console.log('data', createdCollege);
-            
-            
+            console.log('createdCollege', createdCollege);
+
         } catch (error) {
             console.error('Error submitting form:', error);
         }
-
     }
+
+    useEffect(() => {
+        if (!user && !loading) {
+            redirect('/login'); 
+        }
+    }, [user])
 
     return (
         <div>

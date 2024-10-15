@@ -77,7 +77,6 @@ export const InfiniteMovingCards = ({
             className="w-[350px] bg-black max-w-full relative rounded border border-b-0 flex-shrink-0 border-slate-700 px-8 py-6 md:w-[450px]"
             key={item._id}>
             <blockquote>
-              {console.log('item', item)}
               <div
                 aria-hidden="true"
                 className="user-select-none -z-1 pointer-events-none absolute -left-0.5 -top-0.5 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"></div>
