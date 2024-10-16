@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import AddEventClient from '@/components/AddEvent/AddEventClient';
 import AddResearch from '@/components/AddResearch/AddResearch';
+import AddSport from '@/components/AddSport/AddSport';
 
 export default function Page() {
   const { user, setUser , loading } = useContext(AuthContext);
@@ -18,6 +19,7 @@ export default function Page() {
 
   const [addEventModal, setAddEventModal] = useState(false);
   const [addResearchModal, setAddResearchModal] = useState(false);
+  const [addSportModal, setAddSportModal] = useState(false);
 
 
   // Fetch reviews on component mount
@@ -83,6 +85,13 @@ export default function Page() {
   const handleAddResearch = (college) => {
     setCollegeData(college);
     setAddResearchModal(true);
+  }
+
+
+  // handleAddResearch
+  const handleAddSport = (college) => {
+    setCollegeData(college);
+    setAddSportModal(true);
   }
 
   useEffect(() => {
@@ -160,7 +169,7 @@ export default function Page() {
                 <div>
                   <div className='flex justify-between'>
                     <strong>Sports:</strong>
-                    <button className=' bg-blue-600 text-white  p-1 rounded-md'>add sport</button>
+                    <button className=' bg-blue-600 text-white  p-1 rounded-md' onClick={() => handleAddSport(college)}>add sport</button>
                   </div>
                   <ul className='flex flex-wrap gap-2'>
                     {college.sports.length !== 0 ? college.sports.map((el) =>
@@ -222,6 +231,10 @@ export default function Page() {
       
       {/* Add Research */}
       <AddResearch college={collegeData} open={addResearchModal} setOpen={setAddResearchModal} user={user} setUser={setUser} />
+
+
+      {/* Add Sport */}
+      <AddSport college={collegeData} open={addSportModal} setOpen={setAddSportModal} user={user} setUser={setUser} />
     </>
   );
 }

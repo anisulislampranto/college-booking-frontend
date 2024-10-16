@@ -1,53 +1,40 @@
 'use client';
 
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import Modal from '@/utils/Modal'
-import { useForm, Controller } from "react-hook-form";
-import {Select, SelectItem, Textarea, Input} from "@nextui-org/react";
+import { useForm } from "react-hook-form";
+import { Textarea, Input} from "@nextui-org/react";
 
 
-export default function AddResearch({college, open, setOpen, user, setUser}) {
-    const { control, register, handleSubmit, watch, formState: { errors } } = useForm();
-    const [users, setUsers] = useState([])
-
+export default function AddSport({college, open, setOpen, user, setUser}) {
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
     const onSubmit = async (data) => {
-
-        const participantArray = data.participants.split(',');
-
 
         try {
             const formData = new FormData();
             formData.append('name', data.name );
             formData.append('image', data.image[0] );
-            formData.append('description', data.description)
+            formData.append('description', data.description);
             formData.append('college', college._id );
             formData.append('user', user._id)
 
-            participantArray.forEach((participant) => formData.append("participants[]", participant))
-
-
-
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/researches/create`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sports/create`, {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${user.token}` },
                     body: formData, 
             });
 
-            const createdResearch = await res.json();
-
-            console.log('res', res);
-            console.log('createdResearch', createdResearch);
-            
+            const createdSport = await res.json();
 
             if (res.ok) {
                 
                 const updatedColleges = user.colleges.map(college => {
 
-                    if (college._id === createdResearch.data.college) {
+                    if (college._id === createdSport.data.college) {
                         return {
                             ...college,
-                            researches: [...college.researches, createdResearch.data],  // Update events array with the new event
+                            sports: [...college.sports, createdSport.data],  // Update events array with the new event
                         };
                     }
                     return college;
@@ -75,30 +62,11 @@ export default function AddResearch({college, open, setOpen, user, setUser}) {
     }
 
 
-    useEffect(() => {
-        (async()=>{
-            try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users`, {
-                    method: 'GET',
-                    headers: { 'Authorization': `Bearer ${user.token}` },
-                })
-
-                const users = await res.json()
-
-                setUsers(users.data)
-
-            } catch (error) {
-                console.log('err', error);
-            }
-        })()
-    }, [])
-    
-
-
     return (
         <Modal open={open} setOpen={setOpen}>
             <h1 className=' text-4xl py-5'>Add Research for <strong>{college.name}</strong> </h1>
             <form onSubmit={handleSubmit(onSubmit)}>
+
                 {/* Research Name */}
                 <div>
                     <Input
@@ -136,35 +104,9 @@ export default function AddResearch({college, open, setOpen, user, setUser}) {
                     {errors.date && <span className="text-red-500">{errors.date.message}</span>}
                 </div>
 
-                {/* Research Participants */}
-                <div>
-                    <Controller
-                        name="participants"
-                        control={control}
-                        rules={{ required: 'Please select at least one participant' }}
-                        render={({ field }) => (
-                            <Select
-                                {...field}
-                                label="Participants"
-                                placeholder="Select participants"
-                                selectionMode="multiple"
-                                className="px-2"
-                                onSelectionChange={selectedItems => field.onChange([...selectedItems])}  // Get selected IDs
-                            >
-                                {users.map((user) => (
-                                    <SelectItem key={user._id} value={user._id}>
-                                        {user.name}
-                                    </SelectItem>
-                                ))}
-                            </Select>
-                        )}
-                    />
-                    {errors.participants && <span className="text-red-500">{errors.participants.message}</span>}
-                </div>
-
                 {/* Submit Button */}
                 <button type="submit" className="mt-5 p-2 bg-blue-500 text-white rounded-md">
-                    Add Research
+                    Add Sport
                 </button>
             </form>
         </Modal>
