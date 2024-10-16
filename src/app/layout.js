@@ -4,6 +4,7 @@ import HeaderServer from "@/components/globals/header/Server";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import FooterServer from "@/components/globals/footer/Server";
 import GlobalLoader from "../utils/GlobalLoader";
+import { Providers } from "./providers";
 
 export const metadata = {
   title: "College booking App",
@@ -14,17 +15,19 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={""}>
-        <AuthProvider>
-          <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID}>
-            <GlobalLoader>
-              <div className=" font-visbyRegular flex flex-col min-h-screen">
-                <HeaderServer />
-                <main className="flex-grow">{children}</main>
-                <FooterServer />
-              </div>
-            </GlobalLoader>
-          </GoogleOAuthProvider>
-        </AuthProvider>
+        <Providers>
+          <AuthProvider>
+            <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID}>
+              <GlobalLoader>
+                <div className=" font-visbyRegular flex flex-col min-h-screen">
+                  <HeaderServer />
+                  <main className="flex-grow">{children}</main>
+                  <FooterServer />
+                </div>
+              </GlobalLoader>
+            </GoogleOAuthProvider>
+          </AuthProvider>
+        </Providers>
       </body>
     </html>
   );

@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import AddEventClient from '@/components/AddEvent/AddEventClient';
+import AddResearch from '@/components/AddResearch/AddResearch';
 
 export default function Page() {
   const { user, setUser , loading } = useContext(AuthContext);
@@ -15,7 +16,8 @@ export default function Page() {
   const [userReviews, setUserReviews] = useState([]);
   const [collegeData, setCollegeData] = useState({});
 
-  const [addEventModal, setAddEventModal] = useState(false)
+  const [addEventModal, setAddEventModal] = useState(false);
+  const [addResearchModal, setAddResearchModal] = useState(false);
 
 
   // Fetch reviews on component mount
@@ -74,6 +76,13 @@ export default function Page() {
   const handleAddEvent = (college) => {
     setCollegeData(college);
     setAddEventModal(true);
+  }
+
+
+  // handleAddResearch
+  const handleAddResearch = (college) => {
+    setCollegeData(college);
+    setAddResearchModal(true);
   }
 
   useEffect(() => {
@@ -138,7 +147,7 @@ export default function Page() {
                 <div>
                   <div className='flex justify-between'>
                     <strong>Researches:</strong>
-                    <button className=' bg-blue-600 text-white  p-1 rounded-md'>add research</button>
+                    <button className=' bg-blue-600 text-white  p-1 rounded-md' onClick={() => handleAddResearch(college)}>add research</button>
                   </div>
                   <ul className='flex flex-wrap gap-2'>
                     {college.researches.length !== 0 ? college.researches.map((el) =>
@@ -210,6 +219,9 @@ export default function Page() {
 
       {/* Add event */}
       <AddEventClient college={collegeData} open={addEventModal} setOpen={setAddEventModal} user={user} setUser={setUser} />
+      
+      {/* Add REsearch */}
+      <AddResearch college={collegeData} open={addResearchModal} setOpen={setAddEventModal} user={user} setUser={setUser} />
     </>
   );
 }
