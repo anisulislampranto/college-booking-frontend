@@ -5,13 +5,18 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import AddEventClient from '@/components/AddEvent/AddEventClient';
 
 export default function Page() {
-  const { user, loading } = useContext(AuthContext);
+  const { user, setUser , loading } = useContext(AuthContext);
   const router = useRouter()
   const [selectedCollegeId, setSelectedCollegeId] = useState(null);
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [userReviews, setUserReviews] = useState([]);
+  const [collegeData, setCollegeData] = useState({});
+
+  const [addEventModal, setAddEventModal] = useState(false)
+
 
   // Fetch reviews on component mount
   useEffect(() => {
@@ -65,6 +70,12 @@ export default function Page() {
     }
   };
 
+  // handleAddEvent
+  const handleAddEvent = (college) => {
+    setCollegeData(college);
+    setAddEventModal(true);
+  }
+
   useEffect(() => {
     if (!loading && !user) {
         router.push('/signup');
@@ -72,6 +83,7 @@ export default function Page() {
 }, [loading, user, router]);
 
   return (
+    <>
     <div className="container mx-auto px-5 py-20">
       <h1 className="text-3xl">My Colleges</h1>
 
@@ -89,7 +101,6 @@ export default function Page() {
                   fill
                 />
               </div>
-              {/* <img src={college.image} className='h-56 w-full' alt="img" /> */}
               <h3 className="text-lg font-semibold">{college.name}</h3>
 
               {collegeReview ? (
@@ -102,7 +113,7 @@ export default function Page() {
               ) : (
                 <button
                   onClick={() => setSelectedCollegeId(selectedCollegeId === college._id ? null : college._id)}
-                  className="w-52 text-center mt-4 bg-black text-white font-semibold p-2 rounded-md"
+                  className={`w-52 text-center mt-4 bg-black text-white font-semibold p-2 rounded-md ${user.type === 'student' ? 'block' : 'hidden'}`}
                 > 
                   {
                     selectedCollegeId === college._id ? 'Close' : 'Review'
@@ -110,7 +121,50 @@ export default function Page() {
                 </button>
               )}
 
-              {selectedCollegeId === college._id && (
+              {/*  */}
+              <div>
+                  <div className='flex justify-between'>
+                    <strong>Events:</strong>
+                    <button className='bg-blue-600 text-white  p-1 rounded-md' onClick={() => handleAddEvent(college)}>add event</button>
+                  </div>
+                  <ul className='flex flex-wrap gap-2'>
+                    {college.events.length !== 0 ? college.events.map((el) =>
+                      <li key={el._id} className='shadow-md p-1 rounded-sm'>
+                        {el.name}
+                      </li>
+                    ) : 'N/A'}
+                  </ul>
+                </div>
+                <div>
+                  <div className='flex justify-between'>
+                    <strong>Researches:</strong>
+                    <button className=' bg-blue-600 text-white  p-1 rounded-md'>add research</button>
+                  </div>
+                  <ul className='flex flex-wrap gap-2'>
+                    {college.researches.length !== 0 ? college.researches.map((el) =>
+                      <li key={el._id} className='shadow-md p-1 rounded-sm'>
+                        {el.name}
+                      </li>
+                    ) : 'N/A'}
+                  </ul>
+                </div>
+                <div>
+                  <div className='flex justify-between'>
+                    <strong>Sports:</strong>
+                    <button className=' bg-blue-600 text-white  p-1 rounded-md'>add sport</button>
+                  </div>
+                  <ul className='flex flex-wrap gap-2'>
+                    {college.sports.length !== 0 ? college.sports.map((el) =>
+                      <li key={el._id} className='shadow-md p-1 rounded-sm'>
+                        {el.name}
+                      </li>
+                    ) : 'N/A'}
+                  </ul>
+                </div>
+              {/*  */}
+
+              {/* Add Review by student */}
+              {selectedCollegeId === college._id &&  (
                 <div className="mt-4">
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-4">
@@ -153,5 +207,9 @@ export default function Page() {
         }) : <span className=' text-center col-span-3 text-5xl'>{user.type === 'student' ? 'Get Admission to see your colleges.' : 'Add College to see details here'}</span> }
       </ul>
     </div>
+
+      {/* Add event */}
+      <AddEventClient college={collegeData} open={addEventModal} setOpen={setAddEventModal} user={user} setUser={setUser} />
+    </>
   );
 }

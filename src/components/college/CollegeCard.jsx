@@ -26,7 +26,7 @@ export default function CollegeCard({college}) {
                   <div>
                     <strong>Events:</strong>
                     <ul className='flex flex-wrap gap-2'>
-                      {college.events.length !== 0 ? college.events.map((el) =>
+                      {college.events.length !== 0 ? college.events.slice(-3).map((el) =>
                         <li key={el._id} className='shadow-md p-1 rounded-sm'>
                           {el.name}
                         </li>
