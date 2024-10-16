@@ -16,7 +16,6 @@ export default function AddCollegeClient() {
     const onSubmit = async (data) => {
 
         console.log('dataR', data);
-        
 
         try {
             const formData = new FormData();
@@ -29,12 +28,19 @@ export default function AddCollegeClient() {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${user.token}` },
                     body: formData, 
-            }); 
+            });
 
             const createdCollege = await res.json();
 
-            console.log('res', res);
-            console.log('createdCollege', createdCollege);
+            const updatedColleges = user.colleges ? [...user.colleges, createdCollege.data] : [createdCollege.data];
+
+            const updatedUser = {
+                ...user, 
+                colleges: updatedColleges, 
+            }
+
+            setUser(updatedUser);
+            localStorage.setItem('user', JSON.stringify(updatedUser))
 
         } catch (error) {
             console.error('Error submitting form:', error);
