@@ -67,9 +67,9 @@ export default function AddResearch({college, open, setOpen, user, setUser}) {
                     colleges: updatedColleges,  // Replace the colleges array with the updated one
                 };
 
-                // setUser(updatedUser);  
-                // localStorage.setItem('user', JSON.stringify(updatedUser));  
-                // setOpen(false)
+                setUser(updatedUser);  
+                localStorage.setItem('user', JSON.stringify(updatedUser));  
+                setOpen(false)
 
             } else {
                 console.error('Error creating event:', createdEvent.error);

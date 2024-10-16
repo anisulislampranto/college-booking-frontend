@@ -220,8 +220,8 @@ export default function Page() {
       {/* Add event */}
       <AddEventClient college={collegeData} open={addEventModal} setOpen={setAddEventModal} user={user} setUser={setUser} />
       
-      {/* Add REsearch */}
-      <AddResearch college={collegeData} open={addResearchModal} setOpen={setAddEventModal} user={user} setUser={setUser} />
+      {/* Add Research */}
+      <AddResearch college={collegeData} open={addResearchModal} setOpen={setAddResearchModal} user={user} setUser={setUser} />
     </>
   );
 }
