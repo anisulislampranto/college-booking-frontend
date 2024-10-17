@@ -1,3 +1,4 @@
+import EndlessSliderServer from '@/utils/EndlessSliderServer'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
@@ -12,6 +13,7 @@ export default function CollegeCard({college}) {
                 alt={college.name}
                 fill
               />
+              <EndlessSliderServer text={'Admission going on !!!'} className={' bg-black text-white absolute top-0 z-50'} />
               
               {/* Shader */}
               <div className="absolute inset-0 bg-black opacity-50 rounded-md z-10 transition-opacity duration-500 group-hover:opacity-80" />

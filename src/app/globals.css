@@ -84,3 +84,32 @@
     }
 }
 
+.slider-container {
+    overflow: hidden;
+    position: relative;
+    white-space: nowrap; /* Ensure the text flows in a single line */
+  }
+  
+  .slide-track {
+    display: flex;
+    animation: slide-horizontal 100s linear infinite; /* Adjust time as needed */
+    gap: 10px;
+  }
+  
+  .slide {
+    font-size: 10px; /* Adjust as needed */
+    text-transform: uppercase;
+    padding-right: 0em; /* Space between slides */
+  }
+  
+  /* Keyframes for the horizontal sliding */
+  @keyframes slide-horizontal {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      /* Slide to the left until the first duplicate appears */
+      transform: translateX(-50%);
+    }
+  }
+  

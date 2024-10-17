@@ -1,19 +1,37 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import Image from 'next/image';
 import { useContext } from 'react';
 import { AuthContext } from '@/context/AuthContext';
 import { Timeline } from '@/utils/timeline';
+import AdmissionClient from '../admission/AdmissionClient';
+import React, {useState, useEffect} from 'react'
 
 
 
 
 export default function CollegeDetailsClient({ collegeDetails }) {
+    const [open, setOpen] = useState(false);
     const { user, loading } = useContext(AuthContext);
     const router = useRouter();
-  
+    const [subjects, setSubjects] = useState()
+
+    useEffect(() => {
+
+        try {
+            (async () => {
+                const resSubject = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/subjects`);
+                const subjects = await resSubject.json();
+                setSubjects(subjects.data)
+            })()
+        } catch (error) {
+            console.log('err', error);
+        }
+
+    },[])
+    
+
     if (!collegeDetails) return <div className="h-screen text-center flex items-center justify-center">No details found for this college.</div>;
   
     if (!loading && !user) {
@@ -74,22 +92,25 @@ export default function CollegeDetailsClient({ collegeDetails }) {
     ]
 
     return (
-      <div className="container mx-auto py-10 space-y-4 px-5">
-        <div className=' relative h-[20rem] md:h-[30rem] w-full'>
-            <Image className=' absolute object-cover rounded' src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${collegeDetails.image}`} alt='image' fill />
-        </div>
-        <h1 className="text-5xl capitalize">{collegeDetails.name}</h1>
+        <>
+            <div className="container mx-auto py-10 space-y-4 px-5">
+                <div className=' relative h-[20rem] md:h-[30rem] w-full'>
+                    <Image className=' absolute object-cover rounded' src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${collegeDetails.image}`} alt='image' fill />
+                </div>
+                <h1 className="text-5xl capitalize">{collegeDetails.name}</h1>
 
-        {/* Timeline */}
-        <Timeline data={timelineData} />
-        {/* Timeline */}
-  
-        {/* Admission Process */}
-        <div className={`flex flex-col gap-10 mt-10 ${user.type !== 'student' && 'hidden'}`}>
-          <Link href={'/admission'} className="text-center w-36 p-2 bg-black text-white rounded-md">
-            Take Admission
-          </Link>
-        </div>
-      </div>
+                {/* Timeline */}
+                <Timeline data={timelineData} />
+                {/* Timeline */}
+
+                {/* Admission Process */}
+                <div className={`flex flex-col gap-10 mt-10 ${user.type !== 'student' && 'hidden'}`}>
+                    <button onClick={() => setOpen(true)} className="text-center w-36 p-2 bg-black text-white rounded-md">
+                        Take Admission
+                    </button>
+                </div>
+            </div>
+            <AdmissionClient college={collegeDetails} open={open} setOpen={setOpen} subjects={subjects} />
+        </>
     );
-  }
+}

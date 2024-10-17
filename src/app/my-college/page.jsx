@@ -21,6 +21,8 @@ export default function Page() {
   const [addResearchModal, setAddResearchModal] = useState(false);
   const [addSportModal, setAddSportModal] = useState(false);
 
+  console.log('user', user);
+  
 
   // Fetch reviews on component mount
   useEffect(() => {
@@ -103,23 +105,24 @@ export default function Page() {
   return (
     <>
     <div className="container mx-auto px-5 py-20">
-      <h1 className="text-3xl">My Colleges</h1>
 
-      <ul className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <h1 className="text-3xl">My {`${user.type === 'student' ? 'Colleges' : 'College'}`}</h1>
+
+      <ul className={`mt-5 grid ${user.type === 'student' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5' : ' grid-cols-1'}`}>
         { user.colleges.length !== 0 ? user?.colleges?.map((college) => {
           const collegeReview = userReviews.find(review => review.collegeId._id === college._id);
 
           return (
-            <li key={college?._id} className="p-4 border rounded-sm flex flex-col gap-2">
-              <div className="relative h-56 w-full">
+            <li key={college?._id} className="p-4 border rounded-sm flex flex-col gap-5">
+              <div className={`relative w-full ${user.type === 'student' ? ' h-56 ' : 'h-[30rem]'}`}>
                 <Image
                   src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${college?.image}`}
-                  className="rounded-sm absolute object-cover"
+                  className="rounded-sm absolute object-contain"
                   alt={'college image'}
                   fill
                 />
               </div>
-              <h3 className="text-lg font-semibold">{college?.name}</h3>
+              <h3 className={` ${user.type === 'student' ? 'text-lg' : ' text-5xl'} font-semibold`}>{college?.name}</h3>
 
               {collegeReview ? (
                 <div>
@@ -143,7 +146,7 @@ export default function Page() {
               <div>
                   <div className='flex justify-between'>
                     <strong>Events:</strong>
-                    <button className='bg-blue-600 text-white  p-1 rounded-md' onClick={() => handleAddEvent(college)}>add event</button>
+                    <button className={`border px-3 p-1 rounded-md group hover:border-green-600 ${ user.type === 'student' ? 'hidden' : 'block'}`} onClick={() => handleAddEvent(college)}>add event <span className='group-hover:text-green-600'>+</span></button>
                   </div>
                   <ul className='flex flex-wrap gap-2'>
                     {college?.events?.length !== 0 ? college?.events?.map((el) =>
@@ -156,7 +159,7 @@ export default function Page() {
                 <div>
                   <div className='flex justify-between'>
                     <strong>Researches:</strong>
-                    <button className=' bg-blue-600 text-white  p-1 rounded-md' onClick={() => handleAddResearch(college)}>add research</button>
+                    <button className={`border px-3 p-1 rounded-md group hover:border-green-600 ${ user.type === 'student' ? 'hidden' : 'block'}`} onClick={() => handleAddResearch(college)}>add research <span className='group-hover:text-green-600'>+</span></button>
                   </div>
                   <ul className='flex flex-wrap gap-2'>
                     {college?.researches?.length !== 0 ? college?.researches?.map((el) =>
@@ -169,7 +172,7 @@ export default function Page() {
                 <div>
                   <div className='flex justify-between'>
                     <strong>Sports:</strong>
-                    <button className=' bg-blue-600 text-white  p-1 rounded-md' onClick={() => handleAddSport(college)}>add sport</button>
+                    <button className={`border px-3 p-1 rounded-md group hover:border-green-600 ${ user.type === 'student' ? 'hidden' : 'block'}`} onClick={() => handleAddSport(college)}>add sport <span className='group-hover:text-green-600'>+</span></button>
                   </div>
                   <ul className='flex flex-wrap gap-2'>
                     {college?.sports?.length !== 0 ? college?.sports?.map((el) =>
@@ -218,6 +221,11 @@ export default function Page() {
                       Submit Review
                     </button>
                   </form>
+
+                <div>
+
+                </div>
+
                 </div>
               )}
             </li>

@@ -11,9 +11,24 @@ export default function AddCollegeClient() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [error, setError] = useState()
 
+
+    const displayError = (message) => {
+        setError(message);
+        setTimeout(() => {
+            setError(null); // Clear the error after 5 seconds
+        }, 3000);
+    };
+
     const onSubmit = async (data) => {
 
         try {
+            const imageFile = data.image[0];
+            
+            // Validate image size (1MB = 1,048,576 bytes)
+            if (imageFile.size > 1048576) {
+                displayError('Image size cannot exceed 1MB');
+                return;
+            }
             const formData = new FormData();
             formData.append('name', data.name );
             formData.append('admissionDate', data.admissionDate);
@@ -37,7 +52,7 @@ export default function AddCollegeClient() {
                 setUser(updatedUser);
                 localStorage.setItem('user', JSON.stringify(updatedUser))
             } else {
-                setError(createdCollege.error)
+                displayError(createdCollege.error)
             }
 
         } catch (error) {
@@ -49,7 +64,19 @@ export default function AddCollegeClient() {
         if (!user && !loading) {
             redirect('/login'); 
         }
+
+        if (user.type === 'student') {
+            redirect('/')
+        }
+
     }, [user])
+
+    if (user.type === 'collegeAdmin' && user.colleges.length > 0 ) {
+        return <div className=" mt-20 text-5xl text-center flex items-center justify-center">College Admin Can Add one College Only</div>;
+    }
+
+
+
 
     return (
         <div>
@@ -66,7 +93,7 @@ export default function AddCollegeClient() {
                     {errors.name && <span className="text-red-500">{errors.name.message}</span>}
                 </div>
 
-                {/* admissionDate  */}
+                {/* admissionDate */}
                 <div>
                     <label htmlFor="admissionDate" className="block">Admission Date:</label>
                     <input

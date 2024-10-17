@@ -4,39 +4,44 @@ import { redirect, useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '@/context/AuthContext';
 import { useForm } from 'react-hook-form';
-import Modal from '@/utils/modal';
+import Modal from '@/utils/Modal';
 
-export default function AdmissionClient({colleges}) {
+export default function AdmissionClient({ open, setOpen, college, subjects}) {
     const router = useRouter()
-    const [open, setOpen] = useState(false);
-    const [collegeData, setCollegeData] = useState()
     const { user, setUser, loading } = useContext(AuthContext)
     const { register, handleSubmit, formState: { errors } } = useForm();
 
+    console.log('subjects', subjects);
+    
+
     // Submit handler for the form
     const onSubmit = async (data) => {
+
+        console.log('subject', data.subject);
+        
 
         try {
             const formData = new FormData();
             formData.append('address', data.address );
             formData.append('dateOfBirth', data?.dateOfBirth);
             formData.append('email', user?.email);
-            formData.append('image', data?.image );
+            formData.append('image', data?.image[0] );
             formData.append('name', data?.name);
             formData.append('phoneNumber', data?.phoneNumber);
             formData.append('subject', data?.subject);
-            formData.append('college', collegeData?._id);
+            formData.append('college', college?._id);
 
             const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/update/${user._id}`, {
                 method: 'PATCH',
-                headers: {
-                'Content-Type': 'application/json',
-            },
+                headers: { 'Authorization': `Bearer ${user.token}` },
                 body: formData, 
             });
 
             const updatedUser =  await res.json();
-            const userWithNewData  = {...user, colleges: updatedUser.colleges, address: updatedUser.address, dateOfBirth: updatedUser.dateOfBirth, imageLink: updatedUser.imageLink, phoneNumber: updatedUser.phoneNumber }
+
+            console.log('updatedUser', updatedUser);
+
+            const userWithNewData  = {...user, colleges: updatedUser.data.colleges, address: updatedUser.data.address, dateOfBirth: updatedUser.data.dateOfBirth, image: updatedUser.data.image, phoneNumber: updatedUser.data.phoneNumber }
 
             setUser(userWithNewData);
 
@@ -56,7 +61,6 @@ export default function AdmissionClient({colleges}) {
 
 
     const handleClick = (data) => {
-        setCollegeData(data)
         setOpen(true)
     }
 
@@ -68,7 +72,7 @@ export default function AdmissionClient({colleges}) {
 
 
     useEffect(() => {
-        if (user !== 'student') {
+        if (user === 'collegeAdmin') {
             router.back(); 
         }
     }, [user])
@@ -77,19 +81,9 @@ export default function AdmissionClient({colleges}) {
 
     return (
         <>
-            <ul className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 container mx-auto py-20 px-5">
-                {colleges?.map((college) => (
-                    <li key={college._id} className="p-4 border rounded-sm flex flex-col gap-2">
-                        <h3 className="text-lg font-semibold capitalize">{college.name}</h3>
-                        <h3 className="text-lg font-semibold capitalize">Admission Deadline: {college.admissionDate}</h3>
-                        <button onClick={() => handleClick(college)}  className=' w-52 text-center mt-4 bg-black text-white font-semibold p-2 rounded-md'>Admission</button>
-                    </li>
-                ))}
-            </ul>
-
             <Modal open={open} setOpen={setOpen} >
-                <h2 className="text-2xl mb-4 capitalize">Admission Form for <strong>{collegeData?.name}</strong> </h2>
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <h2 className="text-2xl mb-4 capitalize">Admission Form for <strong>{college?.name}</strong> </h2>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
                     {/* Candidate Name */}
                     <div>
@@ -106,11 +100,18 @@ export default function AdmissionClient({colleges}) {
                     {/* Subject */}
                     <div>
                         <label htmlFor="subject" className="block">Subject:</label>
-                        <input
+                        <select
                             {...register('subject', { required: 'Subject is required' })}
                             id="subject"
                             className="border p-2 w-full"
-                        />
+                        >
+                            {
+                                subjects?.map((el) => 
+                                    <option value={el._id}>{el.name}</option>
+                                )
+                            }
+                            
+                        </select>
                         {errors.subject && <span className="text-red-500">{errors.subject.message}</span>}
                     </div>
 
@@ -167,14 +168,14 @@ export default function AdmissionClient({colleges}) {
 
                     {/* Image */}
                     <div>
-                        <label htmlFor="image" className="block">Image Link:</label>
+                        <label htmlFor="image" className="block">Image:</label>
                         <input
                             type="file"
                             {...register('image', { required: 'Image is required' })}
                             id="image"
                             className="border p-2 w-full"
                         />
-                        {errors.imageLink && <span className="text-red-500">{errors.imageLink.message}</span>}
+                        {errors.image && <span className="text-red-500">{errors.image.message}</span>}
                     </div>
 
                     {/* Submit Button */}
