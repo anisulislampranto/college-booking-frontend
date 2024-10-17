@@ -1,12 +1,13 @@
 'use client';
 
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '@/context/AuthContext';
 import { useForm } from 'react-hook-form';
 import Modal from '@/utils/modal';
 
 export default function AdmissionClient({colleges}) {
+    const router = useRouter()
     const [open, setOpen] = useState(false);
     const [collegeData, setCollegeData] = useState()
     const { user, setUser, loading } = useContext(AuthContext)
@@ -62,6 +63,13 @@ export default function AdmissionClient({colleges}) {
     useEffect(() => {
         if (!user && !loading) {
             redirect('/signup'); 
+        }
+    }, [user])
+
+
+    useEffect(() => {
+        if (user !== 'student') {
+            router.back(); 
         }
     }, [user])
 

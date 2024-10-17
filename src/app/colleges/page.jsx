@@ -5,7 +5,6 @@ export default async function page() {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges`);
     const data = await res.json();
 
-
     return (
       <div className=' container mx-auto p-5 py-20'>
           <h1 className=' text-3xl'>Colleges</h1>

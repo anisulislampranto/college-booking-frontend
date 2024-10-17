@@ -110,16 +110,16 @@ export default function Page() {
           const collegeReview = userReviews.find(review => review.collegeId._id === college._id);
 
           return (
-            <li key={college._id} className="p-4 border rounded-sm flex flex-col gap-2">
+            <li key={college?._id} className="p-4 border rounded-sm flex flex-col gap-2">
               <div className="relative h-56 w-full">
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${college.image}`}
+                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${college?.image}`}
                   className="rounded-sm absolute object-cover"
                   alt={'college image'}
                   fill
                 />
               </div>
-              <h3 className="text-lg font-semibold">{college.name}</h3>
+              <h3 className="text-lg font-semibold">{college?.name}</h3>
 
               {collegeReview ? (
                 <div>
@@ -134,7 +134,7 @@ export default function Page() {
                   className={`w-52 text-center mt-4 bg-black text-white font-semibold p-2 rounded-md ${user.type === 'student' ? 'block' : 'hidden'}`}
                 > 
                   {
-                    selectedCollegeId === college._id ? 'Close' : 'Review'
+                    selectedCollegeId === college?._id ? 'Close' : 'Review'
                   }
                 </button>
               )}
@@ -146,7 +146,7 @@ export default function Page() {
                     <button className='bg-blue-600 text-white  p-1 rounded-md' onClick={() => handleAddEvent(college)}>add event</button>
                   </div>
                   <ul className='flex flex-wrap gap-2'>
-                    {college.events.length !== 0 ? college.events.map((el) =>
+                    {college?.events?.length !== 0 ? college?.events?.map((el) =>
                       <li key={el._id} className='shadow-md p-1 rounded-sm'>
                         {el.name}
                       </li>
@@ -159,7 +159,7 @@ export default function Page() {
                     <button className=' bg-blue-600 text-white  p-1 rounded-md' onClick={() => handleAddResearch(college)}>add research</button>
                   </div>
                   <ul className='flex flex-wrap gap-2'>
-                    {college.researches.length !== 0 ? college.researches.map((el) =>
+                    {college?.researches?.length !== 0 ? college?.researches?.map((el) =>
                       <li key={el._id} className='shadow-md p-1 rounded-sm'>
                         {el.name}
                       </li>
@@ -172,7 +172,7 @@ export default function Page() {
                     <button className=' bg-blue-600 text-white  p-1 rounded-md' onClick={() => handleAddSport(college)}>add sport</button>
                   </div>
                   <ul className='flex flex-wrap gap-2'>
-                    {college.sports.length !== 0 ? college.sports.map((el) =>
+                    {college?.sports?.length !== 0 ? college?.sports?.map((el) =>
                       <li key={el._id} className='shadow-md p-1 rounded-sm'>
                         {el.name}
                       </li>
@@ -182,7 +182,7 @@ export default function Page() {
               {/*  */}
 
               {/* Add Review by student */}
-              {selectedCollegeId === college._id &&  (
+              {selectedCollegeId === college?._id &&  (
                 <div className="mt-4">
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-4">

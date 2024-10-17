@@ -72,7 +72,7 @@ export default function CollegeDetailsClient({ collegeDetails }) {
             </div>
         }
     ]
-  
+
     return (
       <div className="container mx-auto py-10 space-y-4 px-5">
         <div className=' relative h-[20rem] md:h-[30rem] w-full'>
@@ -85,7 +85,7 @@ export default function CollegeDetailsClient({ collegeDetails }) {
         {/* Timeline */}
   
         {/* Admission Process */}
-        <div className="flex flex-col gap-10 mt-10">
+        <div className={`flex flex-col gap-10 mt-10 ${user.type !== 'student' && 'hidden'}`}>
           <Link href={'/admission'} className="text-center w-36 p-2 bg-black text-white rounded-md">
             Take Admission
           </Link>
