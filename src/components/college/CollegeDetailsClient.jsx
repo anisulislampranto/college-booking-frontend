@@ -9,8 +9,6 @@ import AdmissionClient from '../admission/AdmissionClient';
 import React, {useState, useEffect} from 'react'
 
 
-
-
 export default function CollegeDetailsClient({ collegeDetails }) {
     const [open, setOpen] = useState(false);
     const { user, loading } = useContext(AuthContext);

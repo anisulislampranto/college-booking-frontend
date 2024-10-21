@@ -13,7 +13,10 @@ export default function CollegeCard({college}) {
                 alt={college.name}
                 fill
               />
-              <EndlessSliderServer text={'Admission going on !!!'} className={' bg-black text-white absolute top-0 z-50'} />
+              {new Date(college.admissionDate) > new Date() && (
+                <EndlessSliderServer text={'Admission going on !!!'} className={' bg-black text-white absolute top-0 z-50'} />
+              )}
+
               
               {/* Shader */}
               <div className="absolute inset-0 bg-black opacity-50 rounded-md z-10 transition-opacity duration-500 group-hover:opacity-80" />
