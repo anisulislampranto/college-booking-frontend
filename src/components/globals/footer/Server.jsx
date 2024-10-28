@@ -13,10 +13,6 @@ const navLinks = [
         label: 'Colleges',
         url: '/colleges'
     },
-    {
-        label: 'Admission',
-        url: '/admission'
-    },
 ]
 
 export default function FooterServer() {
@@ -24,7 +20,7 @@ export default function FooterServer() {
         <div className=' mt-20'>
             <div className=' w-full flex items-center justify-between text-[#1A9876'>
                 <div className=' bg-[#1A9876] h-[1px] w-full rounded-full' />
-                <div className=' flex flex-col md:flex-row items-center gap-5 px-10 w-[40%]'>
+                <div className=' flex flex-col md:flex-row items-center gap-5 px-10 w-[20%]'>
                     {
                         navLinks.map(el =>
                             <Link href={el.url} className=' text-[#1A9876] hover:text-[#A3C2C2] cursor-pointer text-center' key={el}>{el.label}</Link>

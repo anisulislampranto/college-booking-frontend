@@ -45,8 +45,10 @@ export default function CollegeDetailsClient({ collegeDetails }) {
             <div>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                     {collegeDetails?.events?.map((el) => (
-                    <li key={el._id} className="shadow-md rounded-sm p-5"> 
-                        <img src={el.image} alt="img" className="h-36 w-full" />
+                    <li key={el._id} className="shadow-md rounded-sm p-5 space-y-2"> 
+                        <div className=' relative h-36 w-full'>
+                            <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${el.image}`} alt="img" className="absolute object-cover" fill />
+                        </div>
                         <h3 className="capitalize text-xl"> {el.name} </h3>
                         <p> Date: {el.date} </p>
                         <p> {el.description} </p>
@@ -62,8 +64,10 @@ export default function CollegeDetailsClient({ collegeDetails }) {
             <div>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                     {collegeDetails?.sports?.map((el) => (
-                    <li key={el._id} className="shadow-md rounded-sm p-5">
-                        <img src={el.image} alt="img" className="h-36 w-full" />
+                    <li key={el._id} className="shadow-md rounded-sm p-5 space-y-2">
+                        <div className=' relative h-36 w-full'>
+                            <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${el.image}`} alt="img" className="absolute object-cover" fill />
+                        </div>
                         <h3 className="capitalize text-xl"> {el.name} </h3>
                         <p> {el.description} </p>
                     </li>
@@ -78,8 +82,10 @@ export default function CollegeDetailsClient({ collegeDetails }) {
             <div>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                     {collegeDetails?.sports?.map((el) => (
-                    <li key={el._id} className="shadow-md rounded-sm p-5">
-                        <img src={el.image} alt="img" className="h-36 w-full" />
+                    <li key={el._id} className="shadow-md rounded-sm p-5 space-y-2">
+                        <div className=' relative h-36 w-full'>
+                            <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${el.image}`} alt="img" className="absolute object-cover" fill />
+                        </div>
                         <h3 className="capitalize text-xl"> {el.name} </h3>
                         <p> {el.description} </p>
                     </li>

@@ -1,6 +1,6 @@
 'use client'
 import { Pagination } from "@nextui-org/react";
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import {placeholderCard} from '@/utils/PlaceholderCard'
 import CollegeCard from '@/components/college/CollegeCard';
 
@@ -12,14 +12,27 @@ export default function Page() {
 
   useEffect(() => {
     const fetchColleges = async () => {
-      setLoading(true); 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges?page=${page}&limit=9`);
-      const data = await res.json();
-      setColleges(data.colleges);
-      setTotalPages(data.totalPages);
-      setLoading(false);
+
+        try {
+            setLoading(true); 
+            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges?page=${page}&limit=9`);
+            const data = await res.json();
+
+            console.log('data', data);
+
+            if (res.ok) {
+                setColleges(data.colleges);
+                setTotalPages(data.totalPages);
+                setLoading(false);
+            }
+        } catch (error) {
+            console.log('error', error);
+            setLoading(false);
+        }
     };
+
     fetchColleges();
+
   }, [page]);
 
   const handlePageChange = (newPage) => {
@@ -43,7 +56,7 @@ export default function Page() {
       ) : (
         <div>
           <div className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {colleges.length !== 0 ? colleges.map((college) => (
+            {colleges?.length !== 0 ? colleges?.map((college) => (
               <CollegeCard key={college.id} college={college} />
             )) : <span className='text-center col-span-3 text-5xl'>Found no colleges.</span>}
           </div>

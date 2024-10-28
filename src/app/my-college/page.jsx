@@ -110,19 +110,21 @@ export default function Page() {
 
       <ul className={`mt-5 grid ${user.type === 'student' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5' : ' grid-cols-1'}`}>
         { user.colleges.length !== 0 ? user?.colleges?.map((college) => {
+          console.log('userReviews', userReviews);
+          
           const collegeReview = userReviews.find(review => review.collegeId._id === college._id);
 
           return (
             <li key={college?._id} className="p-4 border rounded-sm flex flex-col gap-5">
               <div className={`relative w-full ${user.type === 'student' ? ' h-56 ' : 'h-[30rem]'}`}>
                 <Image
-                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${college?.image}`}
+                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${college?.college?.image || college?.image}`}
                   className="rounded-sm absolute object-contain"
                   alt={'college image'}
                   fill
                 />
               </div>
-              <h3 className={` ${user.type === 'student' ? 'text-lg' : ' text-5xl'} font-semibold`}>{college?.name}</h3>
+              <h3 className={` ${user.type === 'student' ? 'text-lg' : ' text-5xl'} font-semibold`}>{college?.college?.name || college.name}</h3>
 
               {collegeReview ? (
                 <div>
@@ -133,11 +135,11 @@ export default function Page() {
                 </div>
               ) : (
                 <button
-                  onClick={() => setSelectedCollegeId(selectedCollegeId === college._id ? null : college._id)}
+                  onClick={() => setSelectedCollegeId(selectedCollegeId === college.college._id || college._id ? null : college.college._id || college._id)}
                   className={`w-52 text-center mt-4 bg-black text-white font-semibold p-2 rounded-md ${user.type === 'student' ? 'block' : 'hidden'}`}
                 > 
                   {
-                    selectedCollegeId === college?._id ? 'Close' : 'Review'
+                    selectedCollegeId === college?.college?._id || college._id ? 'Close' : 'Review'
                   }
                 </button>
               )}
@@ -149,12 +151,17 @@ export default function Page() {
                     <button className={`border px-3 p-1 rounded-md group hover:border-green-600 ${ user.type === 'student' ? 'hidden' : 'block'}`} onClick={() => handleAddEvent(college)}>add event <span className='group-hover:text-green-600'>+</span></button>
                   </div>
                   <ul className='flex flex-wrap gap-2'>
-                    {college?.events?.length !== 0 ? college?.events?.map((el) =>
-                      <li key={el._id} className='shadow-md p-1 rounded-sm'>
-                        {el.name}
-                      </li>
-                    ) : 'N/A'}
+                    {college?.college?.events?.length > 0 || college?.events?.length > 0 ? (
+                      (college?.college?.events || college?.events).map((el) => (
+                        <li key={el._id} className='shadow-md p-1 rounded-sm'>
+                          {el.name}
+                        </li>
+                      ))
+                    ) : (
+                      <span>N/A</span>
+                    )}
                   </ul>
+
                 </div>
                 <div>
                   <div className='flex justify-between'>
@@ -162,7 +169,7 @@ export default function Page() {
                     <button className={`border px-3 p-1 rounded-md group hover:border-green-600 ${ user.type === 'student' ? 'hidden' : 'block'}`} onClick={() => handleAddResearch(college)}>add research <span className='group-hover:text-green-600'>+</span></button>
                   </div>
                   <ul className='flex flex-wrap gap-2'>
-                    {college?.researches?.length !== 0 ? college?.researches?.map((el) =>
+                      {college?.college?.researches?.length > 0 || college?.researches?.length > 0 ? (college?.college?.researches || college?.researches).map((el) =>
                       <li key={el._id} className='shadow-md p-1 rounded-sm'>
                         {el.name}
                       </li>
@@ -175,7 +182,7 @@ export default function Page() {
                     <button className={`border px-3 p-1 rounded-md group hover:border-green-600 ${ user.type === 'student' ? 'hidden' : 'block'}`} onClick={() => handleAddSport(college)}>add sport <span className='group-hover:text-green-600'>+</span></button>
                   </div>
                   <ul className='flex flex-wrap gap-2'>
-                    {college?.sports?.length !== 0 ? college?.sports?.map((el) =>
+                    {college?.college?.sports?.length > 0 || college?.sports?.length > 0  ? (college?.college?.sports || college?.sports)?.map((el) =>
                       <li key={el._id} className='shadow-md p-1 rounded-sm'>
                         {el.name}
                       </li>
@@ -185,7 +192,7 @@ export default function Page() {
               {/*  */}
 
               {/* Add Review by student */}
-              {selectedCollegeId === college?._id &&  (
+              {selectedCollegeId === college?.college?._id &&  (
                 <div className="mt-4">
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-4">

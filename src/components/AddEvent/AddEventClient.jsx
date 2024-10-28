@@ -3,6 +3,8 @@
 import React from 'react'
 import Modal from '@/utils/Modal'
 import { useForm } from "react-hook-form";
+import {DateInput, Textarea, Input} from "@nextui-org/react";
+
 
 
 export default function AddEventClient({college, open, setOpen, user, setUser}) {
@@ -70,49 +72,52 @@ export default function AddEventClient({college, open, setOpen, user, setUser}) 
             <form onSubmit={handleSubmit(onSubmit)}>
                 {/* Event Name */}
                 <div>
-                    <label htmlFor="name" className="block">Name:</label>
-                    <input
+                    <Input
                         {...register('name', { required: 'Event Name is required' })}
                         id="name"
-                        className="border p-2 w-full"
+                        className=" w-full px-2"
+                        type='textarea'
+                        label='Event Name'
                     />
                     {errors.name && <span className="text-red-500">{errors.name.message}</span>}
                 </div>
 
                 {/* Event Image */}
                 <div>
-                    <label htmlFor="image" className="block">Image:</label>
-                    <input
+                    <Input
+                        label='Image'
                         type='file'
                         {...register('image', { required: 'Event Image is required' })}
                         id="image"
-                        className="border p-2 w-full"
+                        className="p-2 w-full"
                     />
                     {errors.image && <span className="text-red-500">{errors.image.message}</span>}
                 </div>
 
                 {/* Event date */}
                 <div>
-                    <label htmlFor="date" className="block">Date:</label>
+                    <label htmlFor="date">Date</label>
                     <input
                         type='date'
                         {...register('date', { required: 'Event Date is required' })}
                         id="image"
-                        className="border p-2 w-full"
+                        className="p-2 w-full mt-3"
+                        label='Date'
                     />
                     {errors.date && <span className="text-red-500">{errors.date.message}</span>}
                 </div>
 
                 {/* Event Description */}
                 <div>
-                    <label htmlFor="description" className="block">Description:</label>
-                    <input
-                        type='textarea'
-                        {...register('description', { required: 'Event description is required' })}
+                    <label htmlFor="description">Description</label>
+                    <textarea
+                        type='text'
+                        label='Description'
+                        {...register('description', { required: 'Research Description is required' })}
                         id="description"
-                        className="border p-2 w-full"
+                        className="p-2 w-full border rounded-md mt-3"
                     />
-                    {errors.description && <span className="text-red-500">{errors.description.message}</span>}
+                    {errors.date && <span className="text-red-500">{errors.date.message}</span>}
                 </div>
 
                 {/* Submit Button */}

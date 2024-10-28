@@ -51,6 +51,7 @@ export default function AddCollegeClient() {
                 }
                 setUser(updatedUser);
                 localStorage.setItem('user', JSON.stringify(updatedUser))
+                redirect("/my-college")
             } else {
                 displayError(createdCollege.error)
             }
@@ -75,9 +76,6 @@ export default function AddCollegeClient() {
         return <div className=" mt-20 text-5xl text-center flex items-center justify-center">College Admin Can Add one College Only</div>;
     }
 
-
-
-
     return (
         <div>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-5">
@@ -86,7 +84,7 @@ export default function AddCollegeClient() {
                 <div>
                     <label htmlFor="name" className="block">Name:</label>
                     <input
-                        {...register('name', { required: 'Candidate Name is required' })}
+                        {...register('name', { required: 'College Name is required' })}
                         id="name"
                         className="border p-2 w-full"
                     />
@@ -137,3 +135,5 @@ export default function AddCollegeClient() {
         </div>
     )
 }
+
+

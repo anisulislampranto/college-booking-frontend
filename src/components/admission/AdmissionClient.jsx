@@ -1,7 +1,7 @@
 'use client';
 
 import { redirect, useRouter } from 'next/navigation';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { AuthContext } from '@/context/AuthContext';
 import { useForm } from 'react-hook-form';
 import Modal from '@/utils/Modal';
@@ -12,13 +12,11 @@ export default function AdmissionClient({ open, setOpen, college, subjects}) {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     console.log('subjects', subjects);
-    
 
     // Submit handler for the form
     const onSubmit = async (data) => {
 
         console.log('subject', data.subject);
-        
 
         try {
             const formData = new FormData();
@@ -159,7 +157,7 @@ export default function AdmissionClient({ open, setOpen, college, subjects}) {
                         <label htmlFor="dateOfBirth" className="block">Date of birth:</label>
                         <input
                             type="date"
-                            {...register('dateOfBirth', { required: 'Address is required' })}
+                            {...register('dateOfBirth', { required: 'Date of birth is required' })}
                             id="dateOfBirth"
                             className="border p-2 w-full"
                         />

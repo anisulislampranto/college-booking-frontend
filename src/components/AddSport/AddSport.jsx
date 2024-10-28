@@ -64,7 +64,7 @@ export default function AddSport({college, open, setOpen, user, setUser}) {
 
     return (
         <Modal open={open} setOpen={setOpen}>
-            <h1 className=' text-4xl py-5'>Add Research for <strong>{college.name}</strong> </h1>
+            <h1 className=' text-4xl py-5'>Add Sport for <strong>{college.name}</strong> </h1>
             <form onSubmit={handleSubmit(onSubmit)}>
 
                 {/* Research Name */}

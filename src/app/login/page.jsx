@@ -71,7 +71,7 @@ export default function Login() {
 
   useEffect(() => {
     if (user?.email) {
-      router.back();
+      router.push('/');
     }
   }, [user, router]);
 

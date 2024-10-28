@@ -48,9 +48,9 @@ export default function CollegeSearch() {
 
       {/* Display the colleges */}
       <div className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {!fetching && colleges.length ? colleges.map((college) => (
+        {!fetching && colleges?.length ? colleges?.map((college) => (
           <CollegeCard college={college} />
-        )) : !fetching && colleges.length === 0 ? <h1 className='text-3xl text-center col-span-3 mt-32'>Not Found</h1> :
+        )) : !fetching && colleges?.length === 0 ? <h1 className='text-3xl text-center col-span-3 mt-32'>Not Found</h1> :
           <>
             {placeholderCard}
             {placeholderCard}
