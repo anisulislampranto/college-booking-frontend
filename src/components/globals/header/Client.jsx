@@ -19,10 +19,6 @@ const navLinks = [
         url: '/colleges'
     },
     {
-        label: 'Admission',
-        url: '/admission'
-    },
-    {
         label: 'Add College',
         url: '/add-college'
     },

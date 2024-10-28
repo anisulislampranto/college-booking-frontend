@@ -13,7 +13,9 @@ export default function CollegeDetailsClient({ collegeDetails }) {
     const [open, setOpen] = useState(false);
     const { user, loading } = useContext(AuthContext);
     const router = useRouter();
-    const [subjects, setSubjects] = useState()
+    const [subjects, setSubjects] = useState();
+    const [enrolled, setEnrolled] = useState(user.colleges?.some(el => el.college._id))
+    
 
     useEffect(() => {
 
@@ -108,11 +110,14 @@ export default function CollegeDetailsClient({ collegeDetails }) {
                 {/* Timeline */}
 
                 {/* Admission Process */}
-                <div className={`flex flex-col gap-10 mt-10 ${user.type !== 'student' && 'hidden'}`}>
-                    <button onClick={() => setOpen(true)} className="text-center w-36 p-2 bg-black text-white rounded-md">
-                        Take Admission
-                    </button>
-                </div>
+                {
+                    enrolled ? 'Already Enrolled' :
+                    <div className={`flex flex-col gap-10 mt-10 ${user.type !== 'student' && 'hidden'}`}>
+                        <button onClick={() => setOpen(true)} className="text-center w-36 p-2 bg-black text-white rounded-md">
+                            Take Admission
+                        </button>
+                    </div>
+                }
             </div>
             <AdmissionClient college={collegeDetails} open={open} setOpen={setOpen} subjects={subjects} />
         </>

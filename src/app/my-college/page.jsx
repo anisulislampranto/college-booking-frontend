@@ -63,14 +63,17 @@ export default function Page() {
 
       const result = await response.json();
 
-      // Add the newly created review to the state
-      setUserReviews(prevReviews => [...prevReviews, result.review]);
+      if (response.ok) {
+        // Add the newly created review to the state
+        setUserReviews(prevReviews => [...prevReviews, result.review]);
 
-      console.log('Review submitted successfully:', result);
+        console.log('Review submitted successfully:', result);
 
-      // Reset form and close the review section
-      reset();
-      setSelectedCollegeId(null);
+        // Reset form and close the review section
+        reset();
+        setSelectedCollegeId(null);
+      }
+
     } catch (error) {
       console.error('Error submitting review:', error);
     }
@@ -112,7 +115,7 @@ export default function Page() {
         { user.colleges.length !== 0 ? user?.colleges?.map((college) => {
           console.log('userReviews', userReviews);
           
-          const collegeReview = userReviews.find(review => review.collegeId._id === college._id);
+          const collegeReview = userReviews.find(review => review.collegeId._id === college.college._id);
 
           return (
             <li key={college?._id} className="p-4 border rounded-sm flex flex-col gap-5">
@@ -135,11 +138,12 @@ export default function Page() {
                 </div>
               ) : (
                 <button
-                  onClick={() => setSelectedCollegeId(selectedCollegeId === college.college._id || college._id ? null : college.college._id || college._id)}
+                  onClick={() => setSelectedCollegeId(selectedCollegeId === college.college._id ? null : college.college._id )}
                   className={`w-52 text-center mt-4 bg-black text-white font-semibold p-2 rounded-md ${user.type === 'student' ? 'block' : 'hidden'}`}
                 > 
+                  {console.log('college', college)}
                   {
-                    selectedCollegeId === college?.college?._id || college._id ? 'Close' : 'Review'
+                    selectedCollegeId === college?.college?._id ? 'Close' : 'Review'
                   }
                 </button>
               )}
