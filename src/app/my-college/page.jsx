@@ -30,8 +30,7 @@ export default function Page() {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/reviews`);
         const data = await response.json();
-        
-        
+
         // Filter reviews that belong to the current user
         const userSpecificReviews = data.reviews.filter(review => review.userId._id === user._id);
 
@@ -62,6 +61,9 @@ export default function Page() {
       });
 
       const result = await response.json();
+
+      console.log('result', result);
+      
 
       if (response.ok) {
         // Add the newly created review to the state
@@ -108,8 +110,7 @@ export default function Page() {
   return (
     <>
     <div className="container mx-auto px-5 py-20">
-
-      <h1 className="text-3xl">My {`${user.type === 'student' ? 'Colleges' : 'College'}`}</h1>
+      <h1 className="text-3xl font-bold">My {`${user.type === 'student' ? 'Colleges' : 'College'}`}</h1>
 
       <ul className={`mt-5 grid ${user.type === 'student' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5' : ' grid-cols-1'}`}>
         { user.colleges.length !== 0 ? user?.colleges?.map((college) => {
@@ -129,24 +130,7 @@ export default function Page() {
               </div>
               <h3 className={` ${user.type === 'student' ? 'text-lg' : ' text-5xl'} font-semibold`}>{college?.college?.name || college.name}</h3>
 
-              {collegeReview ? (
-                <div>
-                    <p>Rating: {collegeReview.rating}/10</p>
-                    <p className=' text-sm mt-2'>Review:</p>
-                    <p>{collegeReview?.reviewText}</p>
-                    <p className="text-sm mt-2">by {user.name}</p>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setSelectedCollegeId(selectedCollegeId === college.college._id ? null : college.college._id )}
-                  className={`w-52 text-center mt-4 bg-black text-white font-semibold p-2 rounded-md ${user.type === 'student' ? 'block' : 'hidden'}`}
-                > 
-                  {console.log('college', college)}
-                  {
-                    selectedCollegeId === college?.college?._id ? 'Close' : 'Review'
-                  }
-                </button>
-              )}
+              
 
               {/*  */}
               <div>
@@ -187,13 +171,35 @@ export default function Page() {
                   </div>
                   <ul className='flex flex-wrap gap-2'>
                     {college?.college?.sports?.length > 0 || college?.sports?.length > 0  ? (college?.college?.sports || college?.sports)?.map((el) =>
-                      <li key={el._id} className='shadow-md p-1 rounded-sm'>
+                      <li key={el._id} className='shadow-md p-1 rounded-md px-2'>
                         {el.name}
                       </li>
                     ) : 'N/A'}
                   </ul>
                 </div>
               {/*  */}
+
+              {/*  */}
+              {collegeReview ? (
+                <div>
+                    <p>Rating: {collegeReview.rating}/10</p>
+                    <p className=' text-base my-2'>Review:</p>
+                    <p> <span className=' text-green-600'>"</span> {collegeReview?.reviewText} <span className=' text-green-600'>"</span>  </p>
+                    <p className="text-sm mt-2 font-bold">by {user.name}</p>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setSelectedCollegeId(selectedCollegeId === college.college._id ? null : college.college._id )}
+                  className={`w-52 text-center mt-4 bg-black text-white font-semibold p-2 rounded-md ${user.type === 'student' ? 'block' : 'hidden'}`}
+                > 
+                  {console.log('college', college)}
+                  {
+                    selectedCollegeId === college?.college?._id ? 'Close' : 'Review'
+                  }
+                </button>
+              )}
+              {/*  */}
+
 
               {/* Add Review by student */}
               {selectedCollegeId === college?.college?._id &&  (

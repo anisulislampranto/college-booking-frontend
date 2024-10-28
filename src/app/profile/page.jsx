@@ -70,7 +70,7 @@ export default function Page() {
                         {user?.image ? (
                             <Image
                                 className="object-cover"
-                                src={user.image}
+                                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${user.image}`}
                                 alt="profile"
                                 fill
                             />

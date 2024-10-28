@@ -6,7 +6,7 @@ import { AuthContext } from '@/context/AuthContext';
 import { useForm } from 'react-hook-form';
 import Modal from '../../utils/Modal';
 
-export default function AdmissionClient({ open, setOpen, college, subjects}) {
+export default function AdmissionClient({ open, setOpen, college, subjects, setEnrolled}) {
     const router = useRouter()
     const { user, setUser, loading } = useContext(AuthContext)
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -45,10 +45,10 @@ export default function AdmissionClient({ open, setOpen, college, subjects}) {
 
             localStorage.setItem('user', JSON.stringify(userWithNewData))
 
-
             if (res.ok) {
+                setEnrolled(true);
                 setOpen(false); 
-                redirect('/my-college')
+                router.push('/my-college')
             } else {
                 throw new Error('Failed to submit form');
             }
@@ -57,10 +57,6 @@ export default function AdmissionClient({ open, setOpen, college, subjects}) {
         }
     };
 
-
-    const handleClick = (data) => {
-        setOpen(true)
-    }
 
     useEffect(() => {
         if (!user && !loading) {

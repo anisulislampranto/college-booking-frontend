@@ -15,6 +15,9 @@ const GoogleLogin = () => {
 			if (authResult["code"]) {
 				const result = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + `/api/auth/google?code=${authResult.code}`);
 				const data =  await result.json();
+
+				console.log('res', result);
+
 				localStorage.setItem('user',JSON.stringify(data.user));
 				localStorage.setItem('token',JSON.stringify(data.token));
                 setUser(data.user);

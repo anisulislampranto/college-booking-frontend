@@ -60,23 +60,33 @@ export const AnimatedTooltip = ({
               <div
                 className="absolute left-10 w-[40%] z-30 -bottom-px bg-gradient-to-r from-transparent via-sky-500 to-transparent h-px " />
               <div className="font-bold text-white relative z-30 text-base">
-                {item.name}
+                {item.student?.name || item.name || 'John Doe' }
               </div>
-              <div className="text-white text-xs">{item.designation}</div>
+              <div className="text-white text-xs">{item.subject?.name || item.designation}</div>
             </motion.div>
           )}
         </AnimatePresence>
         {
-          item.image ? (
+          item.student?.image ? (
             <Image
               onMouseMove={handleMouseMove}
               height={100}
               width={100}
-              src={item.image}
-              alt={item.name}
+              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${item.image}`}
+              alt={item.student.name}
               className="object-cover !m-0 !p-0 object-top rounded-full h-14 w-14 border-2 group-hover:scale-105 group-hover:z-30 border-white relative transition duration-500"
             />
-          ) : (
+          ) : item.image ? (
+              <Image
+                onMouseMove={handleMouseMove}
+                height={100}
+                width={100}
+                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${item.image}`}
+                alt={item.name}
+                className="object-cover !m-0 !p-0 object-top rounded-full h-14 w-14 border-2 group-hover:scale-105 group-hover:z-30 border-white relative transition duration-500"
+              /> 
+            ) :
+          (
             <div className="w-14 h-14 bg-gray-300 rounded-full flex items-center justify-center group-hover:scale-105 group-hover:z-30 border-2 border-white relative transition duration-500">
               <svg
                 className="w-8 h-8 text-gray-500"

@@ -7,6 +7,7 @@ import { AuthContext } from '@/context/AuthContext';
 import { Timeline } from '@/utils/timeline';
 import AdmissionClient from '../admission/AdmissionClient';
 import React, {useState, useEffect} from 'react'
+import { AnimatedTooltip } from '@/utils/AnimatedTooltip';
 
 
 export default function CollegeDetailsClient({ collegeDetails }) {
@@ -14,10 +15,12 @@ export default function CollegeDetailsClient({ collegeDetails }) {
     const { user, loading } = useContext(AuthContext);
     const router = useRouter();
     const [subjects, setSubjects] = useState();
-    const [enrolled, setEnrolled] = useState(user.colleges?.some(el => el.college._id))
+    const [enrolled, setEnrolled] = useState();
     
 
     useEffect(() => {
+        const userEnrolled = user?.colleges?.some(el => el.college._id)
+        setEnrolled(userEnrolled)
 
         try {
             (async () => {
@@ -37,6 +40,9 @@ export default function CollegeDetailsClient({ collegeDetails }) {
     if (!loading && !user) {
       router.push('/signup');
     }
+
+    console.log('collegeDetails', collegeDetails);
+    
 
 
     const timelineData = [
@@ -109,17 +115,26 @@ export default function CollegeDetailsClient({ collegeDetails }) {
                 <Timeline data={timelineData} />
                 {/* Timeline */}
 
+                {/* Students */}
+                <div className='py-10 w-full space-y-2'>
+                    <p className=' text-lg'>Students</p>
+                    <div className="flex flex-row flex-wrap items-start justify-start">
+                        <AnimatedTooltip items={collegeDetails.students} />
+                    </div>
+                </div>
+                {/* Students */}
+
                 {/* Admission Process */}
                 {
                     enrolled ? 'Already Enrolled' :
-                    <div className={`flex flex-col gap-10 mt-10 ${user.type !== 'student' && 'hidden'}`}>
+                    <div className={`flex flex-col gap-10 mt-10 ${user?.type !== 'student' && 'hidden'}`}>
                         <button onClick={() => setOpen(true)} className="text-center w-36 p-2 bg-black text-white rounded-md">
                             Take Admission
                         </button>
                     </div>
                 }
             </div>
-            <AdmissionClient college={collegeDetails} open={open} setOpen={setOpen} subjects={subjects} />
+            <AdmissionClient college={collegeDetails} open={open} setOpen={setOpen} subjects={subjects} setEnrolled={setEnrolled} />
         </>
     );
 }

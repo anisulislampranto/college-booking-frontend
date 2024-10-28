@@ -1,6 +1,5 @@
 import { AnimatedTooltip } from '@/utils/AnimatedTooltip';
 import Image from 'next/image';
-import Link from 'next/link';
 import React from 'react'
 
 export default async function ResearchServer() {
@@ -16,7 +15,7 @@ export default async function ResearchServer() {
                         <div className=' relative h-56 w-full'>
                             <Image src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${el.image}`} className=' rounded-sm absolute object-cover' alt={'el.image'} fill />
                         </div>
-                        
+
                         <h3 className="text-lg font-semibold">{el.name}</h3>
                         <h3 className="">{el.description}</h3>
 
