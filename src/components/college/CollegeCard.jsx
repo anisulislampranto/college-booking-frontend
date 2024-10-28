@@ -14,7 +14,7 @@ export default function CollegeCard({college}) {
                 fill
               />
               {new Date(college.admissionDate) > new Date() && (
-                <EndlessSliderServer text={'Admission going on !!!'} className={' bg-black text-white absolute top-0 z-50'} />
+                <EndlessSliderServer text={'Admission going on !!!'} className={' bg-black text-white absolute top-0 z-40'} />
               )}
 
               
