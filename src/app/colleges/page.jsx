@@ -61,7 +61,7 @@ export default function Page() {
             )) : <span className='text-center col-span-3 text-5xl'>Found no colleges.</span>}
           </div>
 
-          <div className="flex justify-center items-center mt-5">
+          <div className={` ${colleges?.length > 9 ? 'flex' : 'hidden'} justify-center items-center mt-5`}>
             <Pagination 
               total={totalPages} 
               initialPage={page}

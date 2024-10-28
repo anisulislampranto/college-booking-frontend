@@ -25,15 +25,17 @@ export const AnimatedTooltip = ({
     x.set(event.nativeEvent.offsetX - halfWidth); // set the x value, which is then used in transform and rotate
   };
 
+  console.log('items', items);
+
   return (<>
     {items.map((item, idx) => (
       <div
         className="-mr-4  relative group"
-        key={item.name}
-        onMouseEnter={() => setHoveredIndex(item.id)}
+        key={item._id}
+        onMouseEnter={() => setHoveredIndex(item._id)}
         onMouseLeave={() => setHoveredIndex(null)}>
         <AnimatePresence mode="popLayout">
-          {hoveredIndex === item.id && (
+          {hoveredIndex === item._id && (
             <motion.div
               initial={{ opacity: 0, y: 20, scale: 0.6 }}
               animate={{
@@ -64,13 +66,28 @@ export const AnimatedTooltip = ({
             </motion.div>
           )}
         </AnimatePresence>
-        <Image
-          onMouseMove={handleMouseMove}
-          height={100}
-          width={100}
-          src={item.image}
-          alt={item.name}
-          className="object-cover !m-0 !p-0 object-top rounded-full h-14 w-14 border-2 group-hover:scale-105 group-hover:z-30 border-white  relative transition duration-500" />
+        {
+          item.image ? (
+            <Image
+              onMouseMove={handleMouseMove}
+              height={100}
+              width={100}
+              src={item.image}
+              alt={item.name}
+              className="object-cover !m-0 !p-0 object-top rounded-full h-14 w-14 border-2 group-hover:scale-105 group-hover:z-30 border-white relative transition duration-500"
+            />
+          ) : (
+            <div className="w-14 h-14 bg-gray-300 rounded-full flex items-center justify-center group-hover:scale-105 group-hover:z-30 border-2 border-white relative transition duration-500">
+              <svg
+                className="w-8 h-8 text-gray-500"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+              </svg>
+            </div>
+          )
+        }
       </div>
     ))}
   </>);

@@ -18,6 +18,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "college-booking-backend-production-d4ba.up.railway.app",
       },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
     ],
   },
 };
