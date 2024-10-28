@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react'
-import Modal from '@/utils/Modal'
+import Modal from '../../utils/Modal'
 import { useForm } from "react-hook-form";
 import { Textarea, Input} from "@nextui-org/react";
 

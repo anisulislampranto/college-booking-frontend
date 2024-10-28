@@ -1,7 +1,7 @@
 'use client';
 
 import React, {useState, useEffect} from 'react'
-import Modal from '@/utils/Modal'
+import Modal from '../../utils/Modal'
 import { useForm, Controller } from "react-hook-form";
 import {Select, SelectItem, Textarea, Input} from "@nextui-org/react";
 

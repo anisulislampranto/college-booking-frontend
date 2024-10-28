@@ -4,7 +4,7 @@ import { redirect, useRouter } from 'next/navigation';
 import React, { useContext, useEffect } from 'react'
 import { AuthContext } from '@/context/AuthContext';
 import { useForm } from 'react-hook-form';
-import Modal from '@/utils/Modal';
+import Modal from '../../utils/Modal';
 
 export default function AdmissionClient({ open, setOpen, college, subjects}) {
     const router = useRouter()
