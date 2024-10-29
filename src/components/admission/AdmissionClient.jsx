@@ -3,20 +3,22 @@
 import { redirect, useRouter } from 'next/navigation';
 import React, { useContext, useEffect } from 'react'
 import { AuthContext } from '@/context/AuthContext';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import Modal from '../../utils/Modal';
+import { Input } from '@nextui-org/input';
+import {DateInput, Select, SelectItem} from "@nextui-org/react";
+
 
 export default function AdmissionClient({ open, setOpen, college, subjects, setEnrolled}) {
     const router = useRouter()
     const { user, setUser, loading } = useContext(AuthContext)
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const {control, register, handleSubmit, formState: { errors } } = useForm();
 
-    console.log('subjects', subjects);
 
     // Submit handler for the form
     const onSubmit = async (data) => {
 
-        console.log('subject', data.subject);
+        console.log('data form', data);
 
         try {
             const formData = new FormData();
@@ -39,13 +41,13 @@ export default function AdmissionClient({ open, setOpen, college, subjects, setE
 
             console.log('updatedUser', updatedUser);
 
-            const userWithNewData  = {...user, colleges: updatedUser.data.colleges, address: updatedUser.data.address, dateOfBirth: updatedUser.data.dateOfBirth, image: updatedUser.data.image, phoneNumber: updatedUser.data.phoneNumber }
-
-            setUser(userWithNewData);
-
-            localStorage.setItem('user', JSON.stringify(userWithNewData))
-
             if (res.ok) {
+                const userWithNewData  = {...user, colleges: updatedUser.data.colleges, address: updatedUser.data.address, dateOfBirth: updatedUser.data.dateOfBirth, image: updatedUser.data.image, phoneNumber: updatedUser.data.phoneNumber }
+
+                setUser(userWithNewData);
+
+                localStorage.setItem('user', JSON.stringify(userWithNewData))
+
                 setEnrolled(true);
                 setOpen(false); 
                 router.push('/my-college')
@@ -81,20 +83,22 @@ export default function AdmissionClient({ open, setOpen, college, subjects, setE
 
                     {/* Candidate Name */}
                     <div>
-                        <label htmlFor="name" className="block">Name:</label>
-                        <input
+                        {/* <label htmlFor="name" className="block">Name:</label> */}
+                        <Input
+                            label='Name'
+                            type='textarea'
                             {...register('name', { required: 'Candidate Name is required' })}
                             id="name"
                             defaultValue={user?.name}
-                            className="border p-2 w-full"
+                            className=" w-full"
                         />
                         {errors.name && <span className="text-red-500">{errors.name.message}</span>}
                     </div>
 
                     {/* Subject */}
                     <div>
-                        <label htmlFor="subject" className="block">Subject:</label>
-                        <select
+                        {/* <label htmlFor="subject" className="block">Subject:</label> */}
+                        {/* <select
                             {...register('subject', { required: 'Subject is required' })}
                             id="subject"
                             className="border p-2 w-full"
@@ -105,20 +109,33 @@ export default function AdmissionClient({ open, setOpen, college, subjects, setE
                                 )
                             }
                             
-                        </select>
+                        </select> */}
+                        <Select 
+                            label="Select a Subject" 
+                            className="w-full" 
+                            {...register('subject', { required: 'Subject is required' })}
+                            id="subject"
+                        >
+                            {subjects?.map((el) => (
+                                <SelectItem key={el._id}>
+                                    {el.name}
+                                </SelectItem>
+                            ))}
+                        </Select>
                         {errors.subject && <span className="text-red-500">{errors.subject.message}</span>}
                     </div>
 
                     {/* Candidate Email */}
                     <div>
-                        <label htmlFor="email" className="block">Candidate Email:</label>
-                        <input
-                            type="email"
+                        {/* <label htmlFor="email" className="block">Candidate Email:</label> */}
+                        <Input
+                            label='Email'
+                            type="textarea"
                             {...register('email')}
                             defaultValue={user?.email}
                             disabled
                             id="email"
-                            className="border p-2 w-full"
+                            className=" w-full border-none"
                         />
                         {errors.email && <span className="text-red-500">{errors.email.message}</span>}
                     </div>
@@ -126,36 +143,54 @@ export default function AdmissionClient({ open, setOpen, college, subjects, setE
 
                     {/* Phone Number Email */}
                     <div>
-                        <label htmlFor="phoneNumber" className="block">Phone Number:</label>
-                        <input
-                            type="number"
+                        {/* <label htmlFor="phoneNumber" className="block">Phone Number:</label> */}
+                        <Input
+                            label='Phone Number'
+                            type="textarea"
                             {...register('phoneNumber', { required: 'Phone Number is required' })}
                             id="phoneNumber"
-                            className="border p-2 w-full"
+                            className="w-full"
                         />
                         {errors.phoneNumber && <span className="text-red-500">{errors.phoneNumber.message}</span>}
                     </div>
 
                     {/* Address  */}
                     <div>
-                        <label htmlFor="address" className="block">Address:</label>
-                        <input
-                            type="text"
+                        {/* <label htmlFor="address" className="block">Address:</label> */}
+                        <Input
+                            label='Address'
+                            type="textarea"
                             {...register('address', { required: 'Address is required' })}
                             id="address"
-                            className="border p-2 w-full"
+                            className="w-full"
                         />
                         {errors.address && <span className="text-red-500">{errors.address.message}</span>}
                     </div>
 
                     {/* Address  */}
                     <div>
-                        <label htmlFor="dateOfBirth" className="block">Date of birth:</label>
-                        <input
-                            type="date"
+                        {/* <label htmlFor="dateOfBirth" className="block">Date of birth:</label> */}
+                        {/* <DateInput
+                            label='Date of Birth'
                             {...register('dateOfBirth', { required: 'Date of birth is required' })}
                             id="dateOfBirth"
-                            className="border p-2 w-full"
+                            className="w-full"
+                        /> */}
+                        {/* {errors.dateOfBirth && <span className="text-red-500">{errors.dateOfBirth.message}</span>} */}
+                    </div>
+
+                    <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
+                        <Controller
+                            name="dateOfBirth"
+                            control={control}
+                            rules={{ required: 'Date of birth is required' }}
+                            render={({ field }) => (
+                                <DateInput 
+                                    {...field} 
+                                    label="Date of Birth" 
+                                    className="w-full" 
+                                />
+                            )}
                         />
                         {errors.dateOfBirth && <span className="text-red-500">{errors.dateOfBirth.message}</span>}
                     </div>
@@ -163,11 +198,11 @@ export default function AdmissionClient({ open, setOpen, college, subjects, setE
                     {/* Image */}
                     <div>
                         <label htmlFor="image" className="block">Image:</label>
-                        <input
+                        <Input
                             type="file"
                             {...register('image', { required: 'Image is required' })}
                             id="image"
-                            className="border p-2 w-full"
+                            className="w-full"
                         />
                         {errors.image && <span className="text-red-500">{errors.image.message}</span>}
                     </div>
