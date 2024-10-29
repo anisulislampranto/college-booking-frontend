@@ -8,12 +8,15 @@ import { FaGoogle } from "react-icons/fa";
 
 const GoogleLogin = () => {
     const router = useRouter();
-    const { user, setUser } = useContext(AuthContext);
+    const { user, setUser, userType } = useContext(AuthContext);
+
+	console.log('user', user);
+	
 
 	const responseGoogle = async (authResult) => {
 		try {
 			if (authResult["code"]) {
-				const result = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + `/api/auth/google?code=${authResult.code}`);
+				const result = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + `/api/auth/google?code=${authResult.code}&type=${userType}`);
 				const data =  await result.json();
 
 				console.log('res', result);

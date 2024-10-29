@@ -114,7 +114,7 @@ export default function Page() {
 
       <ul className={`mt-5 grid ${user.type === 'student' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5' : ' grid-cols-1'}`}>
         { user.colleges.length !== 0 ? user?.colleges?.map((college) => {
-          console.log('userReviews', userReviews);
+          console.log('college', college);
           
           const collegeReview = userReviews.find(review => review.collegeId._id === college.college._id);
 
@@ -129,8 +129,6 @@ export default function Page() {
                 />
               </div>
               <h3 className={` ${user.type === 'student' ? 'text-lg' : ' text-5xl'} font-semibold`}>{college?.college?.name || college.name}</h3>
-
-              
 
               {/*  */}
               <div>
@@ -238,11 +236,6 @@ export default function Page() {
                       Submit Review
                     </button>
                   </form>
-
-                <div>
-
-                </div>
-
                 </div>
               )}
             </li>

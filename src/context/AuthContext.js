@@ -8,6 +8,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userType, setUserType] = useState("student");
 
   useEffect(() => {
     // Get user and token from localStorage when app starts
@@ -51,7 +52,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, logout, loading }}>
+    <AuthContext.Provider
+      value={{ user, setUser, logout, loading, userType, setUserType }}
+    >
       {children}
     </AuthContext.Provider>
   );

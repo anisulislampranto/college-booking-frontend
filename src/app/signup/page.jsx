@@ -11,10 +11,9 @@ import Link from 'next/link';
 
 export default function Signup() {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { user, setUser } = useContext(AuthContext);
+    const { user, setUser, userType, setUserType } = useContext(AuthContext);
     const router = useRouter();
     const [btnState, setBtnState] = useState('');
-    const [userType, setUserType] = useState('student')
 
 
     const onSubmit = async (data) => {
@@ -87,7 +86,6 @@ export default function Signup() {
         <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Sign Up to your account
         </h2>
-
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
             <div className="flex bg-gray-300 p-1 rounded-md">
