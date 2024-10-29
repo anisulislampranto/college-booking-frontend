@@ -12,7 +12,7 @@ export default async function ReviewsServer() {
                 <h3 className=' text-3xl font-visbyRegular'>Reviews</h3>
             </div>
             {
-                data.reviews.length !== 0 ? 
+                data.reviews?.length !== 0 ? 
                 <>
                     <InfiniteMovingCards className={ 'mx-auto'} items={data.reviews} />
                     <InfiniteMovingCards className={ 'mx-auto'} direction='right' items={data.reviews} />

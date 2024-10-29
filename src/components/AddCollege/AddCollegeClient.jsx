@@ -3,13 +3,15 @@
 import React, {useState, useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 import { AuthContext } from '@/context/AuthContext';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 
 
 export default function AddCollegeClient() {
     const {user, setUser, loading} = useContext(AuthContext)
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [error, setError] = useState()
+    const [error, setError] = useState(); 
+    const [btnState, setBtnState] = useState('');
+    const router = useRouter()
 
 
     const displayError = (message) => {
@@ -20,7 +22,9 @@ export default function AddCollegeClient() {
     };
 
     const onSubmit = async (data) => {
-
+        console.log('data', data);
+        
+        setBtnState('submitting')
         try {
             const imageFile = data.image[0];
             
@@ -50,10 +54,15 @@ export default function AddCollegeClient() {
                     colleges: updatedColleges, 
                 }
                 setUser(updatedUser);
-                localStorage.setItem('user', JSON.stringify(updatedUser))
-                redirect("/my-college")
+                localStorage.setItem('user', JSON.stringify(updatedUser));
+                setBtnState('Submitted Successfully!')
+                router.push("/my-college")
             } else {
                 displayError(createdCollege.error)
+                setBtnState('Failed to Submit');
+                setTimeout(() => {
+                    setBtnState('')
+                }, 2000);
             }
 
         } catch (error) {
@@ -126,7 +135,9 @@ export default function AddCollegeClient() {
 
                 {/* Submit Button */}
                 <button type="submit" className="mt-5 p-2 bg-blue-500 text-white rounded-md">
-                    Add College
+                    {
+                        btnState ? btnState : 'Add College'
+                    }
                 </button>
 
                 <p className="text-red-500 py-1">{error && error}</p> 
