@@ -41,7 +41,7 @@ const GoogleLogin = () => {
 	});
 
     useEffect(() => {
-        if (user) {
+        if (user?.email) {
           router.back();
         }
       }, [user, router]);

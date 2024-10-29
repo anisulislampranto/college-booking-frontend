@@ -7,7 +7,6 @@ export default async function ResearchServer() {
     const data = await res.json();
 
     console.log('data', data);
-    
 
     return (
         <div className=' container mx-auto p-5 py-20'>

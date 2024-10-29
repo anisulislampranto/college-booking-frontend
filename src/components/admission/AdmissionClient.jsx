@@ -73,6 +73,7 @@ export default function AdmissionClient({ open, setOpen, college, subjects, setE
         }
     }, [user])
 
+    console.log('user', user);
     
 
     return (

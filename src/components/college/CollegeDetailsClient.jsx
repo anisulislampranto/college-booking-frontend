@@ -19,8 +19,8 @@ export default function CollegeDetailsClient({ collegeDetails }) {
     
 
     useEffect(() => {
-        const userEnrolled = user?.colleges?.some(el => el.college._id)
-        setEnrolled(userEnrolled)
+        const alreadyEnrolled = user.colleges.some(el => el.college._id === collegeDetails._id);
+        setEnrolled(alreadyEnrolled)
 
         try {
             (async () => {
@@ -42,6 +42,7 @@ export default function CollegeDetailsClient({ collegeDetails }) {
     }
 
     console.log('collegeDetails', collegeDetails);
+    console.log('user', user);
     
 
 

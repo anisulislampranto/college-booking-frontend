@@ -13,6 +13,8 @@ export default function AddCollegeClient() {
     const [btnState, setBtnState] = useState('');
     const router = useRouter()
 
+    console.log('user', user);
+    
 
     const displayError = (message) => {
         setError(message);
@@ -46,6 +48,10 @@ export default function AddCollegeClient() {
             });
 
             const createdCollege = await res.json();
+
+
+            console.log('res', res);
+            
             
             if (res.ok) {
                 const updatedColleges = user.colleges ? [...user.colleges, createdCollege.data] : [createdCollege.data];
@@ -81,7 +87,7 @@ export default function AddCollegeClient() {
 
     }, [user])
 
-    if (user.type === 'collegeAdmin' && user.colleges.length > 0 ) {
+    if (user?.type === 'collegeAdmin' && user.colleges.length > 0 ) {
         return <div className=" mt-20 text-5xl text-center flex items-center justify-center">College Admin Can Add one College Only</div>;
     }
 
