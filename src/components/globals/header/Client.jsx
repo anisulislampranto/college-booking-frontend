@@ -9,6 +9,7 @@ import logo from '../../../assets/Board_of_Intermediate_and_Secondary_Education_
 import { AuthContext } from '@/context/AuthContext';
 
 
+
 const navLinks = [
     {
         label: 'Home',
@@ -41,6 +42,10 @@ export default function HeaderClient() {
                 </Link>
 
                 <div className=' hidden lg:flex items-center justify-between gap-5 font-poppinsRegular'>
+
+                    {
+                        user.type === 'admin' && <Link href={'/recycle-bin'} className='flex items-center gap-2 hover:text-[#96BEBA] cursor-pointer ' > Recycle Bin </Link>
+                    }
 
                     {
                         user?.type === 'admin' && navLinks.filter(el => el.label !== 'Add College' && el.label !== 'My College' ).map((el) => 
