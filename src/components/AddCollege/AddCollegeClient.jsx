@@ -14,7 +14,6 @@ export default function AddCollegeClient() {
     const router = useRouter()
 
     console.log('user', user);
-    
 
     const displayError = (message) => {
         setError(message);

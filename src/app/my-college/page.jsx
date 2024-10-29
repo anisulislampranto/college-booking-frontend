@@ -33,13 +33,10 @@ export default function Page() {
                     method: 'GET',
                     headers: { 'Authorization': `Bearer ${user.token}` },
                 })
-
                 const users = await res.json()
-
-                console.log('users', users);
-
-                setUsers(users.data)
-
+                if (res.ok) {
+                  setUsers(users.data)
+                }
             } catch (error) {
                 console.log('err', error);
             }
@@ -83,9 +80,6 @@ export default function Page() {
       });
 
       const result = await response.json();
-
-      console.log('result', result);
-      
 
       if (response.ok) {
         // Add the newly created review to the state
@@ -141,15 +135,18 @@ export default function Page() {
           const collegeReview = userReviews.find(review => review.collegeId._id === college.college._id);
 
           return (
-            <li key={college?._id} className="p-4 border rounded-sm flex flex-col gap-5">
+            <li key={college?._id} className="p-4 border rounded-sm flex flex-col gap-5 relative">
               <div className={`relative w-full ${user.type === 'student' ? ' h-56 ' : 'h-[30rem]'}`}>
                 <Image
                   src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${college?.college?.image || college?.image}`}
-                  className="rounded-sm absolute object-contain"
+                  className="rounded-sm absolute object-cover"
                   alt={'college image'}
                   fill
                 />
               </div>
+              <p className={`capitalize w-24 text-center z-40 p-1 rounded-md px-3 ${college.status == 'pending' ? 'bg-yellow-600 text-white' : college.status == 'approved' ? 'bg-green-600 text-white' : ''}`}>
+                {college.status}
+              </p>
               <h3 className={` ${user.type === 'student' ? 'text-lg' : ' text-5xl'} font-semibold`}>{college?.college?.name || college.name}</h3>
 
               {/*  */}

@@ -43,6 +43,12 @@ export default function HeaderClient() {
                 <div className=' hidden lg:flex items-center justify-between gap-5 font-poppinsRegular'>
 
                     {
+                        user?.type === 'admin' && navLinks.filter(el => el.label !== 'Add College' && el.label !== 'My College' ).map((el) => 
+                            <Link href={el.url} className='hover:text-[#96BEBA] cursor-pointer ' key={el.url}>{el.label}</Link>
+                        )
+                    }
+
+                    {
                         user?.type === 'student' && navLinks.filter(el => el.label !== 'Add College' ).map((el) => 
                             <Link href={el.url} className='hover:text-[#96BEBA] cursor-pointer ' key={el.url}>{el.label}</Link>
                         )

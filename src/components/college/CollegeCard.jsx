@@ -1,15 +1,59 @@
+'use client';
+
 import EndlessSliderServer from '@/utils/EndlessSliderServer'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 
-export default function CollegeCard({college}) {
+export default function CollegeCard({college, user, setUser, fetchCollege, setFetchCollege}) {
+  const [deleteBtnState, setDeleteBtnState] = useState('')
+
+  // Delete College By Admin
+  const handleDeleteCollege = (id) => {
+
+    if (user.type !== 'admin') {
+      return
+    }
+
+    setDeleteBtnState('deleting')
+    try {
+      (async () => {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/delete/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${user.token}` },
+        });
+        
+        const data = await res.json();
+
+        console.log('data', data);
+
+        if (res.ok) {
+          setDeleteBtnState('Deleted');
+          console.log("College deleted successfully");
+          setFetchCollege(fetchCollege + 1)
+        } else {
+          setDeleteBtnState('Failed!')
+          setTimeout(() => {
+            setDeleteBtnState('')
+          }, 2000);
+        }
+      })();
+    } catch (error) {
+      console.error("Error deleting college:", error);
+    }
+  };
+
   return (
-        <div key={college._id} className="rounded-md flex flex-col gap-2 overflow-hidden group">
+        <div key={college._id} >
+          <div className="rounded-md flex flex-col gap-2 overflow-hidden group relative">
+            {
+              user?.type === 'admin' && 
+              <p className=' absolute z-40 bottom-2 right-2 capitalize bg-yellow-500 w-24 text-center rounded-md'>{college.status}</p>
+            }
             <div className='relative h-[28rem] w-full'>
               <Image
                 src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${college.image}`}
-                className='inset-0 rounded-md absolute object-cover transition-transform group-hover:scale-105'
+                className='inset-0 rounded-md absolute object-cover transition-transform group-hover:scale-105 overflow-hidden'
                 alt={college.name}
                 fill
               />
@@ -67,6 +111,11 @@ export default function CollegeCard({college}) {
                   {college.name}
                 </h3>
               </div>
+            </div>
+            </div>
+            <div className={`mt-1 items-center justify-between ${user?.type === 'admin' ? 'flex' : 'hidden'}`}>
+                <button disabled={college.status === 'approved'} className={`px-3 rounded-md mt-1 ${college.status === 'approved' ? 'bg-green-600 text-white' : ' border border-green-600 hover:bg-green-600 hover:text-white'}`}>{college.status === 'approved' ? 'Approved' : 'Approve'}</button>
+                <button className={`px-3 rounded-md mt-1 border border-red-600 hover:bg-red-600 hover:text-white`} onClick={() => handleDeleteCollege(college._id)}> {deleteBtnState === '' ? 'Delete' : deleteBtnState}</button>
             </div>
           </div>
   )
