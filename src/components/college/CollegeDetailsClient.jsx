@@ -19,7 +19,7 @@ export default function CollegeDetailsClient({ collegeDetails }) {
     
 
     useEffect(() => {
-        const alreadyEnrolled = user.colleges.some(el => el.college._id === collegeDetails._id);
+        const alreadyEnrolled = user.colleges?.some(el => el.college?._id === collegeDetails._id);
         setEnrolled(alreadyEnrolled)
 
         try {
@@ -40,10 +40,6 @@ export default function CollegeDetailsClient({ collegeDetails }) {
     if (!loading && !user) {
       router.push('/signup');
     }
-
-    console.log('collegeDetails', collegeDetails);
-    console.log('user', user);
-    
 
 
     const timelineData = [
@@ -117,14 +113,16 @@ export default function CollegeDetailsClient({ collegeDetails }) {
                 {/* Timeline */}
 
                 {/* Students */}
-                <div className='py-10 w-full space-y-2'>
-                    <p className=' text-lg'>Students</p>
-                    <div className="flex flex-row flex-wrap items-start justify-start">
-                        <AnimatedTooltip items={collegeDetails.students} />
-                    </div>
-                </div>
+                    {
+                        collegeDetails.students.length !== 0 && 
+                        <div className='py-10 w-full space-y-2'>
+                            <p className=' text-lg'>Students</p>
+                            <div className="flex flex-row flex-wrap items-start justify-start">
+                                <AnimatedTooltip items={collegeDetails.students} />
+                            </div> 
+                        </div>
+                    }
                 {/* Students */}
-
                 {/* Admission Process */}
                 {
                     enrolled ? 'Already Enrolled' :

@@ -19,13 +19,32 @@ export default function Page() {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [userReviews, setUserReviews] = useState([]);
   const [collegeData, setCollegeData] = useState({});
-
+  const [users, setUsers] = useState([])
   const [addEventModal, setAddEventModal] = useState(false);
   const [addResearchModal, setAddResearchModal] = useState(false);
   const [addSportModal, setAddSportModal] = useState(false);
 
-  console.log('user', user);
-  
+
+    // Students of the college
+    useEffect(() => {
+        (async()=>{
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users?collegeId=${collegeData._id}`, {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${user.token}` },
+                })
+
+                const users = await res.json()
+
+                console.log('users', users);
+
+                setUsers(users.data)
+
+            } catch (error) {
+                console.log('err', error);
+            }
+        })()
+    }, [collegeData])
 
   // Fetch reviews on component mount
   useEffect(() => {
@@ -257,7 +276,7 @@ export default function Page() {
       <AddEventClient college={collegeData} open={addEventModal} setOpen={setAddEventModal} user={user} setUser={setUser} />
       
       {/* Add Research */}
-      <AddResearch college={collegeData} open={addResearchModal} setOpen={setAddResearchModal} user={user} setUser={setUser} />
+      <AddResearch setUsers={setUsers} users={users} college={collegeData} open={addResearchModal} setOpen={setAddResearchModal} user={user} setUser={setUser} />
 
 
       {/* Add Sport */}

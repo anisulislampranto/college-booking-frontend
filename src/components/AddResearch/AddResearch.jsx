@@ -6,9 +6,8 @@ import { useForm, Controller } from "react-hook-form";
 import {Select, SelectItem, Textarea, Input} from "@nextui-org/react";
 
 
-export default function AddResearch({college, open, setOpen, user, setUser}) {
+export default function AddResearch({college, open, setOpen, user, setUser, users, setUsers}) {
     const { control, register, handleSubmit, watch, formState: { errors } } = useForm();
-    const [users, setUsers] = useState([])
 
 
     const onSubmit = async (data) => {
@@ -75,25 +74,6 @@ export default function AddResearch({college, open, setOpen, user, setUser}) {
     }
 
 
-    useEffect(() => {
-        (async()=>{
-            try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users`, {
-                    method: 'GET',
-                    headers: { 'Authorization': `Bearer ${user.token}` },
-                })
-
-                const users = await res.json()
-
-                setUsers(users.data)
-
-            } catch (error) {
-                console.log('err', error);
-            }
-        })()
-    }, [])
-    
-
 
     return (
         <Modal open={open} setOpen={setOpen}>
@@ -151,7 +131,7 @@ export default function AddResearch({college, open, setOpen, user, setUser}) {
                                 className="px-2"
                                 onSelectionChange={selectedItems => field.onChange([...selectedItems])}  // Get selected IDs
                             >
-                                {users.map((user) => (
+                                {users?.map((user) => (
                                     <SelectItem key={user._id} value={user._id}>
                                         {user.name}
                                     </SelectItem>
