@@ -83,7 +83,6 @@ export default function AdmissionClient({ open, setOpen, college, subjects, setE
 
                     {/* Candidate Name */}
                     <div>
-                        {/* <label htmlFor="name" className="block">Name:</label> */}
                         <Input
                             label='Name'
                             type='textarea'
@@ -97,19 +96,6 @@ export default function AdmissionClient({ open, setOpen, college, subjects, setE
 
                     {/* Subject */}
                     <div>
-                        {/* <label htmlFor="subject" className="block">Subject:</label> */}
-                        {/* <select
-                            {...register('subject', { required: 'Subject is required' })}
-                            id="subject"
-                            className="border p-2 w-full"
-                        >
-                            {
-                                subjects?.map((el) => 
-                                    <option value={el._id}>{el.name}</option>
-                                )
-                            }
-                            
-                        </select> */}
                         <Select 
                             label="Select a Subject" 
                             className="w-full" 
@@ -127,7 +113,6 @@ export default function AdmissionClient({ open, setOpen, college, subjects, setE
 
                     {/* Candidate Email */}
                     <div>
-                        {/* <label htmlFor="email" className="block">Candidate Email:</label> */}
                         <Input
                             label='Email'
                             type="textarea"
@@ -143,7 +128,6 @@ export default function AdmissionClient({ open, setOpen, college, subjects, setE
 
                     {/* Phone Number Email */}
                     <div>
-                        {/* <label htmlFor="phoneNumber" className="block">Phone Number:</label> */}
                         <Input
                             label='Phone Number'
                             type="textarea"
@@ -156,7 +140,6 @@ export default function AdmissionClient({ open, setOpen, college, subjects, setE
 
                     {/* Address  */}
                     <div>
-                        {/* <label htmlFor="address" className="block">Address:</label> */}
                         <Input
                             label='Address'
                             type="textarea"
@@ -167,18 +150,7 @@ export default function AdmissionClient({ open, setOpen, college, subjects, setE
                         {errors.address && <span className="text-red-500">{errors.address.message}</span>}
                     </div>
 
-                    {/* Address  */}
-                    <div>
-                        {/* <label htmlFor="dateOfBirth" className="block">Date of birth:</label> */}
-                        {/* <DateInput
-                            label='Date of Birth'
-                            {...register('dateOfBirth', { required: 'Date of birth is required' })}
-                            id="dateOfBirth"
-                            className="w-full"
-                        /> */}
-                        {/* {errors.dateOfBirth && <span className="text-red-500">{errors.dateOfBirth.message}</span>} */}
-                    </div>
-
+                    {/* Date of birth  */}
                     <div className="flex flex-col w-full flex-wrap md:flex-nowrap gap-4">
                         <Controller
                             name="dateOfBirth"

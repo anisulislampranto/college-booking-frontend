@@ -8,6 +8,9 @@ import { useRouter } from 'next/navigation';
 import AddEventClient from '@/components/AddEvent/AddEventClient';
 import AddResearch from '@/components/AddResearch/AddResearch';
 import AddSport from '@/components/AddSport/AddSport';
+import { Textarea } from '@headlessui/react';
+import { Select, SelectItem } from '@nextui-org/react';
+
 
 export default function Page() {
   const { user, setUser , loading } = useContext(AuthContext);
@@ -204,31 +207,37 @@ export default function Page() {
                 <div className="mt-4">
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-4">
-                      <label htmlFor="reviewText" className="block text-sm font-medium">Review</label>
-                      <input
+                      <Textarea
+                        label='Review'
                         type="text"
                         placeholder="Review Text"
-                        {...register('reviewText', { 
-                          required: 'Review text is required' 
-                        })}
-                        className="mt-1 block w-full p-2 border rounded-md"
+                        {...register('reviewText', { required: 'Review text is required' })}
+                        className="mt-1 block w-full rounded-md"
                       />
                       {errors.reviewText && <span className="text-red-500">{errors.reviewText.message}</span>}
                     </div>
+
+                    
                     <div className="mb-4">
-                      <label htmlFor="rating" className="block text-sm font-medium">Rating</label>
-                      <input
-                        type="number"
-                        placeholder="Rating out of 10"
-                        {...register('rating', { 
-                          required: 'Rating is required', 
-                          min: { value: 1, message: 'Rating must be at least 1' },
-                          max: { value: 10, message: 'Rating cannot exceed 10' }
-                        })}
-                        className="mt-1 block w-full p-2 border rounded-md"
-                      />
-                      {errors.rating && <span className="text-red-500">{errors.rating.message}</span>}
+                        <Select
+                          label="Rate out of 10" 
+                          className="w-full" 
+                          {...register('rating', { 
+                            required: 'Rating is required', 
+                            min: { value: 1, message: 'Rating must be at least 1' },
+                            max: { value: 10, message: 'Rating cannot exceed 10' }
+                          })}
+                        >
+                            {Array.from({ length: 10 }, (_, index) => (
+                              <SelectItem key={(index + 1).toString()}>
+                                {(index + 1).toString()}
+                              </SelectItem>
+                            ))}
+                        </Select>
+                        {errors.rating && <span className="text-red-500">{errors.rating.message}</span>}
                     </div>
+
+
                     <button
                       type="submit"
                       className="bg-blue-600 text-white py-2 px-4 rounded-md"
