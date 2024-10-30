@@ -11,7 +11,7 @@ export default function CollegeSearch() {
 
   const fetchColleges = async (query = '') => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges?search=${query}&limit=${3}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges?search=${query}&status=approved&limit=${3}`);
       const data = await res.json();
 
       setColleges(data.colleges);

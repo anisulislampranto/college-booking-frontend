@@ -15,8 +15,13 @@ export default function RecycleBinServer() {
     const [fetching, setFetching] = useState(0)
 
     useEffect(() => {
+
+        console.log('user', user);
+        
+
         try {
             (async()=>{
+                console.log('dataRecycleBin');
                 const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/recycle-bin`, {
                         method: 'GET',
                         headers: { 'Authorization': `Bearer ${user.token}` },
@@ -24,7 +29,7 @@ export default function RecycleBinServer() {
                 )
                 const data = await res.json();
 
-                console.log('data', data);
+                console.log('dataRecycleBin', data);
 
                 if (res.ok) {
                     setDeletedColleges(data.data)
