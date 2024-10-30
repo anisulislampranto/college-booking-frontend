@@ -6,9 +6,8 @@ import { useForm, Controller } from "react-hook-form";
 import {Select, SelectItem, Textarea, Input} from "@nextui-org/react";
 
 
-export default function AddResearch({college, open, setOpen, user, setUser, users, setUsers}) {
+export default function AddResearch({college, open, setOpen, user, setUser, students, setStudents}) {
     const { control, register, handleSubmit, watch, formState: { errors } } = useForm();
-
 
     const onSubmit = async (data) => {
 
@@ -24,8 +23,6 @@ export default function AddResearch({college, open, setOpen, user, setUser, user
             formData.append('user', user._id)
 
             participantArray.forEach((participant) => formData.append("participants[]", participant))
-
-
 
             const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/researches/create`, {
                     method: 'POST',
@@ -132,7 +129,7 @@ export default function AddResearch({college, open, setOpen, user, setUser, user
                                 className="px-2"
                                 onSelectionChange={selectedItems => field.onChange([...selectedItems])}  // Get selected IDs
                             >
-                                {users?.map((user) => (
+                                {students?.map((user) => (
                                     <SelectItem key={user._id} value={user._id}>
                                         {user.name}
                                     </SelectItem>

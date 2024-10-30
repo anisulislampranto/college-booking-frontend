@@ -21,15 +21,14 @@ export default function Page() {
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const [userReviews, setUserReviews] = useState([]);
   const [collegeData, setCollegeData] = useState({});
-  const [users, setUsers] = useState([])
+  const [students, setStudents] = useState([]);
   const [addEventModal, setAddEventModal] = useState(false);
   const [addResearchModal, setAddResearchModal] = useState(false);
   const [addSportModal, setAddSportModal] = useState(false);
+  const [toggleStudents, setToggleStudents] = useState('admissionPending')
 
 
-  console.log('user', user);
-
-    // Students of the college
+    // Colleges of the student
     useEffect(() => {
         const fetchCollegeData = async() => {
             try {
@@ -48,7 +47,7 @@ export default function Page() {
                 console.log('colleges', colleges);
 
                 if (res.ok) {
-                  // setUsers(users.data)
+                  setCollegeData(colleges)
                   console.log('colleges', colleges);
                 
                 }
@@ -70,13 +69,13 @@ export default function Page() {
                     method: 'GET',
                     headers: { 'Authorization': `Bearer ${user.token}` },
                 })
-                const users = await res.json();
+                const students = await res.json();
 
-                console.log('users my college', users);
+                // console.log('users my college', users);
                 
 
                 if (res.ok) {
-                  setUsers(users.data)
+                  setStudents(students.data)
                 }
             } catch (error) {
                 console.log('err', error);
@@ -395,6 +394,28 @@ export default function Page() {
                 </div>
               {/*  */}
 
+              {/* Students for college admin */}
+              <div>
+                  <div className="flex bg-gray-300 p-1 rounded-md w-80">
+                    <button
+                        type="button"
+                        onClick={() => setToggleStudents('students')}
+                        className={`flex-1 p-1 ${toggleStudents === 'students' ? 'bg-white' : 'bg-gray-300'} text-gray-900 rounded-md`}
+                    >
+                        Students
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setToggleStudents('admissionPending')}
+                        className={`flex-1 p-1 ${toggleStudents === 'admissionPending' ? 'bg-white' : 'bg-gray-300'} text-gray-900 rounded-md`}
+                    >
+                        Pending Admission
+                    </button>
+                </div>
+                
+              </div>
+              {/* Students for college admin */}
+
               {/*  */}
               {collegeReview ? (
                 <div>
@@ -472,7 +493,7 @@ export default function Page() {
       <AddEventClient college={collegeData} open={addEventModal} setOpen={setAddEventModal} user={user} setUser={setUser} />
       
       {/* Add Research */}
-      <AddResearch setUsers={setUsers} users={users} college={collegeData} open={addResearchModal} setOpen={setAddResearchModal} user={user} setUser={setUser} />
+      <AddResearch setStudents={setStudents} students={students} college={collegeData} open={addResearchModal} setOpen={setAddResearchModal} user={user} setUser={setUser} />
 
 
       {/* Add Sport */}
