@@ -183,9 +183,9 @@ export default function Page() {
   };
 
 
-  const handleDeleteResearch = async (eventId, collegeId) => {
+  const handleDeleteResearch = async (researchId, collegeId) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/delete/${eventId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/researches/delete/${researchId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${user.token}`,
@@ -207,7 +207,56 @@ export default function Page() {
               ...collegeObj,
               college: {
                 ...collegeObj.college,
-                events: collegeObj.college.events.filter(event => event._id !== eventId),  
+                researches: collegeObj.college.researches.filter(event => event._id !== researchId),  
+              },
+            };
+          }
+          return collegeObj;
+        });
+  
+        console.log('updatedColleges', updatedColleges);
+  
+        const updatedUser = {
+          ...user,
+          colleges: updatedColleges,  
+        };
+  
+        setUser(updatedUser);
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        setOpen(false);
+      }
+  
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+
+  const handleDeleteSport = async (sportId, collegeId) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sports/delete/${sportId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${user.token}`,
+        },
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to delete event.');
+      }
+  
+      if (response.ok) {
+        const updatedColleges = user.colleges?.map(collegeObj => {
+
+          if (collegeObj?.college?._id === collegeId) { 
+
+            return {
+              ...collegeObj,
+              college: {
+                ...collegeObj.college,
+                sports: collegeObj.college.sports.filter(event => event._id !== sportId),  
               },
             };
           }
@@ -317,7 +366,7 @@ export default function Page() {
                         {el.name}
                         {
                           user.type === 'collegeAdmin' && 
-                            <button className=' absolute -top-3 -right-3'><RxCross2 className=' hover:bg-red-600 hover:text-white border border-red-600 w-4 h-4 text-red-600 bg-white rounded-full ' /></button>
+                            <button onClick={() => handleDeleteResearch(el._id, college.college._id)} className=' absolute -top-3 -right-3'><RxCross2 className=' hover:bg-red-600 hover:text-white border border-red-600 w-4 h-4 text-red-600 bg-white rounded-full ' /></button>
                         }
                       </li>
                     ) : 'N/A'}
@@ -334,7 +383,7 @@ export default function Page() {
                         {el.name}
                         {
                           user.type === 'collegeAdmin' && 
-                            <button className=' absolute -top-3 -right-3'><RxCross2 className=' hover:bg-red-600 hover:text-white border border-red-600 w-4 h-4 text-red-600 bg-white rounded-full ' /></button>
+                            <button onClick={() => handleDeleteSport(el._id, college.college._id)} className=' absolute -top-3 -right-3'><RxCross2 className=' hover:bg-red-600 hover:text-white border border-red-600 w-4 h-4 text-red-600 bg-white rounded-full ' /></button>
                         }
                       </li>
                     ) : 'N/A'}
