@@ -25,6 +25,41 @@ export default function Page() {
   const [addSportModal, setAddSportModal] = useState(false);
 
 
+  console.log('user', user);
+
+    // Students of the college
+    useEffect(() => {
+        const fetchCollegeData = async() => {
+            try {
+                const collegeIds = user.colleges.map(college => college._id);
+                console.log('collegeIds', collegeIds);
+
+                const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/my-college`, {
+                    method: 'PATCH',
+                    headers: { 'Authorization': `Bearer ${user.token}` },
+                    body: JSON.stringify(collegeIds)
+                })
+
+                const colleges = await res.json();
+
+                console.log('res', res);
+                console.log('colleges', colleges);
+
+                if (res.ok) {
+                  // setUsers(users.data)
+                  console.log('colleges', colleges);
+                
+                }
+            } catch (error) {
+                console.log('err', error);
+            }
+        }
+
+        if (user && user.colleges?.length) fetchCollegeData();
+
+    }, [user.email])
+
+
     // Students of the college
     useEffect(() => {
         (async()=>{

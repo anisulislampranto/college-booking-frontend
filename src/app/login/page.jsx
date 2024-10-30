@@ -71,7 +71,7 @@ export default function Login() {
 
   useEffect(() => {
     if (user?.email) {
-      router.push('/');
+      router.push('/profile');
     }
   }, [user, router]);
 
@@ -82,7 +82,6 @@ export default function Login() {
         <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Log In to your account
         </h2>
-
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

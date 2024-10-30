@@ -44,7 +44,7 @@ export default function HeaderClient() {
                 <div className=' hidden lg:flex items-center justify-between gap-5 font-poppinsRegular'>
 
                     {
-                        user.type === 'admin' && <Link href={'/recycle-bin'} className='flex items-center gap-2 hover:text-[#96BEBA] cursor-pointer ' > Recycle Bin </Link>
+                        user?.type === 'admin' && <Link href={'/recycle-bin'} className='flex items-center gap-2 hover:text-[#96BEBA] cursor-pointer ' > Recycle Bin </Link>
                     }
 
                     {
