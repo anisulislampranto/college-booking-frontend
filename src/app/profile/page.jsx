@@ -27,12 +27,17 @@ export default function Page() {
     }, [loading, user, router]);
 
     const onSubmit = async (data) => {
+        const token = localStorage.getItem('token');
+
+        console.log('token', token);
+        
+
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/update/me/${user._id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                    Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify(data)
             });
@@ -44,7 +49,7 @@ export default function Page() {
             console.log('updatedUser', updatedUser);
 
             if (response.ok) {
-                setUser(updatedUser.data);
+                setUser({ token, ...updatedUser.data });
                 localStorage.setItem('user', JSON.stringify(updatedUser.data))
                 setEdit(false);
                 reset();
