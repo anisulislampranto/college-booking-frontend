@@ -66,11 +66,15 @@ export default function Page() {
     useEffect(() => {
         (async()=>{
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users?collegeId=${collegeData._id}`, {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users?collegeId=${collegeData.college._id}`, {
                     method: 'GET',
                     headers: { 'Authorization': `Bearer ${user.token}` },
                 })
-                const users = await res.json()
+                const users = await res.json();
+
+                console.log('users my college', users);
+                
+
                 if (res.ok) {
                   setUsers(users.data)
                 }

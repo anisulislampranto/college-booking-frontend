@@ -20,7 +20,7 @@ export default function AddResearch({college, open, setOpen, user, setUser, user
             formData.append('name', data.name );
             formData.append('image', data.image[0] );
             formData.append('description', data.description)
-            formData.append('college', college._id );
+            formData.append('college', college.college._id );
             formData.append('user', user._id)
 
             participantArray.forEach((participant) => formData.append("participants[]", participant))
@@ -41,28 +41,29 @@ export default function AddResearch({college, open, setOpen, user, setUser, user
 
             if (res.ok) {
                 
-                const updatedColleges = user.colleges.map(college => {
-
-                    if (college._id === createdResearch.data.college) {
-                        return {
-                            ...college,
-                            researches: [...college.researches, createdResearch.data],  // Update events array with the new event
-                        };
+                const updatedColleges = user.colleges.map(collegeObj => {
+                    if (collegeObj?.college?._id === createdResearch.data.college) {
+                      return {
+                        ...collegeObj,
+                        college: {
+                          ...collegeObj.college,
+                          researches: [...(collegeObj.college?.researches || []), createdResearch.data],
+                        },
+                      };
                     }
-                    return college;
-                });
-
-                console.log('updatedColleges', updatedColleges );
-                
-
-                const updatedUser = {
+                    return collegeObj;
+                  });
+                  
+                  console.log('updatedColleges', updatedColleges);
+                  
+                  const updatedUser = {
                     ...user,
                     colleges: updatedColleges,  // Replace the colleges array with the updated one
-                };
-
-                setUser(updatedUser);  
-                localStorage.setItem('user', JSON.stringify(updatedUser));  
-                setOpen(false)
+                  };
+                  
+                  setUser(updatedUser);
+                  localStorage.setItem('user', JSON.stringify(updatedUser));
+                  setOpen(false);
 
             } else {
                 console.error('Error creating event:', createdResearch.error);
