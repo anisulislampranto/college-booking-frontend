@@ -10,6 +10,9 @@ import {Input} from "@nextui-org/react";
 export default function AddEventClient({college, open, setOpen, user, setUser}) {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
 
+    console.log('college', college);
+    
+
     const onSubmit = async (data) => {
 
         try {
@@ -18,7 +21,7 @@ export default function AddEventClient({college, open, setOpen, user, setUser}) 
             formData.append('date', data.date);
             formData.append('image', data.image[0] );
             formData.append('description', data.description)
-            formData.append('college', college._id );
+            formData.append('college', college.college._id );
             formData.append('user', user._id)
 
             const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/create`, {
@@ -32,28 +35,30 @@ export default function AddEventClient({college, open, setOpen, user, setUser}) 
 
             if (res.ok) {
                 
-                const updatedColleges = user.colleges.map(college => {
-
-                    if (college._id === createdEvent.data.college) {
-                        return {
-                            ...college,
-                            events: [...college.events, createdEvent.data],  // Update events array with the new event
-                        };
+                const updatedColleges = user.colleges.map(collegeObj => {
+                    if (collegeObj?.college?._id === createdEvent.data.college) {
+                      return {
+                        ...collegeObj,
+                        college: {
+                          ...collegeObj.college,
+                          events: [...(collegeObj.college?.events || []), createdEvent.data],  // Update events array with the new event
+                        },
+                      };
                     }
-                    return college;
-                });
-
-                console.log('updatedColleges', updatedColleges );
-                
-
-                const updatedUser = {
+                    return collegeObj;
+                  });
+                  
+                  console.log('updatedColleges', updatedColleges);
+                  
+                  const updatedUser = {
                     ...user,
                     colleges: updatedColleges,  // Replace the colleges array with the updated one
-                };
-
-                setUser(updatedUser);  
-                localStorage.setItem('user', JSON.stringify(updatedUser));  
-                setOpen(false)
+                  };
+                  
+                  setUser(updatedUser);
+                  localStorage.setItem('user', JSON.stringify(updatedUser));
+                  setOpen(false);
+                  
 
             } else {
                 console.error('Error creating event:', createdEvent.error);

@@ -16,7 +16,7 @@ export default function AddSport({college, open, setOpen, user, setUser}) {
             formData.append('name', data.name );
             formData.append('image', data.image[0] );
             formData.append('description', data.description);
-            formData.append('college', college._id );
+            formData.append('college', college.college._id );
             formData.append('user', user._id)
 
             const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sports/create`, {
@@ -29,31 +29,32 @@ export default function AddSport({college, open, setOpen, user, setUser}) {
 
             if (res.ok) {
                 
-                const updatedColleges = user.colleges.map(college => {
-
-                    if (college._id === createdSport.data.college) {
-                        return {
-                            ...college,
-                            sports: [...college.sports, createdSport.data],  // Update events array with the new event
-                        };
+                const updatedColleges = user.colleges.map(collegeObj => {
+                    if (collegeObj?.college?._id === createdSport.data.college) {
+                      return {
+                        ...collegeObj,
+                        college: {
+                          ...collegeObj.college,
+                          sports: [...(collegeObj.college?.sports || []), createdSport.data],  // Update events array with the new event
+                        },
+                      };
                     }
-                    return college;
-                });
-
-                console.log('updatedColleges', updatedColleges );
-                
-
-                const updatedUser = {
+                    return collegeObj;
+                  });
+                  
+                  console.log('updatedColleges', updatedColleges);
+                  
+                  const updatedUser = {
                     ...user,
                     colleges: updatedColleges,  // Replace the colleges array with the updated one
-                };
-
-                setUser(updatedUser);  
-                localStorage.setItem('user', JSON.stringify(updatedUser));  
-                setOpen(false)
+                  };
+                  
+                  setUser(updatedUser);
+                  localStorage.setItem('user', JSON.stringify(updatedUser));
+                  setOpen(false);
 
             } else {
-                console.error('Error creating event:', createdEvent.error);
+                console.error('Error creating event:', createdSport.error);
             }
 
         } catch (error) {

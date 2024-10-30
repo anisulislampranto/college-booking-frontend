@@ -10,10 +10,12 @@ import AddResearch from '@/components/AddResearch/AddResearch';
 import AddSport from '@/components/AddSport/AddSport';
 import { Textarea } from '@headlessui/react';
 import { Select, SelectItem } from '@nextui-org/react';
+import { RxCross2 } from "react-icons/rx";
+
 
 
 export default function Page() {
-  const { user, setUser , loading } = useContext(AuthContext);
+  const { user, setUser , loading} = useContext(AuthContext);
   const router = useRouter()
   const [selectedCollegeId, setSelectedCollegeId] = useState(null);
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -34,7 +36,7 @@ export default function Page() {
                 const collegeIds = user.colleges.map(college => college._id);
                 console.log('collegeIds', collegeIds);
 
-                const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/my-college${user.type === 'student' && '?status=approved'}`, {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/my-college?${user.type === 'student' && 'status=approved' }`, {
                     method: 'PATCH',
                     headers: { 'Authorization': `Bearer ${user.token}` },
                     body: JSON.stringify(collegeIds)
@@ -97,7 +99,7 @@ export default function Page() {
     fetchReviews();
   }, [user]);
 
-  // Handler for form submission
+  // Handler Review for form submission 
   const onSubmit = async (data) => {
     const reviewData = {
       ...data,
@@ -129,6 +131,103 @@ export default function Page() {
 
     } catch (error) {
       console.error('Error submitting review:', error);
+    }
+  };
+
+  const handleDeleteEvent = async (eventId, collegeId) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/delete/${eventId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${user.token}`,
+        },
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to delete event.');
+      }
+  
+      if (response.ok) {
+        const updatedColleges = user.colleges?.map(collegeObj => {
+
+          if (collegeObj?.college?._id === collegeId) { 
+
+            return {
+              ...collegeObj,
+              college: {
+                ...collegeObj.college,
+                events: collegeObj.college.events.filter(event => event._id !== eventId),  
+              },
+            };
+          }
+          return collegeObj;
+        });
+  
+        console.log('updatedColleges', updatedColleges);
+  
+        const updatedUser = {
+          ...user,
+          colleges: updatedColleges,  
+        };
+  
+        setUser(updatedUser);
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        setOpen(false);
+      }
+  
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+
+  const handleDeleteResearch = async (eventId, collegeId) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/delete/${eventId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${user.token}`,
+        },
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to delete event.');
+      }
+  
+      if (response.ok) {
+        const updatedColleges = user.colleges?.map(collegeObj => {
+
+          if (collegeObj?.college?._id === collegeId) { 
+
+            return {
+              ...collegeObj,
+              college: {
+                ...collegeObj.college,
+                events: collegeObj.college.events.filter(event => event._id !== eventId),  
+              },
+            };
+          }
+          return collegeObj;
+        });
+  
+        console.log('updatedColleges', updatedColleges);
+  
+        const updatedUser = {
+          ...user,
+          colleges: updatedColleges,  
+        };
+  
+        setUser(updatedUser);
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        setOpen(false);
+      }
+  
+    } catch (error) {
+      console.log('error', error);
     }
   };
 
@@ -193,9 +292,13 @@ export default function Page() {
                   <ul className='flex flex-wrap gap-2'>
                     {college?.college?.events?.length > 0 || college?.events?.length > 0 ? (
                       (college?.college?.events || college?.events).map((el) => (
-                        <li key={el._id} className='shadow-md p-1 rounded-sm'>
+                        <li key={el._id} className='shadow-md p-1 rounded-sm relative'>
                           {el.name}
-                        </li>
+                            {
+                              user.type === 'collegeAdmin' && 
+                                <button onClick={() => handleDeleteEvent(el._id, college.college._id) } className=' absolute -top-3 -right-3'><RxCross2 className=' hover:bg-red-600 hover:text-white border border-red-600 w-4 h-4 text-red-600 bg-white rounded-full ' /></button>
+                            }
+                          </li>
                       ))
                     ) : (
                       <span>N/A</span>
@@ -210,8 +313,12 @@ export default function Page() {
                   </div>
                   <ul className='flex flex-wrap gap-2'>
                       {college?.college?.researches?.length > 0 || college?.researches?.length > 0 ? (college?.college?.researches || college?.researches).map((el) =>
-                      <li key={el._id} className='shadow-md p-1 rounded-sm'>
+                      <li key={el._id} className='shadow-md p-1 rounded-sm relative'>
                         {el.name}
+                        {
+                          user.type === 'collegeAdmin' && 
+                            <button className=' absolute -top-3 -right-3'><RxCross2 className=' hover:bg-red-600 hover:text-white border border-red-600 w-4 h-4 text-red-600 bg-white rounded-full ' /></button>
+                        }
                       </li>
                     ) : 'N/A'}
                   </ul>
@@ -223,8 +330,12 @@ export default function Page() {
                   </div>
                   <ul className='flex flex-wrap gap-2'>
                     {college?.college?.sports?.length > 0 || college?.sports?.length > 0  ? (college?.college?.sports || college?.sports)?.map((el) =>
-                      <li key={el._id} className='shadow-md p-1 rounded-md px-2'>
+                      <li key={el._id} className='shadow-md p-1 rounded-md px-2 relative'>
                         {el.name}
+                        {
+                          user.type === 'collegeAdmin' && 
+                            <button className=' absolute -top-3 -right-3'><RxCross2 className=' hover:bg-red-600 hover:text-white border border-red-600 w-4 h-4 text-red-600 bg-white rounded-full ' /></button>
+                        }
                       </li>
                     ) : 'N/A'}
                   </ul>

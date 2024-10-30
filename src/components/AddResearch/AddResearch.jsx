@@ -65,7 +65,7 @@ export default function AddResearch({college, open, setOpen, user, setUser, user
                 setOpen(false)
 
             } else {
-                console.error('Error creating event:', createdEvent.error);
+                console.error('Error creating event:', createdResearch.error);
             }
 
         } catch (error) {
