@@ -57,7 +57,7 @@ export default function Page() {
 
         if (user && user.colleges?.length) fetchCollegeData();
 
-    }, [user.email])
+    }, [user?.email])
 
 
     // Students of the college
@@ -161,17 +161,17 @@ export default function Page() {
   return (
     <>
     <div className="container mx-auto px-5 py-20">
-      <h1 className="text-3xl font-bold">My {`${user.type === 'student' ? 'Colleges' : 'College'}`}</h1>
+      <h1 className="text-3xl font-bold">My {`${user?.type === 'student' ? 'Colleges' : 'College'}`}</h1>
 
-      <ul className={`mt-5 grid ${user.type === 'student' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5' : ' grid-cols-1'}`}>
-        { user.colleges.length !== 0 ? user?.colleges?.map((college) => {
+      <ul className={`mt-5 grid ${user?.type === 'student' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5' : ' grid-cols-1'}`}>
+        { user?.colleges.length !== 0 ? user?.colleges?.filter(el => el.college?.name).map((college) => {
           console.log('college', college);
           
           const collegeReview = userReviews.find(review => review.collegeId._id === college.college._id);
 
           return (
-            <li key={college?._id} className="p-4 border rounded-sm flex flex-col gap-5 relative">
-              <div className={`relative w-full ${user.type === 'student' ? ' h-56 ' : 'h-[30rem]'}`}>
+            <li key={college?._id} className={`p-4 border rounded-sm flex flex-col gap-5 relative `}>
+              <div className={`relative w-full ${user?.type === 'student' ? ' h-56 ' : 'h-[30rem]'}`}>
                 <Image
                   src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${college?.college?.image || college?.image}`}
                   className="rounded-sm absolute object-cover"
@@ -179,8 +179,8 @@ export default function Page() {
                   fill
                 />
               </div>
-              <p className={`capitalize w-24 text-center z-40 p-1 rounded-md px-3 ${college.status == 'pending' ? 'bg-yellow-600 text-white' : college.status == 'approved' ? 'bg-green-600 text-white' : ''}`}>
-                {college.status}
+              <p className={`capitalize w-24 text-center z-40 p-1 rounded-md px-3 ${college.college.status == 'pending' ? 'bg-yellow-600 text-white' : college.college.status == 'approved' ? 'bg-green-600 text-white' : ''}`}>
+                {college.college.status}
               </p>
               <h3 className={` ${user.type === 'student' ? 'text-lg' : ' text-5xl'} font-semibold`}>{college?.college?.name || college.name}</h3>
 
