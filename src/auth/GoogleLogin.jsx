@@ -20,11 +20,15 @@ const GoogleLogin = () => {
 				const data =  await result.json();
 
 				console.log('res', result);
+				console.log('data', data);
 
-				localStorage.setItem('user',JSON.stringify(data.user));
-				localStorage.setItem('token',JSON.stringify(data.token));
-                setUser(data.user);
-                router.push('/profile');
+				if (result.ok) {
+					localStorage.setItem('token', data.token)
+					localStorage.setItem('user', JSON.stringify({token: data.token, ...data.user}))
+					setUser({token: data.token, ...data.user});
+					router.push('/profile');
+				}
+                
 			} else {
 				console.log(authResult);
 				throw new Error(authResult);
@@ -44,7 +48,7 @@ const GoogleLogin = () => {
         if (user?.email) {
           router.back();
         }
-      }, [user, router]);
+      }, [user?.email]);
 
 	return (
 		<button

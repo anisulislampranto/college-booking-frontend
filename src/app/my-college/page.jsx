@@ -34,7 +34,7 @@ export default function Page() {
                 const collegeIds = user.colleges.map(college => college._id);
                 console.log('collegeIds', collegeIds);
 
-                const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/my-college`, {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/my-college${user.type === 'student' && '?status=approved'}`, {
                     method: 'PATCH',
                     headers: { 'Authorization': `Bearer ${user.token}` },
                     body: JSON.stringify(collegeIds)
@@ -167,7 +167,7 @@ export default function Page() {
         { user?.colleges.length !== 0 ? user?.colleges?.filter(el => el.college?.name).map((college) => {
           console.log('college', college);
           
-          const collegeReview = userReviews.find(review => review.collegeId._id === college.college._id);
+          const collegeReview = userReviews.find(review => review.collegeId?._id === college.college?._id);
 
           return (
             <li key={college?._id} className={`p-4 border rounded-sm flex flex-col gap-5 relative `}>
@@ -179,7 +179,7 @@ export default function Page() {
                   fill
                 />
               </div>
-              <p className={`capitalize w-24 text-center z-40 p-1 rounded-md px-3 ${college.college.status == 'pending' ? 'bg-yellow-600 text-white' : college.college.status == 'approved' ? 'bg-green-600 text-white' : ''}`}>
+              <p className={` ${user.type !== 'student'} capitalize w-24 text-center z-40 p-1 rounded-md px-3 ${college.college.status == 'pending' ? 'bg-yellow-600 text-white' : college.college.status == 'approved' ? 'bg-green-600 text-white' : ''}`}>
                 {college.college.status}
               </p>
               <h3 className={` ${user.type === 'student' ? 'text-lg' : ' text-5xl'} font-semibold`}>{college?.college?.name || college.name}</h3>
