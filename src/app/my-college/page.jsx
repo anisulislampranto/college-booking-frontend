@@ -11,10 +11,11 @@ import AddSport from '@/components/AddSport/AddSport';
 import { Textarea } from '@headlessui/react';
 import { Select, SelectItem } from '@nextui-org/react';
 import { RxCross2 } from "react-icons/rx";
+import { AnimatedTooltip } from '@/utils/AnimatedTooltip';
 
 
 
-export default function Page() {
+export default function MyCollege() {
   const { user, setUser , loading} = useContext(AuthContext);
   const router = useRouter()
   const [selectedCollegeId, setSelectedCollegeId] = useState(null);
@@ -25,63 +26,35 @@ export default function Page() {
   const [addEventModal, setAddEventModal] = useState(false);
   const [addResearchModal, setAddResearchModal] = useState(false);
   const [addSportModal, setAddSportModal] = useState(false);
-  const [toggleStudents, setToggleStudents] = useState('admissionPending')
+  const [toggle, setToggle] = useState('admissionPending')
 
+  console.log('students', students);
+  
 
-    // Colleges of the student
+   // Students of the college
     useEffect(() => {
-        const fetchCollegeData = async() => {
-            try {
-                const collegeIds = user.colleges.map(college => college._id);
-                console.log('collegeIds', collegeIds);
+      (async () => {
+          try {
+              const status = toggle === 'students' ? 'approved' : 'admissionPending';
 
-                const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/my-college?${user.type === 'student' && 'status=approved' }`, {
-                    method: 'PATCH',
-                    headers: { 'Authorization': `Bearer ${user.token}` },
-                    body: JSON.stringify(collegeIds)
-                })
+              const collegeWithName = user.colleges?.find(el => el.college?.name);
 
-                const colleges = await res.json();
+              const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/students?collegeId=${collegeWithName?.college?._id}&status=${status}`, {
+                  method: 'GET',
+                  headers: { 'Authorization': `Bearer ${user.token}` },
+              });
 
-                console.log('res', res);
-                console.log('colleges', colleges);
+              const data = await res.json();
 
-                if (res.ok) {
-                  setCollegeData(colleges)
-                  console.log('colleges', colleges);
-                
-                }
-            } catch (error) {
-                console.log('err', error);
-            }
-        }
+              if (res.ok) {
+                  setStudents(data.data);
+              }
+          } catch (error) {
+              console.log('err', error);
+          }
+      })();
+    }, [toggle]);
 
-        if (user && user.colleges?.length) fetchCollegeData();
-
-    }, [user?.email])
-
-
-    // Students of the college
-    useEffect(() => {
-        (async()=>{
-            try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users?collegeId=${collegeData.college._id}`, {
-                    method: 'GET',
-                    headers: { 'Authorization': `Bearer ${user.token}` },
-                })
-                const students = await res.json();
-
-                // console.log('users my college', users);
-                
-
-                if (res.ok) {
-                  setStudents(students.data)
-                }
-            } catch (error) {
-                console.log('err', error);
-            }
-        })()
-    }, [collegeData])
 
   // Fetch reviews on component mount
   useEffect(() => {
@@ -283,6 +256,41 @@ export default function Page() {
     }
   };
 
+
+  const handleApproveStudent = async (studentId, collegeId) => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/approve/${studentId}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${user.token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ collegeId }),
+      });
+  
+      console.log('resApprove', res);
+
+      if (!res.ok) {
+        throw new Error('Failed to approve student');
+      }
+
+      if (res.ok) {
+        const data = await response.json();
+        console.log('Student approved:', data);
+    
+        // Update local student list with approved status
+        setStudents(students =>
+          students.map(s => s.student === studentId ? { ...s, status: 'approved' } : s)
+        );
+      }
+  
+      
+    } catch (error) {
+      console.log('Error approving student:', error);
+    }
+  };
+  
+
   // handleAddEvent
   const handleAddEvent = (college) => {
     setCollegeData(college);
@@ -330,7 +338,7 @@ export default function Page() {
                   fill
                 />
               </div>
-              <p className={` ${user.type !== 'student'} capitalize w-24 text-center z-40 p-1 rounded-md px-3 ${college.college.status == 'pending' ? 'bg-yellow-600 text-white' : college.college.status == 'approved' ? 'bg-green-600 text-white' : ''}`}>
+              <p className={` ${user.type === 'student' && 'hidden'} capitalize w-24 text-center z-40 p-1 rounded-md px-3 ${college.college.status == 'pending' ? 'bg-yellow-600 text-white' : college.college.status == 'approved' ? 'bg-green-600 text-white' : ''}`}>
                 {college.college.status}
               </p>
               <h3 className={` ${user.type === 'student' ? 'text-lg' : ' text-5xl'} font-semibold`}>{college?.college?.name || college.name}</h3>
@@ -395,23 +403,49 @@ export default function Page() {
               {/*  */}
 
               {/* Students for college admin */}
-              <div>
+              <div className={`${user.type === 'collegeAdmin' ? 'block my-10' : 'hidden'}`}>
                   <div className="flex bg-gray-300 p-1 rounded-md w-80">
                     <button
                         type="button"
-                        onClick={() => setToggleStudents('students')}
-                        className={`flex-1 p-1 ${toggleStudents === 'students' ? 'bg-white' : 'bg-gray-300'} text-gray-900 rounded-md`}
+                        onClick={() => setToggle('students')}
+                        className={`flex-1 p-1 ${toggle === 'students' ? 'bg-white' : 'bg-gray-300'} text-gray-900 rounded-md`}
                     >
                         Students
                     </button>
                     <button
                         type="button"
-                        onClick={() => setToggleStudents('admissionPending')}
-                        className={`flex-1 p-1 ${toggleStudents === 'admissionPending' ? 'bg-white' : 'bg-gray-300'} text-gray-900 rounded-md`}
+                        onClick={() => setToggle('admissionPending')}
+                        className={`flex-1 p-1 ${toggle === 'admissionPending' ? 'bg-white' : 'bg-gray-300'} text-gray-900 rounded-md`}
                     >
-                        Pending Admission
+                        Admission Pending
                     </button>
                 </div>
+
+                {/* Admitted Students */}
+                {
+                    toggle === 'students' ? 
+                    <div className="flex flex-row flex-wrap items-start justify-start my-10">
+                      <AnimatedTooltip items={students} />
+                    </div> : 
+                    <ul className=' my-10 flex flex-wrap gap-10 w-full'>
+                      {
+                        students?.map((el) => 
+                          <li className=' bg-gray-700 text-white p-3'> 
+                            {/* <div>
+                              <Image alt='student' fill />
+                            </div> */}
+                            <h1>{el.student.name}</h1>
+                            <p>{el.subject.name}</p>
+                            <div className=' flex gap-2 py-1'>
+                              <button onClick={() => handleApproveStudent(el.student._id, college.college._id)} className=' bg-green-600 text-white p-2 rounded-md'>Approve</button>
+                              <button className=' bg-red-600 text-white p-2 rounded-md'>Reject</button>
+                            </div>
+                          </li>
+                        )
+                      }
+                    </ul>
+                }
+                {/* Admitted Students */}
                 
               </div>
               {/* Students for college admin */}
