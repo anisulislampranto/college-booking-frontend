@@ -13,6 +13,47 @@ import { Select, SelectItem } from '@nextui-org/react';
 import { RxCross2 } from "react-icons/rx";
 import { AnimatedTooltip } from '@/utils/AnimatedTooltip';
 
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
+
+function StripePaymentForm({ onPaymentSuccess }) {
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!stripe || !elements) return;
+
+    const cardElement = elements.getElement(CardElement);
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+    });
+
+    if (error) {
+      console.log('[error]', error);
+    } else {
+      console.log('[PaymentMethod]', paymentMethod);
+      onPaymentSuccess(paymentMethod);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="p-4 border rounded-md">
+      <label className="block text-sm font-medium text-gray-700 mb-1">Card Details</label>
+      <CardElement className="p-2 border rounded-md" options={{ style: { base: { fontSize: '16px' } } }} />
+      <button type="submit" className="mt-4 bg-green-600 text-white p-2 rounded-md" disabled={!stripe}>
+        Pay Now
+      </button>
+    </form>
+  );
+}
+
+
 
 
 export default function MyCollege() {
@@ -305,6 +346,11 @@ export default function MyCollege() {
       setApprovingStudentId(null);
     }
   };
+
+
+  const handlePaymentSuccess = (paymentMethod) => {
+    // Logic to handle successful payment, e.g., storing payment info, updating user status, etc.
+  };
   
 
   // handleAddEvent
@@ -469,7 +515,7 @@ export default function MyCollege() {
                             <h1>{el.student?.name}</h1>
                             <p>{el.subject?.name}</p>
                             <div className=' flex gap-2 py-1'>
-                              <button disabled={approvingStudentId === el.student._id} onClick={() => handleApproveStudent(el.student._id, college.college._id)} className={` text-white p-2 rounded-md ${approvingStudentId === el.student._id ? 'bg-gray-600 cursor-not-allowed' : 'bg-green-600' }`}>Approve</button>
+                              <button disabled={approvingStudentId === el.student?._id} onClick={() => handleApproveStudent(el.student?._id, college.college._id)} className={` text-white p-2 rounded-md ${approvingStudentId === el.student?._id ? 'bg-gray-600 cursor-not-allowed' : 'bg-green-600' }`}>Approve</button>
                               {/* <button className=' bg-red-600 text-white p-2 rounded-md'>Reject</button> */}
                             </div>
                           </li>
@@ -482,7 +528,16 @@ export default function MyCollege() {
               </div>
               {/* Students for college admin */}
 
-              {/*  */}
+              {/* Stripe Payment  */}
+              <div className="mt-8">
+                <h3 className="text-xl font-semibold">Complete Your Payment</h3>
+                <Elements stripe={stripePromise}>
+                  <StripePaymentForm onPaymentSuccess={handlePaymentSuccess} />
+                </Elements>
+              </div>
+              {/* Stripe Payment */}
+
+              {/* Review */}
               {collegeReview ? (
                 <div>
                     <p>Rating: {collegeReview.rating}/10</p>
@@ -500,7 +555,7 @@ export default function MyCollege() {
                   }
                 </button>
               )}
-              {/*  */}
+              {/* Review */}
 
 
               {/* Add Review by student */}
