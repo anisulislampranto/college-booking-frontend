@@ -13,30 +13,30 @@ export default function Page() {
     const [loading, setLoading] = useState(true);
     const [fetchCollege, setFetchCollege] = useState(0)
 
-  useEffect(() => {
-    const fetchColleges = async () => {
-
+    useEffect(() => {
+      const fetchColleges = async () => {
         try {
-            setLoading(true); 
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges?page=${page}${user.type !== 'admin' && '&status=approved'}&limit=9`);
-            const data = await res.json();
-
-            console.log('data', data);
-
-            if (res.ok) {
-                setColleges(data.colleges);
-                setTotalPages(data.totalPages);
-                setLoading(false);
-            }
+          setLoading(true); 
+          const statusQuery = (!user || (user && user.type !== 'admin')) ? '&status=approved' : '';
+          const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges?page=${page}${statusQuery}&limit=9`);
+          const data = await res.json();
+    
+          console.log('data', data);
+    
+          if (res.ok) {
+            setColleges(data.colleges);
+            setTotalPages(data.totalPages);
+          }
         } catch (error) {
-            console.log('error', error);
-            setLoading(false);
+          console.log('error', error);
+        } finally {
+          setLoading(false);
         }
-    };
-
-    fetchColleges();
-
-  }, [page, fetchCollege]);
+      };
+    
+      fetchColleges();
+    }, [page, user]);
+    
 
   const handlePageChange = (newPage) => {
     setPage(newPage);

@@ -34,7 +34,6 @@ export default function MyCollege() {
 
 
   console.log('students', students);
-  
 
 
   useEffect(() => {
@@ -352,8 +351,6 @@ export default function MyCollege() {
 
           console.log('approvedStudents', approvedStudents);
           console.log('admissionPendingStudents', admissionPendingStudents);
-          
-          
 
           return (
             <li key={college?._id} className={`p-4 border rounded-sm flex flex-col gap-5 relative ${user.type ==='student' && admittedAlready ? 'border-green-600' :  user.type ==='student' && !admittedAlready ? 'border-yellow-600' : ''}`}>
