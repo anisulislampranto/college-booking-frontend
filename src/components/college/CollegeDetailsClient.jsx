@@ -123,9 +123,10 @@ export default function CollegeDetailsClient({ collegeDetails }) {
                         </div>
                     }
                 {/* Students */}
+
                 {/* Admission Process */}
                 {
-                    enrolled ? 'Already Enrolled' :
+                    enrolled && user.type !== 'collegeAdmin' ? 'Already Enrolled' :
                     <div className={`flex flex-col gap-10 mt-10 ${user?.type !== 'student' && 'hidden'}`}>
                         <button onClick={() => setOpen(true)} className="text-center w-36 p-2 bg-black text-white rounded-md">
                             Take Admission

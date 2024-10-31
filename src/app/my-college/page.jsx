@@ -26,12 +26,37 @@ export default function MyCollege() {
   const [addEventModal, setAddEventModal] = useState(false);
   const [addResearchModal, setAddResearchModal] = useState(false);
   const [addSportModal, setAddSportModal] = useState(false);
-  const [toggle, setToggle] = useState('admissionPending')
+  const [toggle, setToggle] = useState('admissionPending');
+  const [admittedColleges, setAdmittedColleges] = useState([]);
+  const [admissionPendingColleges, setAdmissionPendingColleges] = useState([]);
+  const [approvingStudentId, setApprovingStudentId] = useState(null);
+  const [fetchStudent, setFetchStudent] = useState(0)
+
 
   console.log('students', students);
   
 
-   // Students of the college
+
+  useEffect(() => {
+    try {
+      const approved = user.colleges?.filter(college =>
+        college.college.students?.some(student => student.student === user._id && student.status === 'approved')
+      );
+      setAdmittedColleges(approved)
+  
+      const pending = user.colleges?.filter(college =>
+        college.college.students?.some(student => student.student === user._id && student.status === 'admissionPending')
+      );
+      setAdmissionPendingColleges(pending)
+  
+  
+    } catch (error) {
+      console.error('Error checking enrollment status:', error);
+    }
+  }, [user?.colleges, user?._id]);
+
+
+   // Students of the college only for college admin
     useEffect(() => {
       (async () => {
           try {
@@ -53,7 +78,7 @@ export default function MyCollege() {
               console.log('err', error);
           }
       })();
-    }, [toggle]);
+    }, [toggle, fetchStudent]);
 
 
   // Fetch reviews on component mount
@@ -258,6 +283,7 @@ export default function MyCollege() {
 
 
   const handleApproveStudent = async (studentId, collegeId) => {
+    setApprovingStudentId(studentId)
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/approve/${studentId}`, {
         method: 'PATCH',
@@ -267,26 +293,17 @@ export default function MyCollege() {
         },
         body: JSON.stringify({ collegeId }),
       });
-  
-      console.log('resApprove', res);
-
-      if (!res.ok) {
-        throw new Error('Failed to approve student');
-      }
-
-      if (res.ok) {
-        const data = await response.json();
-        console.log('Student approved:', data);
     
-        // Update local student list with approved status
-        setStudents(students =>
-          students.map(s => s.student === studentId ? { ...s, status: 'approved' } : s)
-        );
+      if (res.ok) {
+        const data = await res.json();
+        console.log('Student approved:', data);
+        setFetchStudent(fetchStudent + 1)
       }
-  
-      
+    
     } catch (error) {
       console.log('Error approving student:', error);
+    } finally {
+      setApprovingStudentId(null);
     }
   };
   
@@ -324,12 +341,22 @@ export default function MyCollege() {
 
       <ul className={`mt-5 grid ${user?.type === 'student' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5' : ' grid-cols-1'}`}>
         { user?.colleges.length !== 0 ? user?.colleges?.filter(el => el.college?.name).map((college) => {
-          console.log('college', college);
           
           const collegeReview = userReviews.find(review => review.collegeId?._id === college.college?._id);
+          const admittedAlready = admittedColleges.some( el => el.college._id === college.college._id);
+          
+
+          // For College Admin Only
+          const approvedStudents = students?.filter(el => el.status === 'approved');
+          const admissionPendingStudents = students?.filter(el => el.status === 'admissionPending');
+
+          console.log('approvedStudents', approvedStudents);
+          console.log('admissionPendingStudents', admissionPendingStudents);
+          
+          
 
           return (
-            <li key={college?._id} className={`p-4 border rounded-sm flex flex-col gap-5 relative `}>
+            <li key={college?._id} className={`p-4 border rounded-sm flex flex-col gap-5 relative ${user.type ==='student' && admittedAlready ? 'border-green-600' :  user.type ==='student' && !admittedAlready ? 'border-yellow-600' : ''}`}>
               <div className={`relative w-full ${user?.type === 'student' ? ' h-56 ' : 'h-[30rem]'}`}>
                 <Image
                   src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${college?.college?.image || college?.image}`}
@@ -341,6 +368,13 @@ export default function MyCollege() {
               <p className={` ${user.type === 'student' && 'hidden'} capitalize w-24 text-center z-40 p-1 rounded-md px-3 ${college.college.status == 'pending' ? 'bg-yellow-600 text-white' : college.college.status == 'approved' ? 'bg-green-600 text-white' : ''}`}>
                 {college.college.status}
               </p>
+
+              <div>
+                { user.type == 'student' && admittedAlready ? 
+                  <p className='bg-green-600 text-white p-1 rounded-md w-24 text-center'>Admitted</p> : user.type == 'student' && !admittedAlready ? <p className='bg-yellow-600 text-white p-1 rounded-md w-40 text-center'>Admission Pending</p> :''
+                }
+              </div>
+
               <h3 className={` ${user.type === 'student' ? 'text-lg' : ' text-5xl'} font-semibold`}>{college?.college?.name || college.name}</h3>
 
               {/*  */}
@@ -424,21 +458,22 @@ export default function MyCollege() {
                 {/* Admitted Students */}
                 {
                     toggle === 'students' ? 
-                    <div className="flex flex-row flex-wrap items-start justify-start my-10">
-                      <AnimatedTooltip items={students} />
-                    </div> : 
-                    <ul className=' my-10 flex flex-wrap gap-10 w-full'>
+                    <div className="flex flex-row flex-wrap items-start justify-start my-8">
+                      <AnimatedTooltip items={approvedStudents} />
+                    </div> 
+                    : 
+                    <ul className=' my-8 flex flex-wrap gap-3 w-full'>
                       {
-                        students?.map((el) => 
-                          <li className=' bg-gray-700 text-white p-3'> 
+                        admissionPendingStudents?.map((el) => 
+                          <li className=' bg-gray-700 text-white p-3 rounded-md text-center'> 
                             {/* <div>
                               <Image alt='student' fill />
                             </div> */}
-                            <h1>{el.student.name}</h1>
-                            <p>{el.subject.name}</p>
+                            <h1>{el.student?.name}</h1>
+                            <p>{el.subject?.name}</p>
                             <div className=' flex gap-2 py-1'>
-                              <button onClick={() => handleApproveStudent(el.student._id, college.college._id)} className=' bg-green-600 text-white p-2 rounded-md'>Approve</button>
-                              <button className=' bg-red-600 text-white p-2 rounded-md'>Reject</button>
+                              <button disabled={approvingStudentId === el.student._id} onClick={() => handleApproveStudent(el.student._id, college.college._id)} className={` text-white p-2 rounded-md ${approvingStudentId === el.student._id ? 'bg-gray-600 cursor-not-allowed' : 'bg-green-600' }`}>Approve</button>
+                              {/* <button className=' bg-red-600 text-white p-2 rounded-md'>Reject</button> */}
                             </div>
                           </li>
                         )
@@ -463,7 +498,6 @@ export default function MyCollege() {
                   onClick={() => setSelectedCollegeId(selectedCollegeId === college.college._id ? null : college.college._id )}
                   className={`w-52 text-center mt-4 bg-black text-white font-semibold p-2 rounded-md ${user.type === 'student' ? 'block' : 'hidden'}`}
                 > 
-                  {console.log('college', college)}
                   {
                     selectedCollegeId === college?.college?._id ? 'Close' : 'Review'
                   }
