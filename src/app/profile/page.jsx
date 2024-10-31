@@ -119,7 +119,7 @@ export default function Page() {
                                 type="text"
                                 {...register('name', { required: 'Name is required' })}
                                 className="mt-1 block w-full p-2 border rounded-md"
-                                defaultValue={user.name}
+                                defaultValue={user?.name}
                             />
                             {errors.name && <span className="text-red-500">{errors.name.message}</span>}
                         </div>
@@ -159,7 +159,7 @@ export default function Page() {
                             <label className="block text-sm font-medium text-gray-700">Password</label>
                             <input
                                 type="password"
-                                {...register('password', { minLength: 6 })}
+                                {...register('password', { required: 'Password is required', minLength: 6 })}
                                 className="mt-1 block w-full p-2 border rounded-md"
                             />
                             {errors.password && <span className="text-red-500">{errors.password.message}</span>}

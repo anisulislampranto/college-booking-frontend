@@ -493,7 +493,7 @@ export default function MyCollege() {
                     <p> <span className=' text-green-600'>"</span> {collegeReview?.reviewText} <span className=' text-green-600'>"</span>  </p>
                     <p className="text-sm mt-2 font-bold">by {user.name}</p>
                 </div>
-              ) : (
+              ) : !collegeReview && admittedAlready && (
                 <button
                   onClick={() => setSelectedCollegeId(selectedCollegeId === college.college._id ? null : college.college._id )}
                   className={`w-52 text-center mt-4 bg-black text-white font-semibold p-2 rounded-md ${user.type === 'student' ? 'block' : 'hidden'}`}
