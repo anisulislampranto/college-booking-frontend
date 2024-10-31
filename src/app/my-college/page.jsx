@@ -71,7 +71,8 @@ export default function MyCollege() {
   const [admittedColleges, setAdmittedColleges] = useState([]);
   const [admissionPendingColleges, setAdmissionPendingColleges] = useState([]);
   const [approvingStudentId, setApprovingStudentId] = useState(null);
-  const [fetchStudent, setFetchStudent] = useState(0)
+  const [fetchStudent, setFetchStudent] = useState(0);
+  const [paymentErrorId, setPaymentErrorId] = useState(null)
 
 
   console.log('students', students);
@@ -348,9 +349,35 @@ export default function MyCollege() {
   };
 
 
-  const handlePaymentSuccess = (paymentMethod) => {
-    // Logic to handle successful payment, e.g., storing payment info, updating user status, etc.
+  const handlePaymentSuccess = async () => {
+    try {
+      const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL+'/api/admission-fee-payment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ amount: 5000 }), 
+      });
+  
+      if (!response.ok) {
+        throw new Error("Payment initiation failed.");
+      }
+  
+      const data = await response.json();
+      
+      console.log('dataPay', data);
+      
+  
+      if (data?.data?.url) {
+        console.log('dataPAY', data);
+        
+      }
+    } catch (error) {
+      console.error("Payment initiation failed:", error.message);
+      setPaymentErrorId(error.message)
+    }
   };
+  
   
 
   // handleAddEvent
@@ -532,7 +559,7 @@ export default function MyCollege() {
               <div className="mt-8">
                 <h3 className="text-xl font-semibold">Complete Your Payment</h3>
                 <Elements stripe={stripePromise}>
-                  <StripePaymentForm onPaymentSuccess={handlePaymentSuccess} />
+                  <StripePaymentForm  onPaymentSuccess={handlePaymentSuccess} />
                 </Elements>
               </div>
               {/* Stripe Payment */}
