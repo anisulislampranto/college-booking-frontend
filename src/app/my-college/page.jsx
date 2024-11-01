@@ -564,9 +564,9 @@ export default function MyCollege() {
                             </div> */}
                             <h1>{el.student?.name}</h1>
                             <p>{el.subject?.name}</p>
-                            <p className='mt-2'>Payment Status: <span className={`font-semibold ${el.paymentStatus?.status === 'Paid' ? 'text-green-500' : 'text-red-500'}`}>{el.paymentStatus?.status || 'Not Paid'}</span></p>
+                            <p className='mt-2'>Payment Status: <span className={`font-semibold capitalize ${el.paymentStatus?.status === 'paid' ? 'text-green-500' : 'text-red-500'}`}>{el.paymentStatus?.status}</span></p>
                             <div className=' flex gap-2 py-1'>
-                              <button disabled={approvingStudentId === el.student?._id} onClick={() => handleApproveStudent(el.student?._id, college.college._id)} className={` text-white p-2 rounded-md ${approvingStudentId === el.student?._id ? 'bg-gray-600 cursor-not-allowed' : 'bg-green-600' }`}>Approve</button>
+                              <button disabled={approvingStudentId === el.student?._id} onClick={() => handleApproveStudent(el.student?._id, college.college._id)} className={` w-full text-white p-2 rounded-md ${approvingStudentId === el.student?._id ? 'bg-gray-600 cursor-not-allowed' : 'bg-green-600' }`}>Approve</button>
                               {/* <button className=' bg-red-600 text-white p-2 rounded-md'>Reject</button> */}
                             </div>
                           </li>
