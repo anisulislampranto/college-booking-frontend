@@ -18,7 +18,8 @@ import { loadStripe } from '@stripe/stripe-js';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
 
-function StripePaymentForm({ onPaymentSuccess }) {
+function StripePaymentForm({ onPaymentSuccess, studentId, collegeId, admissionFee }) {
+
   const stripe = useStripe();
   const elements = useElements();
 
@@ -38,7 +39,10 @@ function StripePaymentForm({ onPaymentSuccess }) {
       console.log('[error]', error);
     } else {
       console.log('[PaymentMethod]', paymentMethod);
-      onPaymentSuccess(paymentMethod);
+      console.log('====================================');
+      console.log();
+      console.log('====================================');
+      onPaymentSuccess(paymentMethod, studentId, collegeId, admissionFee);
     }
   };
 
@@ -72,10 +76,12 @@ export default function MyCollege() {
   const [admissionPendingColleges, setAdmissionPendingColleges] = useState([]);
   const [approvingStudentId, setApprovingStudentId] = useState(null);
   const [fetchStudent, setFetchStudent] = useState(0);
-  const [paymentErrorId, setPaymentErrorId] = useState(null)
+  const [paymentErrorId, setPaymentErrorId] = useState(null);
+  const [userPaymentStatus, setUserPaymentStatus] = useState(null);
 
 
-  console.log('students', students);
+
+  console.log('userPaymentStatus', userPaymentStatus);
 
 
   useEffect(() => {
@@ -114,6 +120,10 @@ export default function MyCollege() {
 
               if (res.ok) {
                   setStudents(data.data);
+                  const currentUser = data.data.find(student => student.student?._id === user._id);
+                  console.log('currentUser', currentUser);
+                  
+                  setUserPaymentStatus(currentUser?.paymentStatus?.status || 'Not Paid');
               }
           } catch (error) {
               console.log('err', error);
@@ -338,7 +348,7 @@ export default function MyCollege() {
       if (res.ok) {
         const data = await res.json();
         console.log('Student approved:', data);
-        setFetchStudent(fetchStudent + 1)
+        setFetchStudent(fetchStudent + 1);
       }
     
     } catch (error) {
@@ -349,32 +359,39 @@ export default function MyCollege() {
   };
 
 
-  const handlePaymentSuccess = async () => {
+  const handlePaymentSuccess = async (paymentMethod, studentId, collegeId, admissionFee) => {
+
     try {
       const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL+'/api/admission-fee-payment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ amount: 5000 }), 
+        body: JSON.stringify({
+          amount: admissionFee,
+          collegeId,
+          studentId,
+        }),
       });
-  
+
+      console.log('data?.data?.Res', response);
+    
       if (!response.ok) {
         throw new Error("Payment initiation failed.");
       }
-  
+    
       const data = await response.json();
+      console.log('data?.data?.Res', response);
+    
       
-      console.log('dataPay', data);
-      
-  
       if (data?.data?.url) {
-        console.log('dataPAY', data);
+        console.log('data?.data?.url', data);
         
+        setFetchStudent(fetchStudent + 1)
       }
     } catch (error) {
-      console.error("Payment initiation failed:", error.message);
-      setPaymentErrorId(error.message)
+      console.error("Payment initiation failed:", error);
+      // setPaymentErrorId(error.error)
     }
   };
   
@@ -413,17 +430,17 @@ export default function MyCollege() {
 
       <ul className={`mt-5 grid ${user?.type === 'student' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5' : ' grid-cols-1'}`}>
         { user?.colleges.length !== 0 ? user?.colleges?.filter(el => el.college?.name).map((college) => {
+
+          console.log('college', college.college.name);
+          
           
           const collegeReview = userReviews.find(review => review.collegeId?._id === college.college?._id);
           const admittedAlready = admittedColleges.some( el => el.college._id === college.college._id);
-          
+          const student = college?.college?.students?.find(student => student.student === user._id);
 
           // For College Admin Only
           const approvedStudents = students?.filter(el => el.status === 'approved');
           const admissionPendingStudents = students?.filter(el => el.status === 'admissionPending');
-
-          console.log('approvedStudents', approvedStudents);
-          console.log('admissionPendingStudents', admissionPendingStudents);
 
           return (
             <li key={college?._id} className={`p-4 border rounded-sm flex flex-col gap-5 relative ${user.type ==='student' && admittedAlready ? 'border-green-600' :  user.type ==='student' && !admittedAlready ? 'border-yellow-600' : ''}`}>
@@ -445,7 +462,18 @@ export default function MyCollege() {
                 }
               </div>
 
-              <h3 className={` ${user.type === 'student' ? 'text-lg' : ' text-5xl'} font-semibold`}>{college?.college?.name || college.name}</h3>
+              {
+                college.college?.admissionFee &&
+                <p> Admission Fee: {college.college?.admissionFee}$</p>
+              }
+
+               {/*  */}
+                <div>
+                  <p className=' capitalize'>Payment Status: <strong className={`font-bold ${student?.paymentStatus?.status === 'paid' ? 'text-green-600' : 'text-yellow-600'}`}>{student?.paymentStatus?.status}</strong></p>
+                </div>
+                {/*  */}
+
+              <h3 className={` ${user.type === 'student' ? 'text-2xl' : ' text-5xl'} font-semibold`}>{college?.college?.name || college.name}</h3>
 
               {/*  */}
               <div>
@@ -541,6 +569,7 @@ export default function MyCollege() {
                             </div> */}
                             <h1>{el.student?.name}</h1>
                             <p>{el.subject?.name}</p>
+                            <p className='mt-2'>Payment Status: <span className={`font-semibold ${el.paymentStatus?.status === 'Paid' ? 'text-green-500' : 'text-red-500'}`}>{el.paymentStatus?.status || 'Not Paid'}</span></p>
                             <div className=' flex gap-2 py-1'>
                               <button disabled={approvingStudentId === el.student?._id} onClick={() => handleApproveStudent(el.student?._id, college.college._id)} className={` text-white p-2 rounded-md ${approvingStudentId === el.student?._id ? 'bg-gray-600 cursor-not-allowed' : 'bg-green-600' }`}>Approve</button>
                               {/* <button className=' bg-red-600 text-white p-2 rounded-md'>Reject</button> */}
@@ -551,17 +580,20 @@ export default function MyCollege() {
                     </ul>
                 }
                 {/* Admitted Students */}
+
+                
                 
               </div>
               {/* Students for college admin */}
 
               {/* Stripe Payment  */}
-              <div className="mt-8">
-                <h3 className="text-xl font-semibold">Complete Your Payment</h3>
-                <Elements stripe={stripePromise}>
-                  <StripePaymentForm  onPaymentSuccess={handlePaymentSuccess} />
-                </Elements>
-              </div>
+                {student?.paymentStatus?.status === 'pending' && user.type === 'student' &&
+                  <div className="mt-8">
+                    <h3 className="text-xl font-semibold">Complete Your Payment</h3>
+                    <Elements stripe={stripePromise}>
+                      <StripePaymentForm admissionFee={college.college?.admissionFee} collegeId={college.college._id} studentId={user?._id} onPaymentSuccess={handlePaymentSuccess} />
+                    </Elements>
+                  </div>}
               {/* Stripe Payment */}
 
               {/* Review */}
