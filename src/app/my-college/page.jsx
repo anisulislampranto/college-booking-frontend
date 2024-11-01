@@ -61,7 +61,7 @@ function StripePaymentForm({ onPaymentSuccess, studentId, collegeId, admissionFe
 
 
 export default function MyCollege() {
-  const { user, setUser , loading} = useContext(AuthContext);
+  const { user, setUser , loading, userFetch, setUserFetch} = useContext(AuthContext);
   const router = useRouter()
   const [selectedCollegeId, setSelectedCollegeId] = useState(null);
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -373,20 +373,15 @@ export default function MyCollege() {
           studentId,
         }),
       });
-
-      console.log('data?.data?.Res', response);
     
       if (!response.ok) {
         throw new Error("Payment initiation failed.");
       }
-    
+      
       const data = await response.json();
-      console.log('data?.data?.Res', response);
-    
       
       if (data?.data?.url) {
-        console.log('data?.data?.url', data);
-        
+        setUserFetch(userFetch + 1);
         setFetchStudent(fetchStudent + 1)
       }
     } catch (error) {
