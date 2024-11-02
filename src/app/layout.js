@@ -5,6 +5,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import FooterServer from "@/components/globals/footer/Server";
 import GlobalLoader from "../utils/GlobalLoader";
 import { Providers } from "./providers";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata = {
   title: "College booking App",
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
             </GoogleOAuthProvider>
           </AuthProvider>
         </Providers>
+        <Toaster />
       </body>
     </html>
   );

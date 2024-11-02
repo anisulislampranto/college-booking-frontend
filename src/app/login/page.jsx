@@ -7,6 +7,10 @@ import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/context/AuthContext';
 import GoogleLogin from '@/auth/GoogleLogin';
 import Link from 'next/link';
+import { Button } from "@/components/ui/button"
+import { useToast } from '@/hooks/use-toast';
+
+
 
 
 export default function Login() {
@@ -15,7 +19,10 @@ export default function Login() {
     const router = useRouter();
     const [btnState, setBtnState] = useState('');
     const [error, setError] = useState('')
-    
+    const { toast } = useToast()
+
+
+
 
     const onSubmit = async (data) => {
 
