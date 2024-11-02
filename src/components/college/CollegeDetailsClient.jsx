@@ -19,7 +19,7 @@ export default function CollegeDetailsClient({ collegeDetails }) {
     
 
     useEffect(() => {
-        const alreadyEnrolled = user.colleges?.some(el => el.college?._id === collegeDetails._id);
+        const alreadyEnrolled = user?.colleges?.some(el => el.college?._id === collegeDetails._id);
         setEnrolled(alreadyEnrolled)
 
         try {
