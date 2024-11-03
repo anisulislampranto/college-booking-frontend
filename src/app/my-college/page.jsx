@@ -76,7 +76,6 @@ export default function MyCollege() {
   const [admissionPendingColleges, setAdmissionPendingColleges] = useState([]);
   const [approvingStudentId, setApprovingStudentId] = useState(null);
   const [fetchStudent, setFetchStudent] = useState(0);
-  const [paymentErrorId, setPaymentErrorId] = useState(null);
   const [userPaymentStatus, setUserPaymentStatus] = useState(null);
 
 
@@ -448,6 +447,7 @@ export default function MyCollege() {
                   className="rounded-sm absolute object-cover"
                   alt={'college image'}
                   fill
+                  quality={70}
                 />
               </div>
               <p className={` ${user.type === 'student' && 'hidden'} capitalize w-24 text-center z-40 p-1 rounded-md px-3 ${college.college.status == 'pending' ? 'bg-yellow-600 text-white' : college.college.status == 'approved' ? 'bg-green-600 text-white' : ''}`}>

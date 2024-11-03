@@ -38,7 +38,7 @@ export default function FooterServer() {
                         contact@edu.org
                     </p>
                 </div>
-                <div className=' absolute top-[45%] left-[40%] lg:left-[45%] flex items-center gap-2'>
+                <div className=' absolute top-[45%] left-[40%] lg:left-[45%] flex gap-2'>
                     <Link href={'/'} >Privacy Policy</Link>
                     <FaLinkedin className=' text-[#0B58CA] w-5 h-5' />
                 </div>

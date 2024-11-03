@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/context/AuthContext';
 import GoogleLogin from '@/auth/GoogleLogin';
 import Link from 'next/link';
+import Button from '@/components/ui/Button';
 
 
 export default function Login() {
@@ -84,7 +85,7 @@ export default function Login() {
             Log In to your account
         </h2>
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+          <div className="bg-white px-6 py-12 shadow-2xl border border-black sm:px-12">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
 
               <InputField
@@ -132,13 +133,7 @@ export default function Login() {
               </div>
 
               <div>
-                <button
-                    disabled={btnState === 'loading'}
-                    type="submit"
-                    className={` ${btnState === 'loading' ? 'bg-gray-500' : btnState === 'success' ? 'bg-green-600' : 'bg-indigo-600' } flex w-full justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
-                >
-                    { `${ btnState  === 'loading' ? 'loading' : btnState === 'success' ? 'Success' : btnState === 'failed' ? 'failed' : 'Sign In'}`}
-                </button>
+                <Button width={'w-full'} type="submit" text={ `${ btnState  === 'loading' ? 'loading' : btnState === 'success' ? 'Success' : btnState === 'failed' ? 'failed' : 'Sign In'}`} />
                 <p className='text-red-700 capitalize mt-2' >{error}</p>
               </div>
 

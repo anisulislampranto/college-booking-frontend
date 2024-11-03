@@ -96,6 +96,7 @@ const handleApprove = (id) => {
                 className='inset-0 rounded-md absolute object-cover transition-transform group-hover:scale-105 overflow-hidden'
                 alt={college.name}
                 fill
+                quality={70}
               />
               {new Date(college.admissionDate) > new Date() && (
                 <EndlessSliderServer text={'Admission going on !!!'} className={' bg-black text-white absolute top-0 z-40'} />

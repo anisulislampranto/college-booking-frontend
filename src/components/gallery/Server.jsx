@@ -14,7 +14,7 @@ export default async function GalleryServer() {
                 {
                     data?.map((el) => 
                         <WobbleCard key={el._id} className=' relative h-56 w-full'>
-                            <Image className=' absolute object-cover rounded-md' src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${el.image}`} alt='img' fill />
+                            <Image quality={70} className=' absolute object-cover rounded-md' src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${el.image}`} alt='img' fill />
                             <p className=' rounded-md absolute bottom-5 text-xl left-3 text-white capitalize backdrop-blur-md p-2'>{el.college?.name}</p>
                         </WobbleCard>
                     )

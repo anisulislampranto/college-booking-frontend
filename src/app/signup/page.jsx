@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/context/AuthContext';
 import GoogleLogin from '@/auth/GoogleLogin';
 import Link from 'next/link';
+import Button from '@/components/ui/Button';
 
 
 export default function Signup() {
@@ -82,23 +83,23 @@ export default function Signup() {
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center py-9 px-5 sm:px-6 lg:px-8">
-        <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Sign Up
+        <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 capitalize">
+          {userType} Sign Up
         </h2>
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-            <div className="flex bg-gray-300 p-1 rounded-md">
+          <div className="bg-white border border-black px-6 py-12 shadow-2xl sm:px-12">
+            <div className="flex bg-black p-1 rounded-md">
                 <button
                     type="button"
                     onClick={() => setUserType('college')}
-                    className={`flex-1 p-1 ${userType === 'college' ? 'bg-white' : 'bg-gray-300'} text-gray-900 rounded-md`}
+                    className={`flex-1 p-1 ${userType === 'college' ? 'bg-white text-black' : ' bg-black text-white'}  rounded-md`}
                 >
                     College
                 </button>
                 <button
                     type="button"
                     onClick={() => setUserType('student')}
-                    className={`flex-1 p-1 ${userType === 'student' ? 'bg-white' : 'bg-gray-300'} text-gray-900 rounded-md`}
+                    className={`flex-1 p-1 ${userType === 'student' ? 'bg-white text-black' : 'bg-black text-white'} rounded-md`}
                 >
                     Student
                 </button>
@@ -153,19 +154,15 @@ export default function Signup() {
               </div>
 
               <div>
-                <button
-                  type="submit"
-                  className={` ${btnState === 'loading' ? 'bg-gray-500' : btnState === 'success' ? 'bg-green-600' : 'bg-indigo-600' } flex w-full justify-center rounded-md  px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
-                >
-                    { `${ btnState  === 'loading' ? 'Submitting. . .' : btnState === 'success' ? 'Success' : btnState === 'failed' ? 'failed' : 'Sign Up'}` }
-                </button>
+                <Button width={'w-full'} type={'submit'} text={ `${ btnState  === 'loading' ? 'Submitting. . .' : btnState === 'success' ? 'Success' : btnState === 'failed' ? 'failed' : 'Sign Up'}` } />
               </div>
+              
             </form>
 
                 {
                   userType !== 'college' &&
                       <div>
-                        <div className="relative mt-10">
+                        <div className="relative mt-8">
                           <div aria-hidden="true" className="absolute inset-0 flex items-center">
                             <div className="w-full border-t border-gray-200" />
                           </div>

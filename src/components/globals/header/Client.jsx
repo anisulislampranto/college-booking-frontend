@@ -7,7 +7,6 @@ import { RiCloseLargeLine } from "react-icons/ri";
 import Link from 'next/link';
 import logo from '../../../assets/Board_of_Intermediate_and_Secondary_Education_Dhaka_Monogram.svg.png'
 import { AuthContext } from '@/context/AuthContext';
-import AnimatedBg from '@/components/ui/AnimatedBg';
 
 
 
@@ -38,9 +37,9 @@ export default function HeaderClient() {
     return (
         <>
             <div className=' sticky top-0 z-50 bg-white shadow'>
-                    <div className=' flex items-center justify-between text-black lg:bg-transparent p-5 gap-5 relative '>
-                        <Link href={'/'} className=' relative h-14 w-[12rem]'>
-                            <Image src={logo} alt='logo' fill className=' absolute object-contain' />
+                    <div className=' flex items-center justify-between text-black lg:bg-transparent p-5 gap-5 relative md:px-24'>
+                        <Link href={'/'} className=' relative h-16 w-[5rem]'>
+                            <Image src={logo} alt='logo' fill className=' absolute object-contain' quality={50} />
                         </Link>
 
                         <div className=' hidden lg:flex items-center justify-between gap-5 font-poppinsRegular'>

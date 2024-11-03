@@ -3,7 +3,7 @@ export const InputField = ({ label, id, type = "text", validation, register, err
       <label htmlFor={id} className="block text-sm font-medium leading-6 text-gray-900">
         {label}
       </label>
-      <div className="mt-2">
+      <div style={{margin: 0}}>
         <input
           id={id}
           type={type}
