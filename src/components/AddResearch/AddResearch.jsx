@@ -4,6 +4,7 @@ import React, {useState, useEffect} from 'react'
 import Modal from '../../utils/Modal'
 import { useForm, Controller } from "react-hook-form";
 import {Select, SelectItem, Textarea, Input} from "@nextui-org/react";
+import Button from '../ui/button';
 
 
 export default function AddResearch({college, open, setOpen, user, setUser, students, setStudents}) {
@@ -75,8 +76,8 @@ export default function AddResearch({college, open, setOpen, user, setUser, stud
 
     return (
         <Modal open={open} setOpen={setOpen}>
-            <h1 className=' text-4xl py-5'>Add Research for <strong>{college.name}</strong> </h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <h1 className=' text-4xl py-5'>Add Research for <strong>{college.college?.name}</strong> </h1>
+            <form onSubmit={handleSubmit(onSubmit)} className=' space-y-3' >
                 {/* Research Name */}
                 <div>
                     <Input
@@ -141,9 +142,9 @@ export default function AddResearch({college, open, setOpen, user, setUser, stud
                 </div>
 
                 {/* Submit Button */}
-                <button type="submit" className="mt-5 p-2 bg-blue-500 text-white rounded-md">
-                    Add Research
-                </button>
+                <div className=' flex justify-end mt-5'>
+                    <Button type={'submit'} text={'Add Research'} />
+                </div>
             </form>
         </Modal>
     )

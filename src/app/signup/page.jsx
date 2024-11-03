@@ -83,7 +83,7 @@ export default function Signup() {
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center py-9 px-5 sm:px-6 lg:px-8">
         <h2 className="text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Sign Up to your account
+          Sign Up
         </h2>
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
           <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">

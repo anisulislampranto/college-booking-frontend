@@ -3,7 +3,10 @@
 import React from 'react'
 import Modal from '../../utils/Modal'
 import { useForm } from "react-hook-form";
-import {Input} from "@nextui-org/react";
+import Button from '../ui/button';
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+
 
 
 
@@ -73,28 +76,30 @@ export default function AddEventClient({college, open, setOpen, user, setUser}) 
 
     return (
         <Modal open={open} setOpen={setOpen}>
-            <h1 className=' text-4xl py-5'>Add Event for <strong>{college.name}</strong> </h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <h1 className=' text-4xl py-5'>Add Event for <strong>{college.college?.name}</strong> </h1>
+            <form onSubmit={handleSubmit(onSubmit)} className=' space-y-4'>
                 {/* Event Name */}
                 <div>
+                    <label htmlFor="description">Name:</label>
                     <Input
                         {...register('name', { required: 'Event Name is required' })}
                         id="name"
-                        className=" w-full px-2"
-                        type='textarea'
-                        label='Event Name'
+                        className=" w-full px-2 border-black"
+                        type='text'
+                        placeholder='Enter Event Name border '
+                        
                     />
                     {errors.name && <span className="text-red-500">{errors.name.message}</span>}
                 </div>
 
                 {/* Event Image */}
                 <div>
+                    <label htmlFor="image">Image: </label>
                     <Input
-                        label='Image'
                         type='file'
                         {...register('image', { required: 'Event Image is required' })}
                         id="image"
-                        className="p-2 w-full"
+                        className="p-2 w-full border-black"
                     />
                     {errors.image && <span className="text-red-500">{errors.image.message}</span>}
                 </div>
@@ -102,33 +107,31 @@ export default function AddEventClient({college, open, setOpen, user, setUser}) 
                 {/* Event date */}
                 <div>
                     <label htmlFor="date">Date</label>
-                    <input
+                    <Input
                         type='date'
                         {...register('date', { required: 'Event Date is required' })}
                         id="image"
-                        className="p-2 w-full mt-3"
-                        label='Date'
+                        className="p-2 w-full border-black"
                     />
                     {errors.date && <span className="text-red-500">{errors.date.message}</span>}
                 </div>
-
                 {/* Event Description */}
                 <div>
                     <label htmlFor="description">Description</label>
-                    <textarea
+                    <Textarea
                         type='text'
-                        label='Description'
-                        {...register('description', { required: 'Research Description is required' })}
+                        {...register('description', { required: 'Event Description is required' })}
                         id="description"
-                        className="p-2 w-full border rounded-md mt-3"
+                        className="p-2 w-full border border-black"
+                        placeholder='Enter Event description'
                     />
                     {errors.date && <span className="text-red-500">{errors.date.message}</span>}
                 </div>
 
                 {/* Submit Button */}
-                <button type="submit" className="mt-5 p-2 bg-blue-500 text-white rounded-md">
-                    Add Event
-                </button>
+                <div className=' flex justify-end'>
+                    <Button type={'submit'} text={'Add Event'} />
+                </div>
             </form>
         </Modal>
     )

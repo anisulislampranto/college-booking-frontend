@@ -4,8 +4,8 @@ import React from 'react'
 export default function page() {
 
     return (
-        <div className=' container mx-auto p-5 py-20'>
-            <h1 className='text-5xl'>Add College</h1>
+        <div className='sm:mx-auto p-10 px-5 mx-5 my-20 max-w-2xl backdrop-blur-sm bg-white/30 border border-black shadow-2xl'>
+            <h1 className='text-4xl sm:text-5xl'>Add College</h1>
             <AddCollegeClient />
         </div>
     )

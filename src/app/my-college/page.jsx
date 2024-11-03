@@ -438,7 +438,7 @@ export default function MyCollege() {
           const admissionPendingStudents = students?.filter(el => el.status === 'admissionPending');
 
           return (
-            <li key={college?._id} className={`p-4 border rounded-sm flex flex-col gap-5 relative ${user.type ==='student' && admittedAlready ? 'border-green-600' :  user.type ==='student' && !admittedAlready ? 'border-yellow-600' : ''}`}>
+            <li key={college?._id} className={`p-4 border shadow-2xl border-black rounded-sm flex flex-col gap-5 h-full relative ${user.type ==='student' && admittedAlready ? 'border-green-600' :  user.type ==='student' && !admittedAlready ? 'border-yellow-600' : ''}`}>
               <div className={`relative w-full ${user?.type === 'student' ? ' h-56 ' : 'h-[30rem]'}`}>
                 <Image
                   src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${college?.college?.image || college?.image}`}
@@ -463,9 +463,12 @@ export default function MyCollege() {
               }
 
                {/*  */}
-                <div>
-                  <p className=' capitalize'>Payment Status: <strong className={`font-bold ${student?.paymentStatus?.status === 'paid' ? 'text-green-600' : 'text-yellow-600'}`}>{student?.paymentStatus?.status}</strong></p>
-                </div>
+                {
+                  user.type === 'student' &&
+                    <div>
+                      <p className=' capitalize'>Payment Status: <strong className={`font-bold ${student?.paymentStatus?.status === 'paid' ? 'text-green-600' : 'text-yellow-600'}`}>{student?.paymentStatus?.status}</strong></p>
+                    </div>
+                }
                 {/*  */}
 
               <h3 className={` ${user.type === 'student' ? 'text-2xl' : ' text-5xl'} font-semibold`}>{college?.college?.name || college.name}</h3>
@@ -479,7 +482,7 @@ export default function MyCollege() {
                   <ul className='flex flex-wrap gap-2'>
                     {college?.college?.events?.length > 0 || college?.events?.length > 0 ? (
                       (college?.college?.events || college?.events).map((el) => (
-                        <li key={el._id} className='shadow-md p-1 rounded-sm relative'>
+                        <li key={el._id} className='shadow-md p-2 rounded-sm relative border border-black'>
                           {el.name}
                             {
                               user.type === 'collegeAdmin' && 
@@ -496,11 +499,11 @@ export default function MyCollege() {
                 <div>
                   <div className='flex justify-between'>
                     <strong>Researches:</strong>
-                    <button className={`border px-3 p-1 rounded-md group hover:border-green-600 ${ user.type === 'student' ? 'hidden' : 'block'}`} onClick={() => handleAddResearch(college)}>add research <span className='group-hover:text-green-600'>+</span></button>
+                    <button className={`border px-3 p-1 group rounded-sm hover:border-green-600 ${ user.type === 'student' ? 'hidden' : 'block'}`} onClick={() => handleAddResearch(college)}>add research <span className='group-hover:text-green-600'>+</span></button>
                   </div>
                   <ul className='flex flex-wrap gap-2'>
                       {college?.college?.researches?.length > 0 || college?.researches?.length > 0 ? (college?.college?.researches || college?.researches).map((el) =>
-                      <li key={el._id} className='shadow-md p-1 rounded-sm relative'>
+                      <li key={el._id} className='shadow-md p-2 rounded-sm relative border border-black'>
                         {el.name}
                         {
                           user.type === 'collegeAdmin' && 
@@ -517,7 +520,7 @@ export default function MyCollege() {
                   </div>
                   <ul className='flex flex-wrap gap-2'>
                     {college?.college?.sports?.length > 0 || college?.sports?.length > 0  ? (college?.college?.sports || college?.sports)?.map((el) =>
-                      <li key={el._id} className='shadow-md p-1 rounded-md px-2 relative'>
+                      <li key={el._id} className='shadow-md p-2 rounded-sm px-2 relative border border-black'>
                         {el.name}
                         {
                           user.type === 'collegeAdmin' && 
@@ -531,18 +534,18 @@ export default function MyCollege() {
 
               {/* Students for college admin */}
               <div className={`${user.type === 'collegeAdmin' ? 'block my-10' : 'hidden'}`}>
-                  <div className="flex bg-gray-300 p-1 rounded-md w-80">
+                  <div className="flex bg-black p-1 rounded-md w-80">
                     <button
                         type="button"
                         onClick={() => setToggle('students')}
-                        className={`flex-1 p-1 ${toggle === 'students' ? 'bg-white' : 'bg-gray-300'} text-gray-900 rounded-md`}
+                        className={`flex-1 p-1 ${toggle === 'students' ? ' bg-white text-black' : 'bg-black text-white'}  rounded-md`}
                     >
                         Students
                     </button>
                     <button
                         type="button"
                         onClick={() => setToggle('admissionPending')}
-                        className={`flex-1 p-1 ${toggle === 'admissionPending' ? 'bg-white' : 'bg-gray-300'} text-gray-900 rounded-md`}
+                        className={`flex-1 p-1 ${toggle === 'admissionPending' ? ' bg-white text-black' : 'bg-black text-white'} rounded-md`}
                     >
                         Admission Pending
                     </button>
@@ -550,7 +553,7 @@ export default function MyCollege() {
 
                 {/* Admitted Students */}
                 {
-                    toggle === 'students' ? 
+                    students.length !== 0 ? toggle === 'students' ? 
                     <div className="flex flex-row flex-wrap items-start justify-start my-8">
                       <AnimatedTooltip items={approvedStudents} />
                     </div> 
@@ -572,7 +575,7 @@ export default function MyCollege() {
                           </li>
                         )
                       }
-                    </ul>
+                    </ul> : <p className=' py-5 text-center'>No Students yet</p>
                 }
                 {/* Admitted Students */}
 

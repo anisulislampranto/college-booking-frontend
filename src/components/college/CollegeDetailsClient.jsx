@@ -8,6 +8,7 @@ import { Timeline } from '@/utils/timeline';
 import AdmissionClient from '../admission/AdmissionClient';
 import React, {useState, useEffect} from 'react'
 import { AnimatedTooltip } from '@/utils/AnimatedTooltip';
+import Button from '../ui/button';
 
 
 export default function CollegeDetailsClient({ collegeDetails }) {
@@ -127,10 +128,8 @@ export default function CollegeDetailsClient({ collegeDetails }) {
                 {/* Admission Process */}
                 {
                     enrolled && user.type !== 'collegeAdmin' ? 'Already Enrolled' :
-                    <div className={`flex flex-col gap-10 mt-10 ${user?.type !== 'student' && 'hidden'}`}>
-                        <button onClick={() => setOpen(true)} className="text-center w-36 p-2 bg-black text-white rounded-md">
-                            Take Admission
-                        </button>
+                    <div className={`flex flex-col gap-10 mt-10  ${user?.type !== 'student' && 'hidden'}`}>
+                        <Button onClick={() => setOpen(true)} text={'Take Admission'} width={'w-48'}  />
                     </div>
                 }
             </div>

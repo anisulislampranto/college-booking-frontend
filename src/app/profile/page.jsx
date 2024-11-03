@@ -1,5 +1,6 @@
 'use client';
 
+import Button from '@/components/ui/button';
 import { AuthContext } from '@/context/AuthContext';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -68,7 +69,7 @@ export default function Page() {
 
     return (
         <div className="max-w-3xl mx-auto py-20">
-            <div className="bg-white shadow-lg rounded-lg p-8">
+            <div className="bg-white shadow-lg rounded-sm p-8 border border-black">
                 {/* Profile Header */}
                 <div className="flex flex-col items-center gap-4">
                     <div className="relative w-32 h-32 rounded-full overflow-hidden">
@@ -96,18 +97,8 @@ export default function Page() {
 
                 {/* Edit and Logout Buttons */}
                 <div className="mt-6 flex gap-4 justify-center">
-                    <button 
-                        className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition-colors" 
-                        onClick={handleLogout}
-                    >
-                        Logout
-                    </button>
-                    <button 
-                        className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition-colors" 
-                        onClick={() => setEdit(!edit)}
-                    >
-                        {edit ? 'Cancel' : 'Edit Info'}
-                    </button>
+                    <Button onClick={handleLogout} text={'Logout'} />
+                    <Button onClick={() => setEdit(!edit)} text={edit ? 'Cancel' : 'Edit Info'} />
                 </div>
 
                 {/* Form Section */}
@@ -165,9 +156,10 @@ export default function Page() {
                             {errors.password && <span className="text-red-500">{errors.password.message}</span>}
                         </div>
 
-                        <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded-md">
-                            Save Changes
-                        </button>
+                        <div className=' flex justify-end'>
+                            <Button type='submit' text={'Save Changes'} />
+                        </div>
+
                     </form>
                 )}
             </div>

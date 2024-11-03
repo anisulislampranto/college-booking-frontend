@@ -3,7 +3,9 @@
 import React from 'react'
 import Modal from '../../utils/Modal'
 import { useForm } from "react-hook-form";
-import { Textarea, Input} from "@nextui-org/react";
+import Button from '../ui/button';
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 
 
 export default function AddSport({college, open, setOpen, user, setUser}) {
@@ -65,50 +67,53 @@ export default function AddSport({college, open, setOpen, user, setUser}) {
 
     return (
         <Modal open={open} setOpen={setOpen}>
-            <h1 className=' text-4xl py-5'>Add Sport for <strong>{college.name}</strong> </h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <h1 className=' text-4xl py-5'>Add Sport for <strong>{college.college?.name}</strong> </h1>
+            <form onSubmit={handleSubmit(onSubmit)} className=' space-y-3'>
 
-                {/* Research Name */}
+                {/* Sport Name */}
                 <div>
+                    <label htmlFor="name">Name</label>
                     <Input
-                        label='Name'
-                        type='textarea'
+                        type='text'
                         {...register('name', { required: 'Name is required' })}
                         id="name"
-                        className="p-2 w-full"
+                        className="p-2 w-full border border-black"
+                        placeholder='Enter Sport Name'
                     />
                     {errors.name && <span className="text-red-500">{errors.name.message}</span>}
                 </div>
 
-                {/* Research Image */}
+                {/* Sport Image */}
                 <div>
+                    <label htmlFor="image">Image</label>  
                     <Input
                         label='Image'
                         type='file'
-                        {...register('image', { required: 'Research Image is required' })}
+                        {...register('image', { required: 'Sport Image is required' })}
                         id="image"
-                        className="p-2 w-full"
+                        className="p-2 w-full border border-black"
                     />
                     {errors.image && <span className="text-red-500">{errors.image.message}</span>}
                 </div>
 
-                {/* Research Description */}
+                {/* Sport Description */}
                 <div>
+                    <label htmlFor="description">Description</label>  
                     <Textarea
-                        style={{border: 'none'}}
                         type='text'
                         label='Description'
-                        {...register('description', { required: 'Research Description is required' })}
+                        {...register('description', { required: 'Sport Description is required' })}
                         id="description"
-                        className="p-2 w-full"
+                        className="p-2 w-full border border-black"
+                        placeholder='Enter Sport Description'
                     />
-                    {errors.date && <span className="text-red-500">{errors.date.message}</span>}
+                    {errors.description && <span className="text-red-500">{errors.description.message}</span>}
                 </div>
 
                 {/* Submit Button */}
-                <button type="submit" className="mt-5 p-2 bg-blue-500 text-white rounded-md">
-                    Add Sport
-                </button>
+                <div className=' flex justify-end mt-5'>
+                    <Button text={'Add Sport'} type={'submit'} />
+                </div>
             </form>
         </Modal>
     )

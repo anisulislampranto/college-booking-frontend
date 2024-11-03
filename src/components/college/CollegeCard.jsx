@@ -113,7 +113,7 @@ const handleApprove = (id) => {
                     <strong>Events:</strong>
                     <ul className='flex flex-wrap gap-2'>
                       {college.events.length !== 0 ? college.events.slice(-3).map((el) =>
-                        <li key={el._id} className='shadow-md p-1 rounded-sm'>
+                        <li key={el._id} className='shadow-md p-2 rounded-sm '>
                           {el.name}
                         </li>
                       ) : 'N/A'}
@@ -123,7 +123,7 @@ const handleApprove = (id) => {
                     <strong>Researches:</strong>
                     <ul className='flex flex-wrap gap-2'>
                       {college.researches.length !== 0 ? college.researches.map((el) =>
-                        <li key={el._id} className='shadow-md p-1 rounded-sm'>
+                        <li key={el._id} className='shadow-md p-2 rounded-sm '>
                           {el.name}
                         </li>
                       ) : 'N/A'}
@@ -133,7 +133,7 @@ const handleApprove = (id) => {
                     <strong>Sports:</strong>
                     <ul className='flex flex-wrap gap-2'>
                       {college.sports.length !== 0 ? college.sports.map((el) =>
-                        <li key={el._id} className='shadow-md p-1 rounded-sm'>
+                        <li key={el._id} className='shadow-md p-1 rounded-sm '>
                           {el.name}
                         </li>
                       ) : 'N/A'}

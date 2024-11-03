@@ -7,6 +7,7 @@ import { useForm, Controller } from 'react-hook-form';
 import Modal from '../../utils/Modal';
 import { Input } from '@nextui-org/input';
 import {DateInput, Select, SelectItem} from "@nextui-org/react";
+import Button from '../ui/button';
 
 
 export default function AdmissionClient({ open, setOpen, college, subjects, setEnrolled}) {
@@ -50,7 +51,8 @@ export default function AdmissionClient({ open, setOpen, college, subjects, setE
 
                 setEnrolled(true);
                 setOpen(false); 
-                router.push('/my-college')
+                router.push('/my-college');
+                router.refresh()
             } else {
                 throw new Error('Failed to submit form');
             }
@@ -179,11 +181,10 @@ export default function AdmissionClient({ open, setOpen, college, subjects, setE
                         />
                         {errors.image && <span className="text-red-500">{errors.image.message}</span>}
                     </div>
-
-                    {/* Submit Button */}
-                    <button type="submit" className="mt-5 p-2 bg-blue-500 text-white rounded-md">
-                        Submit
-                    </button>
+                    <div className=' flex justify-end'>
+                        {/* Submit Button */}
+                        <Button text={'Submit'} type={'submit'} />
+                    </div>
                 </form>
             </Modal>
         </>
