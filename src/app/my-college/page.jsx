@@ -336,7 +336,7 @@ export default function MyCollege() {
   const handleApproveStudent = async (studentId, collegeId) => {
     setApprovingStudentId(studentId)
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/approve/${studentId}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/approve-student/${studentId}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${user.token}`,
@@ -418,13 +418,16 @@ export default function MyCollege() {
     }
 }, [loading, user, router]);
 
+  console.log('user', user);
+
+
   return (
     <>
     <div className="container mx-auto px-5 py-20">
       <h1 className="text-3xl font-bold">My {`${user?.type === 'student' ? 'Colleges' : 'College'}`}</h1>
 
       <ul className={`mt-5 grid ${user?.type === 'student' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5' : ' grid-cols-1'}`}>
-        { user?.colleges.length !== 0 ? user?.colleges?.filter(el => el.college?.name).map((college) => {
+        { user?.colleges?.length !== 0 ? user?.colleges?.filter(el => el.college?.name).map((college) => {
 
           console.log('college', college.college.name);
           

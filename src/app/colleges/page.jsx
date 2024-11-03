@@ -14,7 +14,7 @@ export default function Page() {
     const [fetchCollege, setFetchCollege] = useState(0)
 
     useEffect(() => {
-      const fetchColleges = async () => {
+      (async () => {
         try {
           setLoading(true); 
           const statusQuery = (!user || (user && user.type !== 'admin')) ? '&status=approved' : '';
@@ -32,10 +32,9 @@ export default function Page() {
         } finally {
           setLoading(false);
         }
-      };
+      })()
     
-      fetchColleges();
-    }, [page, user]);
+    }, [page, user, fetchCollege]);
     
 
   const handlePageChange = (newPage) => {

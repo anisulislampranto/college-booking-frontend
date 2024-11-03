@@ -50,7 +50,7 @@ const handleApprove = (id) => {
 
   try {
     (async () => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/approve/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/approve-college/${id}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${user.token}`,
@@ -60,6 +60,9 @@ const handleApprove = (id) => {
       });
 
       const data = await res.json();
+
+      console.log('dataaaaaaa', data);
+      
 
       if (res.ok) {
         setApproveBtnState('Approved');
