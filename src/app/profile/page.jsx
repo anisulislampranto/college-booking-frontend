@@ -68,7 +68,7 @@ export default function Page() {
     console.log('user', user);
 
     return (
-        <div className="max-w-3xl mx-auto py-20">
+        <div className="max-w-3xl mx-auto py-20 px-5">
             <div className="bg-white shadow-lg rounded-sm p-8 border border-black">
                 {/* Profile Header */}
                 <div className="flex flex-col items-center gap-4">
