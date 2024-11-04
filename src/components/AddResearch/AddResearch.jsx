@@ -4,7 +4,7 @@ import React, {useState, useEffect} from 'react'
 import Modal from '../../utils/Modal'
 import { useForm, Controller } from "react-hook-form";
 import {Select, SelectItem, Textarea, Input} from "@nextui-org/react";
-import Button from '../ui/button';
+import Button from '@/components/ui/Button';
 
 
 export default function AddResearch({college, open, setOpen, user, setUser, students, setStudents}) {

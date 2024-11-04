@@ -3,7 +3,7 @@
 import React from 'react'
 import Modal from '../../utils/Modal'
 import { useForm } from "react-hook-form";
-import Button from '../ui/button';
+import Button from '@/components/ui/Button';
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 

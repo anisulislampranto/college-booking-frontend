@@ -7,7 +7,7 @@ import { useForm, Controller } from 'react-hook-form';
 import Modal from '../../utils/Modal';
 import { Input } from '@nextui-org/input';
 import {DateInput, Select, SelectItem} from "@nextui-org/react";
-import Button from '../ui/button';
+import Button from '@/components/ui/Button';
 
 
 export default function AdmissionClient({ open, setOpen, college, subjects, setEnrolled}) {
