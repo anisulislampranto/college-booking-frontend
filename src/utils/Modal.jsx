@@ -5,7 +5,7 @@ import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 export default function Modal({ open, setOpen, children }) {
 
   return (
-    <Dialog open={open} onClose={() => setOpen(false)} className="relative z-10">
+    <Dialog open={open} onClose={() => setOpen(false)} className="relative z-50">
       <DialogBackdrop
         className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
       />
