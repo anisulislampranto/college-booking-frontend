@@ -8,7 +8,7 @@ import { Timeline } from '@/utils/timeline';
 import AdmissionClient from '../admission/AdmissionClient';
 import React, {useState, useEffect} from 'react'
 import { AnimatedTooltip } from '@/utils/AnimatedTooltip';
-import Button from '../ui/button';
+import Button from '@/components/ui/Button';
 
 
 export default function CollegeDetailsClient({ collegeDetails }) {

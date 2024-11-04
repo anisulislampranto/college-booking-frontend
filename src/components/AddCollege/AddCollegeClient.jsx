@@ -4,7 +4,7 @@ import React, {useState, useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 import { AuthContext } from '@/context/AuthContext';
 import { redirect, useRouter } from 'next/navigation';
-import Button from '../ui/button';
+import Button from '@/components/ui/Button';
 import { Input } from "@/components/ui/input"
 
 
