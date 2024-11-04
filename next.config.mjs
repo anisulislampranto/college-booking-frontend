@@ -7,7 +7,7 @@ const pwaConfig = withPWA({
   disable: process.env.NODE_ENV === "development",
   register: true,
   skipWaiting: true,
-  sw: "service-worker.js",
+  sw: "sw.js",
 });
 
 // Define the Next.js configuration

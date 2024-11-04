@@ -21,6 +21,6 @@
     "lang": "en-GB",
     "name": "Colleg Booking",
     "short_name": "college_booking",
-    "start_url": "https://college-booking-frontend.vercel.app",
-    "scope": "https://college-booking-frontend.vercel.app"
+    "start_url": "http://localhost:3000",
+    "scope": "http://localhost:3000"
 }
