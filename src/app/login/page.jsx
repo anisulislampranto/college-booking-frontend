@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { AuthContext } from '@/context/AuthContext';
 import GoogleLogin from '@/auth/GoogleLogin';
 import Link from 'next/link';
-import Button from '@/components/ui/Button';
+import Button from '../../components/ui/Button';
 
 
 export default function Login() {
