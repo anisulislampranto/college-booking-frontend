@@ -3,13 +3,16 @@
 import AnimatedBg from "@/components/ui/AnimatedBg";
 import { cn } from "@/utils/cn";
 import React, { useEffect, useState } from "react";
+import { WobbleCard } from "./WobbleCard";
+import Image from "next/image";
 
 export const InfiniteMovingCards = ({
   items,
   direction = "left",
   speed,
   pauseOnHover = true,
-  className
+  className,
+  type
 }) => {
   const containerRef = React.useRef(null);
   const scrollerRef = React.useRef(null);
@@ -76,26 +79,38 @@ export const InfiniteMovingCards = ({
         {items?.map((item, idx) => (
           <AnimatedBg>
             <li
-              className="w-[350px] max-w-full relative flex-shrink-0 px-8 py-6 md:w-[450px]"
+              className="w-[250px] h-[13rem] max-w-full relative flex-shrink-0 px-8 py-6 md:w-[450px] md:h-full"
               key={item._id}>
                 <blockquote>
+
                   <div
                     aria-hidden="true"
                     className="user-select-none -z-1 pointer-events-none absolute -left-0.5 -top-0.5 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"></div>
-                  <span
-                    className="relative z-20 text-sm leading-[1.6] font-normal capitalize">
-                    {item.reviewText}
-                  </span>
-                  <div className="relative z-20 mt-6 flex flex-row items-center">
-                    <span className="flex flex-col gap-1">
-                      <span className=" text-sm leading-[1.6]  font-normal capitalize">
-                        {item.collegeId?.name}
-                      </span>
-                      <span className=" text-sm leading-[1.6] font-normal capitalize">
-                        {item.userId?.name}
-                      </span>
-                    </span>
-                  </div>
+
+                    {
+                      type === 'image' ? 
+                        <WobbleCard key={item._id} className=' relative h-32 md:h-56 w-full'>
+                            <Image quality={70} className=' absolute object-cover rounded-md' src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${item.image}`} alt='img' fill />
+                            <p className=' rounded-md absolute bottom-5 text-xl left-3 text-white capitalize backdrop-blur-md p-2'>{item.college?.name}</p>
+                        </WobbleCard>
+                      : 
+                      <>
+                        <span
+                          className="relative z-20 text-sm leading-[1.6] font-normal capitalize">
+                          {item.reviewText}
+                        </span>
+                        <div className="relative z-20 mt-6 flex flex-row items-center">
+                          <span className="flex flex-col gap-1">
+                            <span className=" text-sm leading-[1.6]  font-normal capitalize">
+                              {item.collegeId?.name}
+                            </span>
+                            <span className=" text-sm leading-[1.6] font-normal capitalize">
+                              {item.userId?.name}
+                            </span>
+                          </span>
+                        </div>
+                      </>
+                    }
                 </blockquote>
             </li>
           </AnimatedBg>

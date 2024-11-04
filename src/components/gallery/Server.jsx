@@ -1,3 +1,4 @@
+import { InfiniteMovingCards } from '@/utils/InfiniteMovingCards'
 import { WobbleCard } from '@/utils/WobbleCard'
 import Image from 'next/image'
 import React from 'react'
@@ -10,7 +11,7 @@ export default async function GalleryServer() {
     return (
         <div className=' container mx-auto p-5 space-y-3'>
             <h1 className=' text-3xl'>Gallery</h1>
-            <div className=' grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
+            {/* <div className=' grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5'>
                 {
                     data?.map((el) => 
                         <WobbleCard key={el._id} className=' relative h-56 w-full'>
@@ -19,7 +20,20 @@ export default async function GalleryServer() {
                         </WobbleCard>
                     )
                 }
-            </div>
+                
+            </div> */}
+            {
+                    data.length !== 0 && 
+                    <InfiniteMovingCards items={data} type={'image'} />
+                }
+            {
+                    data.length !== 0 && 
+                    <InfiniteMovingCards items={data} type={'image'} direction='right' />
+                }
+            {
+                    data.length !== 0 && 
+                    <InfiniteMovingCards items={data} type={'image'} />
+                }
         </div>
     )
 }

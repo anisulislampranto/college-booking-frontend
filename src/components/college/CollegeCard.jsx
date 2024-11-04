@@ -22,6 +22,9 @@ export default function CollegeCard({college, user, setUser, fetchCollege, setFe
           headers: { 'Authorization': `Bearer ${user.token}` },
         });
 
+        console.log('res', res);
+        
+
         if (res.ok) {
           setDeleteBtnState('Deleted');
           console.log("College deleted successfully");
