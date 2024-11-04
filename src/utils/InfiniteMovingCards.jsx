@@ -79,9 +79,8 @@ export const InfiniteMovingCards = ({
         {items?.map((item, idx) => (
           <AnimatedBg>
             <li
-              className="w-[250px] h-[13rem] max-w-full relative flex-shrink-0 px-8 py-6 md:w-[450px] md:h-full"
-              key={item._id}
-            >
+              className="w-[350px] max-w-full relative flex-shrink-0 px-8 py-6 md:w-[450px]"
+              key={item._id}>
                 <blockquote>
 
                   <div
@@ -91,11 +90,10 @@ export const InfiniteMovingCards = ({
                     {
                       type === 'image' ? 
                         <>
-                          <WobbleCard key={item._id} className=' relative h-32 md:h-56 w-full'>
+                          <WobbleCard key={item._id} className=' relative h-56 w-full'>
                               <Image quality={70} className=' absolute object-cover rounded-md' src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${item.image}`} alt='img' fill />
                               <p className=' rounded-md absolute bottom-5 text-xl left-3 text-white capitalize backdrop-blur-md p-2'>{item.college?.name}</p>
                           </WobbleCard>
-                          <h1>Uttara College</h1>
                         </>
                       : 
                       <>

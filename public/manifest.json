@@ -20,7 +20,7 @@
     "dir": "auto",
     "lang": "en-GB",
     "name": "College Booking",
-    "short_name": "college_booking",
+    "short_name": "College_Booking",
     "start_url": "https://college-booking-frontend.vercel.app",
     "scope": "https://college-booking-frontend.vercel.app"
 }
