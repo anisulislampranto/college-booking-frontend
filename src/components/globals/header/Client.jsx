@@ -110,6 +110,11 @@ export default function HeaderClient() {
                         </Link>
                     )
                 }
+                {
+                    !user && navLinks.filter(el => el.label !== 'Add College' &&  el.label !== 'Admission' &&  el.label !== 'My College' ).map((el) => 
+                        <Link onClick={() => setOpen(false)} href={el.url} className='hover:text-gray-500 cursor-pointer ' key={el.url}>{el.label}</Link>
+                    )
+                }
                 <Link onClick={() => setOpen(false)} type='button' href={ user?.name ? '/profile' : '/signup'} className='hover:text-gray-500 cursor-pointer'>
                     {user?.name ? user?.name : 'Sign up'}
                 </Link>
