@@ -145,9 +145,6 @@ export default function AddCollegeClient() {
                         />
                         {errors.admissionFee && <span className="text-red-500">{errors.admissionFee.message}</span>}
                     </div>
-
-
-
                 </div>
 
                 

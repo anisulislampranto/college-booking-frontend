@@ -11,7 +11,7 @@ const GoogleLogin = () => {
     const { user, setUser, userType } = useContext(AuthContext);
 
 	console.log('user', user);
-	
+
 
 	const responseGoogle = async (authResult) => {
 		try {

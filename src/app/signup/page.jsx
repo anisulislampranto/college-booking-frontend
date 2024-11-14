@@ -16,7 +16,6 @@ export default function Signup() {
     const router = useRouter();
     const [btnState, setBtnState] = useState('');
 
-
     const onSubmit = async (data) => {
         setBtnState('loading'); 
         try {

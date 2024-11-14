@@ -36,7 +36,7 @@ export default function AddGalleryImageClient() {
     return (
         <>  
             {
-                user.type === 'admin' && 
+                user?.type === 'admin' && 
                 <button onClick={()=>setModalOpen(true)} className=' border border-black hover-text group rounded-sm hover:border-green-600 px-3'> <span className=' group-hover:text-green-600'>+</span> Add Image</button>
             }
 
