@@ -23,7 +23,7 @@ const GoogleLogin = () => {
 				console.log('data', data);
 
 				if (result.ok) {
-					localStorage.setItem('token', data.token)
+					localStorage.setItem('collegeToken', data.token)
 					localStorage.setItem('user', JSON.stringify({token: data.token, ...data.user}))
 					setUser({token: data.token, ...data.user});
 					router.push('/profile');

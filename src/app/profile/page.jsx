@@ -28,7 +28,7 @@ export default function Page() {
     }, [loading, user, router]);
 
     const onSubmit = async (data) => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('collegeToken');
 
         console.log('token', token);
         

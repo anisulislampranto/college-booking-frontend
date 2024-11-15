@@ -45,7 +45,7 @@ export default function Signup() {
               console.log('userData', userData);
               
 
-              localStorage.setItem('token', userData.token)
+              localStorage.setItem('collegeToken', userData.token)
               localStorage.setItem('user', JSON.stringify(userData))
               setUser(userData);
               setBtnState('success');

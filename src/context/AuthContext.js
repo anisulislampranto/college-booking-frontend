@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("collegeToken");
 
       if (token) {
         try {
@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
               const data = await response.json();
               console.log("dataUSer", data);
               setLoading(false);
-              localStorage.setItem("token", token);
+              localStorage.setItem("collegeToken", token);
               setUser({ token, ...data.data });
               // setUserType(data.data.)
             } else {

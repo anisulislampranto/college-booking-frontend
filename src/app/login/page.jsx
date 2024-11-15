@@ -50,7 +50,7 @@ export default function Login() {
 
             if (userData.data?.email) {
 
-                localStorage.setItem('token', userData.data.token)
+                localStorage.setItem('collegeToken', userData.data.token)
                 localStorage.setItem('user', JSON.stringify(userData.data))
                 setUser(userData.data);
                 setBtnState('success');
