@@ -11,7 +11,7 @@ export default function RecycleBinServer() {
     const router = useRouter();
     const [deletedColleges, setDeletedColleges] = useState();
     const [collegeFetching, setCollegeFetching] = useState(true);
-    const [restoreBtnState, setRestoreBtnState] = useState('Restore');
+    const [restoringId, setRestoringId] = useState(null);
     const [fetching, setFetching] = useState(0)
 
     useEffect(() => {
@@ -43,7 +43,7 @@ export default function RecycleBinServer() {
     }, [fetching])
 
     const handleRestoreCollege = async (collegeId) => {
-        setRestoreBtnState('Restoring. . .');
+        setRestoringId(collegeId);
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/colleges/restore/${collegeId}`, {
                 method: 'POST',
@@ -55,9 +55,10 @@ export default function RecycleBinServer() {
     
         if (res.ok) {
             console.log("College restored successfully");
-            setRestoreBtnState('Restored');
+            setRestoringId(null);
             setFetching(fetching + 1)
         } else {
+            setRestoringId(null)
             console.error("Failed to restore college:", errorData.message);
             setRestoreBtnState('Failed to Restore');
             setTimeout(() => {
@@ -65,6 +66,7 @@ export default function RecycleBinServer() {
             }, 2000);
         }
         } catch (error) {
+            setRestoringId(null)
             console.error("Error restoring college:", error);
             setRestoreBtnState('Failed to Restore');
             setTimeout(() => {
@@ -102,7 +104,7 @@ export default function RecycleBinServer() {
                             </div>
                             <h1>{college.name}</h1>
 
-                            <button onClick={() => handleRestoreCollege(college._id)} className=' px-3 border border-green-600 hover:bg-green-600 hover:text-white rounded-md'>{restoreBtnState}</button>
+                            <button onClick={() => handleRestoreCollege(college._id)} className=' px-3 border border-green-600 hover:bg-green-600 hover:text-white rounded-md'>{restoringId === college._id ? 'Restoring' : 'Restore'}</button>
                         </div>
                     )) : <span className='text-center col-span-3 text-5xl'>404 Colleges Not Found</span>}
                 </div>

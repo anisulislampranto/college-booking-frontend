@@ -15,16 +15,13 @@ export default function AddGalleryImageClient() {
     const handleAddImage = async( ) => {
         try {
             const formData = new FormData();
-
-            const res =  await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/gallery/create`, {
-                method: 'POST',
-
-            });
+            
+            const res =  await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/gallery/create`, { method: 'POST' });
+            
             const data = res.json();
-
+            
             if (res.ok) {
                 console.log('data', data);
-                
             }
 
         } catch (error) {
@@ -35,10 +32,10 @@ export default function AddGalleryImageClient() {
 
     return (
         <>  
-            {
+            {/* {
                 user?.type === 'admin' && 
                 <button onClick={()=>setModalOpen(true)} className=' border border-black hover-text group rounded-sm hover:border-green-600 px-3'> <span className=' group-hover:text-green-600'>+</span> Add Image</button>
-            }
+            } */}
 
             {
                 <Modal open={modalOpen} setOpen={setModalOpen}>
